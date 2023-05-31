@@ -30,3 +30,17 @@
 *.exe
 *.out
 *.app
+
+# Debug
+*.ilk
+*.recipe
+*.tlog
+*.pdb
+*.idb
+*.vsidx
+*.lock
+*.db*
+*.opendb
+*.ipch
+*.log
+*.suo
