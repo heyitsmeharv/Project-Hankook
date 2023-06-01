@@ -30,6 +30,12 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -47,6 +53,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Player.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="assets\Dirt.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="assets\Grass.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="assets\Water.png">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>
