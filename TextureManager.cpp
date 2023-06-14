@@ -1,6 +1,7 @@
 #include "TextureManager.h"
 
 #include <filesystem>
+#include <unordered_set>
 
 namespace hk
 {
@@ -44,13 +45,14 @@ namespace hk
 	{
 		init_info.renderer = m_renderer;
 
-		auto [itr, _] = m_textures.emplace(init_info.filepath, init_info);
+		auto [itr, did_insert] = m_textures.emplace(init_info.filepath, init_info);
 
 		//If the texture fails to load, we don't want a bad entry hanging around
 		//so remove it from the list so we can't find it and reference it later
-		if (itr->second.LoadTexture() == false)
+		if (did_insert && itr->second.LoadTexture() == false)
 		{
 			m_textures.erase(itr);
+			printf("Failed to load texture: %s \n", init_info.filepath.data());
 			return false;
 		}
 
@@ -59,10 +61,29 @@ namespace hk
 
 	void TextureManager::LoadDirectory(const std::string& directory)
 	{
-		//for (const auto& directory_entry : std::filesystem::recursive_directory_iterator(directory))
-		//{
-		//	directory_entry.path().extension()
-		//}
+		static const std::unordered_set<std::filesystem::path> valid_file_extensions
+		{
+			".png",
+			".jpg",
+			".jpeg",
+			".bmp",
+			".gif"
+		};
+
+		for (const auto& directory_entry : std::filesystem::recursive_directory_iterator(directory))
+		{
+			if (valid_file_extensions.contains(directory_entry.path().extension()))
+			{
+				hk::TextureInitInfo init_info;
+				init_info.filepath = directory_entry.path().string();
+				init_info.renderer = m_renderer;
+
+				if (LoadTexture(init_info) == false)
+				{
+					printf("Failed to load texture (%s) in directory (%s) \n", directory.data(), init_info.filepath.data());
+				}
+			}
+		}
 	}
 
 	const hk::Texture& TextureManager::GetTexture(const std::string& filepath) const

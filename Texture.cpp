@@ -43,8 +43,6 @@ namespace hk
 
 	bool Texture::LoadTexture()
 	{
-		IMG_
-
 		SDL_Surface* image_surface = IMG_Load(m_filepath.data());
 		if (image_surface == nullptr)
 		{

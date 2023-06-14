@@ -15,6 +15,7 @@
 //***** TODO LIST *****
 //*********************
 // - TextureManager
+// - ErrorHandler
 // - Animated Sprite
 // - Movement
 // - Collision
@@ -58,6 +59,8 @@ int main(int argc, char* args[])
 			printf("TextureManager failed to load, we're in big trouble! \n");
 			return - 1;
 		}
+
+		hk::TextureManager::Instance().LoadDirectory("Data/Images");
 
 		//----- TEXTURE -----
 		hk::TextureInitInfo texture_info;
