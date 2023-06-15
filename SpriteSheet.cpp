@@ -5,6 +5,7 @@
 #include <sstream>
 #include <rapidjson/document.h>
 
+#include "ErrorManager.h"
 #include "TextureManager.h"
 
 namespace hk
@@ -88,7 +89,7 @@ namespace hk
 
 		if (doc.HasParseError() || doc.IsNull())
 		{
-			printf("Failed to parse keybindings file for controller, all keybindings will be blank");
+			hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Failed to parse keybindings file for controller, all keybindings will be blank");
 			return false;
 		}
 

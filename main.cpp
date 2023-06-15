@@ -2,6 +2,7 @@
 #include <iostream>  
 
 #include "DebugShape.h"
+#include "ErrorManager.h"
 #include "ImGuiManager.h"
 #include "KeyboardInputHandler.h"
 #include "Sprite.h"
@@ -25,9 +26,13 @@ int main(int argc, char* args[])
 {
 	argc; args;
 
+	hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Test error: %s %d %f", "ww2n", 100, 30.2f);
+	hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Test error: %s %d %f", "ww2n", 100, 30.2f);
+	hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Test error: %s %d %f", "ww2n", 101, 30.2f);
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		hk::ErrorManager::Error(hk::ErrorCategory::GFX, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 	}
 	else
 	{
@@ -56,8 +61,8 @@ int main(int argc, char* args[])
 		//----- TEXTURES -----
 		if (hk::TextureManager::Instance().Initialise(window.GetRenderer(), "Data/Images/default.jpg") == false)
 		{
-			printf("TextureManager failed to load, we're in big trouble! \n");
-			return - 1;
+			hk::ErrorManager::Error(hk::ErrorCategory::GFX, "TextureManager failed to load, we're in big trouble!");
+			return -1;
 		}
 
 		hk::TextureManager::Instance().LoadDirectory("Data/Images");
@@ -160,6 +165,7 @@ int main(int argc, char* args[])
 			imgui_manager.StartFrame();
 			sprite_anim.AddToImGui();
 			timer.AddToImGui();
+			hk::ErrorManager::AddToImGui();
 			imgui_manager.Draw();
 		}
 

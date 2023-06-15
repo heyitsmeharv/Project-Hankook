@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="DebugShape.cpp" />
     <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="ErrorManager.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="DebugShape.h" />
+    <ClInclude Include="ErrorManager.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

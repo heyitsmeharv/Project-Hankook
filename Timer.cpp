@@ -12,6 +12,13 @@ namespace
 
 namespace hk
 {
+	Timer::Timer()
+		: m_delta_time()
+		, m_total_time()
+		, m_last_tick()
+	{
+	}
+
 	void Timer::Restart()
 	{
 		m_delta_time = std::chrono::seconds{ 0 };

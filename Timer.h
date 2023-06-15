@@ -7,6 +7,8 @@ namespace hk
 	class Timer
 	{
 	public:
+		Timer();
+
 		void	Restart		();
 		void	Update		();
 		void	Pause		();

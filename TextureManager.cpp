@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <unordered_set>
 
+#include "ErrorManager.h"
+
 namespace hk
 {
 	TextureManager::TextureManager()
@@ -27,7 +29,7 @@ namespace hk
 		m_default_texture = hk::Texture(init_info);
 		if (m_default_texture.LoadTexture() == false)
 		{
-			printf("This is really bad, we have no default texture, things are going to crash! \n");
+			hk::ErrorManager::Error(hk::ErrorCategory::GFX, "This is really bad, we have no default texture, things are going to crash! \n");
 			return false;
 		}
 
@@ -52,7 +54,7 @@ namespace hk
 		if (did_insert && itr->second.LoadTexture() == false)
 		{
 			m_textures.erase(itr);
-			printf("Failed to load texture: %s \n", init_info.filepath.data());
+			hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Failed to load texture: %s \n", init_info.filepath.data());
 			return false;
 		}
 
@@ -80,7 +82,7 @@ namespace hk
 
 				if (LoadTexture(init_info) == false)
 				{
-					printf("Failed to load texture (%s) in directory (%s) \n", directory.data(), init_info.filepath.data());
+					hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Failed to load texture (%s) in directory (%s) \n", directory.data(), init_info.filepath.data());
 				}
 			}
 		}
