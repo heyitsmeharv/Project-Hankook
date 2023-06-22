@@ -89,7 +89,7 @@ namespace hk
 
 		if (doc.HasParseError() || doc.IsNull())
 		{
-			hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Failed to parse keybindings file for controller, all keybindings will be blank");
+			hk::Warn(hk::ErrorCategory::GFX, "Failed to parse keybindings file for controller, all keybindings will be blank");
 			return false;
 		}
 

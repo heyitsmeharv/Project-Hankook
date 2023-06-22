@@ -15,9 +15,10 @@
 //*********************
 //***** TODO LIST *****
 //*********************
-// - TextureManager
-// - ErrorHandler
-// - Animated Sprite
+// - TextureManager X
+// - ErrorHandler X
+// - ImGui User class (list of func ptrs)
+// - Animated Sprite 
 // - Movement
 // - Collision
 // - Clean includes
@@ -26,13 +27,9 @@ int main(int argc, char* args[])
 {
 	argc; args;
 
-	hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Test error: %s %d %f", "ww2n", 100, 30.2f);
-	hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Test error: %s %d %f", "ww2n", 100, 30.2f);
-	hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Test error: %s %d %f", "ww2n", 101, 30.2f);
-
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		hk::ErrorManager::Error(hk::ErrorCategory::GFX, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		hk::Fatal(hk::ErrorCategory::GFX, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 	}
 	else
 	{
@@ -61,7 +58,7 @@ int main(int argc, char* args[])
 		//----- TEXTURES -----
 		if (hk::TextureManager::Instance().Initialise(window.GetRenderer(), "Data/Images/default.jpg") == false)
 		{
-			hk::ErrorManager::Error(hk::ErrorCategory::GFX, "TextureManager failed to load, we're in big trouble!");
+			hk::Fatal(hk::ErrorCategory::GFX, "TextureManager failed to load, we're in big trouble!");
 			return -1;
 		}
 

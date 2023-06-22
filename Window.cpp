@@ -16,14 +16,14 @@ namespace hk
         m_window = SDL_CreateWindow(init_data.window_title.data(), init_data.x_pos, init_data.y_pos, init_data.width, init_data.height, init_data.flags);
         if (m_window == nullptr)
         {
-            hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
+            hk::Warn(hk::ErrorCategory::GFX, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
         }
         else
         {
             m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
             if (m_renderer == NULL)
             {
-                hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+                hk::Warn(hk::ErrorCategory::GFX, "Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 return false;
             }
             else
@@ -36,7 +36,7 @@ namespace hk
                 int imgFlags = IMG_INIT_PNG;
                 if (!(IMG_Init(imgFlags) & imgFlags))
                 {
-                    hk::ErrorManager::Error(hk::ErrorCategory::GFX, "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+                    hk::Warn(hk::ErrorCategory::GFX, "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
                     return false;
                 }
             }

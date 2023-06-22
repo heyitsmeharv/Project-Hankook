@@ -47,7 +47,7 @@ namespace hk
 		SDL_Surface* image_surface = IMG_Load(m_filepath.data());
 		if (image_surface == nullptr)
 		{
-			hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Unable to load Texture %s! SDL Error: %s\n", m_filepath.data(), SDL_GetError());
+			hk::Warn(hk::ErrorCategory::GFX, "Unable to load Texture %s! SDL Error: %s\n", m_filepath.data(), SDL_GetError());
 			return false;
 		}
 		else
@@ -61,10 +61,7 @@ namespace hk
 			}
 
 			m_texture = SDL_CreateTextureFromSurface(m_renderer, image_surface);
-			if (m_texture == nullptr)
-			{
-				hk::ErrorManager::Error(hk::ErrorCategory::GFX, "Unable to create texture from %s! SDL Error: %s\n", m_filepath.c_str(), SDL_GetError());
-			}
+			hk::WarnIf::Null(m_texture, hk::ErrorCategory::GFX, "Unable to create texture from %s! SDL Error: %s\n", m_filepath.c_str(), SDL_GetError());
 
 			SDL_FreeSurface(image_surface);
 		}
