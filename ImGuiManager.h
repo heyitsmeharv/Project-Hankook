@@ -8,20 +8,28 @@
 
 namespace hk
 {
+	class ImGuiUser;
+
 	class ImGuiManager
 	{
 	public:
 		 ImGuiManager(const hk::WindowInitData& init_data);
 		~ImGuiManager();
 
-		void Create		();
-		void Destroy	();
+		void Create			();
+		void Destroy		();
 
-		void Update		(SDL_Event& event);
-		void StartFrame	();
-		void Draw		();
+		void UpdateInput	(SDL_Event& event);
+		void StartFrame		();
+		void CallUsers		();
+		void Draw			();
+
+		static void RegisterUser	(ImGuiUser& user);
+		static void DeregisterUser	(ImGuiUser& user);
 
 	private:
 		hk::Window m_window;
+
+		static inline std::vector<ImGuiUser*> m_users;
 	};
 }

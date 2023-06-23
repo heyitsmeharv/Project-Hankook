@@ -1,10 +1,12 @@
 #pragma once
 
+#include "ImGuiUser.h"
+
 namespace hk
 {
 	class SpriteSheet;
 
-	class SpriteAnimation
+	class SpriteAnimation : public ImGuiUser
 	{
 	public:
 		 SpriteAnimation();
@@ -15,7 +17,7 @@ namespace hk
 		
 		void SetSpriteSheet(const SpriteSheet* sprite_sheet);
 
-		void AddToImGui();
+		void AddToImGui() override;
 
 	private:
 		int  m_current_frame_index;

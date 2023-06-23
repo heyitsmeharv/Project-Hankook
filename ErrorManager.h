@@ -2,6 +2,9 @@
 
 #include <unordered_map>
 #include <string>
+#include <memory>
+
+#include "ImGuiUser.h"
 
 namespace hk
 {
@@ -55,13 +58,20 @@ namespace hk
 		void Null(const bool expression, ErrorCategory category, const char* message, ...);
 	}
 
-	class ErrorManager
+	class ErrorManager : public ImGuiUser
 	{
 	public:
-		static void AddToImGui();
-		static void AddError(ErrorSeverity severity, ErrorCategory category, std::string&& message);
+		void AddToImGui	() override;
+		void AddError	(ErrorSeverity severity, ErrorCategory category, std::string&& message);
 
 	private:
-		static inline std::unordered_map<std::string, hk::ErrorInfo> m_errors;
+		std::unordered_map<std::string, hk::ErrorInfo> m_errors;
+
+	//Singleton stuff
+	public:
+		static ErrorManager& Instance();
+
+	private:
+		static inline std::unique_ptr<ErrorManager> m_instance;
 	};
 }

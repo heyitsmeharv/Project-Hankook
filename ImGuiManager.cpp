@@ -1,4 +1,5 @@
 #include "ImGuiManager.h"
+#include "ImGuiUser.h"
 
 #include "imgui/imgui_impl_sdl2.h"
 #include "imgui/imgui_impl_sdlrenderer2.h"
@@ -44,7 +45,7 @@ namespace hk
 		m_window.Destroy();
 	}
 
-	void ImGuiManager::Update(SDL_Event& event)
+	void ImGuiManager::UpdateInput(SDL_Event& event)
 	{
 		ImGui_ImplSDL2_ProcessEvent(&event);
 	}
@@ -54,6 +55,17 @@ namespace hk
 		ImGui_ImplSDLRenderer2_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
+	}
+
+	void ImGuiManager::CallUsers()
+	{
+		for (auto& user : m_users)
+		{
+			if (user)
+			{
+				user->AddToImGui();
+			}
+		}
 	}
 
 	void ImGuiManager::Draw()
@@ -69,5 +81,19 @@ namespace hk
 		m_window.Clear();
 		ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 		m_window.Display();
+	}
+
+	void ImGuiManager::RegisterUser(ImGuiUser& user)
+	{
+		m_users.push_back(&user);
+	}
+
+	void ImGuiManager::DeregisterUser(ImGuiUser& user)
+	{
+		auto itr = std::find(m_users.begin(), m_users.end(), &user);
+		if (itr != m_users.end())
+		{
+			m_users.erase(itr);
+		}
 	}
 }

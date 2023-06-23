@@ -137,6 +137,7 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="ErrorManager.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
+    <ClCompile Include="ImGuiUser.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="DebugShape.h" />
     <ClInclude Include="ErrorManager.h" />
     <ClInclude Include="ImGuiManager.h" />
+    <ClInclude Include="ImGuiUser.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_sdl2.h" />

@@ -12,9 +12,9 @@ namespace
 		static const std::string ph = "severity not found";
 		static const std::unordered_map<hk::ErrorSeverity, std::string> lookup
 		{
-			{ hk::ErrorSeverity::WARNING, "Warning" },
-			{ hk::ErrorSeverity::FAULT, "Fault" },
-			{ hk::ErrorSeverity::FATAL, "Fatal" },
+			{ hk::ErrorSeverity::WARNING,	"Warning" },
+			{ hk::ErrorSeverity::FAULT,		"Fault" },
+			{ hk::ErrorSeverity::FATAL,		"Fatal" },
 		};
 
 		const auto& itr = lookup.find(severity);
@@ -32,7 +32,7 @@ namespace hk
 		vsprintf_s(buffer, message, args);
 		va_end(args);
 
-		hk::ErrorManager::AddError(hk::ErrorSeverity::WARNING, category, buffer);
+		hk::ErrorManager::Instance().AddError(hk::ErrorSeverity::WARNING, category, buffer);
 	}
 
 	namespace WarnIf
@@ -67,7 +67,7 @@ namespace hk
 		vsprintf_s(buffer, message, args);
 		va_end(args);
 
-		hk::ErrorManager::AddError(hk::ErrorSeverity::FAULT, category, buffer);
+		hk::ErrorManager::Instance().AddError(hk::ErrorSeverity::FAULT, category, buffer);
 	}
 
 	namespace FaultIf
@@ -102,7 +102,7 @@ namespace hk
 		vsprintf_s(buffer, message, args);
 		va_end(args);
 
-		hk::ErrorManager::AddError(hk::ErrorSeverity::FATAL, category, buffer);
+		hk::ErrorManager::Instance().AddError(hk::ErrorSeverity::FATAL, category, buffer);
 	}
 
 	namespace FatalIf
@@ -177,5 +177,15 @@ namespace hk
 		}
 
 		ImGui::End();
+	}
+
+	ErrorManager& ErrorManager::Instance()
+	{
+		if (m_instance == nullptr)
+		{
+			m_instance = std::make_unique<ErrorManager>();
+		}
+
+		return *m_instance;
 	}
 }

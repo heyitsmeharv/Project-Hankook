@@ -17,7 +17,7 @@
 //*********************
 // - TextureManager X
 // - ErrorHandler X
-// - ImGui User class (list of func ptrs)
+// - ImGui User class X
 // - Animated Sprite 
 // - Movement
 // - Collision
@@ -121,7 +121,7 @@ int main(int argc, char* args[])
 			SDL_Event e;
 			while (SDL_PollEvent(&e)) 
 			{
-				imgui_manager.Update(e);
+				imgui_manager.UpdateInput(e);
 
 				switch (e.type) 
 				{
@@ -160,9 +160,7 @@ int main(int argc, char* args[])
 
 			//----- IMGUI -----
 			imgui_manager.StartFrame();
-			sprite_anim.AddToImGui();
-			timer.AddToImGui();
-			hk::ErrorManager::AddToImGui();
+			imgui_manager.CallUsers();
 			imgui_manager.Draw();
 		}
 

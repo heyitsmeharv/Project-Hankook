@@ -2,9 +2,11 @@
 
 #include <chrono>
 
+#include "ImGuiUser.h"
+
 namespace hk
 {
-	class Timer
+	class Timer : public ImGuiUser
 	{
 	public:
 		Timer();
@@ -17,7 +19,7 @@ namespace hk
 		double	DeltaTime	() const;
 		double	TotalTime	() const;
 
-		void	AddToImGui	();
+		void	AddToImGui	() override;
 
 	private:
 		//This is stored as seconds so 0.016s
