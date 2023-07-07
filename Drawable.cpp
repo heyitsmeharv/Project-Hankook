@@ -3,29 +3,14 @@
 namespace hk
 {
 	Drawable::Drawable()
-		: m_x_pos(0)
-		, m_y_pos(0)
-		, m_x_scale(0)
-		, m_y_scale(0)
-		, m_rotation_in_deg(0)
+		: m_rotation_in_deg(0)
+		, m_scale()
 		, m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
 	{
 	}
 
 	Drawable::~Drawable()
 	{
-	}
-
-	void Drawable::SetPosition(int new_x_pos, int new_y_pos)
-	{
-		m_x_pos = new_x_pos;
-		m_y_pos = new_y_pos;
-	}
-
-	void Drawable::MovePosition(int x_delta, int y_delta)
-	{
-		m_x_pos += x_delta;
-		m_y_pos += y_delta;
 	}
 
 	void Drawable::SetRotation(int new_rot_in_deg)
@@ -38,4 +23,24 @@ namespace hk
 		m_rotation_in_deg += delta_rot_in_deg;
 	}
 
+	void Drawable::SetScale(float new_x_scale, float new_y_scale)
+	{
+		m_scale.x = new_x_scale;
+		m_scale.y = new_y_scale;
+	}
+
+	void Drawable::SetScale(const Vector2f& new_scale)
+	{
+		m_scale = new_scale;
+	}
+
+	int Drawable::GetRotationInDeg() const
+	{
+		return m_rotation_in_deg;
+	}
+
+	const Vector2f& Drawable::GetScale() const
+	{
+		return m_scale;
+	}
 }

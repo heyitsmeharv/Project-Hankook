@@ -10,6 +10,7 @@ namespace hk
 		  MoveCommand(/*Transformable& moveable,*/ const float x_delta, const float y_delta);
 		 ~MoveCommand();
 
+		std::unique_ptr<Command> Clone() const override;
 		void Execute() const override;
 
 	private:

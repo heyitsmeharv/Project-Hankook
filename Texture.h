@@ -4,6 +4,8 @@
 #include <optional>
 #include <SDL_render.h>
 
+#include "Vector2.h"
+
 namespace hk
 {
 	struct TextureInitInfo
@@ -15,8 +17,7 @@ namespace hk
 
 	struct TextureDrawInfo
 	{
-		int							x_pos = 0;
-		int							y_pos = 0;
+		Vector2i					position = { 0, 0 };
 		double						angle_in_deg = 0.0;
 		std::optional<SDL_Rect>		clip = std::nullopt;
 		std::optional<SDL_Point>	centre = std::nullopt;

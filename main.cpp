@@ -3,13 +3,18 @@
 
 #include "DebugShape.h"
 #include "ErrorManager.h"
+#include "GameObject.h"
+#include "GamepadInstance.h"
 #include "ImGuiManager.h"
-#include "KeyboardInputHandler.h"
-#include "Sprite.h"
+#include "InputDeviceManager.h"
+#include "KeyboardMouseInstance.h"
+#include "Logger.h"
+#include "PlayerController.h"
 #include "SpriteAnimation.h"
 #include "SpriteSheet.h"
 #include "TextureManager.h"
 #include "Timer.h"
+#include "Vector2.h"
 #include "Window.h"
 
 //*********************
@@ -18,16 +23,22 @@
 // - TextureManager X
 // - ErrorHandler X
 // - ImGui User class X
+// - Game Object Class (diff between sprite, drawable and game object) X
+// - Rework Input Handling X
+// - Logger (Inputs, Commands etc) X
 // - Animated Sprite 
 // - Movement
 // - Collision
 // - Clean includes
+// - Make Point & Click Demo
+// - Will probably need a proper Event Pipeline
+// - Database loading
 
 int main(int argc, char* args[])
 {
 	argc; args;
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER) < 0)
 	{
 		hk::Fatal(hk::ErrorCategory::GFX, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 	}
@@ -38,7 +49,7 @@ int main(int argc, char* args[])
 		init_data.window_title = "Project Hankook";
 		init_data.width = 800;
 		init_data.height = 800;
-		init_data.x_pos = 800;
+		init_data.x_pos = 1000;
 		init_data.y_pos = 200;
 		init_data.flags = SDL_WINDOW_SHOWN;
 
@@ -47,8 +58,8 @@ int main(int argc, char* args[])
 		//----- IMGUI -----
 		hk::WindowInitData imgui_init_data;
 		imgui_init_data.window_title = "Project Hankook - ImGui Debug";
-		imgui_init_data.width = 600;
-		imgui_init_data.height = 800;
+		imgui_init_data.width = 800;
+		imgui_init_data.height = 600;
 		imgui_init_data.x_pos = 100;
 		imgui_init_data.y_pos = 200;
 		imgui_init_data.flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_SHOWN;
@@ -71,8 +82,27 @@ int main(int argc, char* args[])
 
 		hk::TextureManager::Instance().LoadTexture(texture_info);
 
-		//----- INPUT HANDLER -----
-		hk::KeyboardInputHandler input_handler;
+		//----- INPUT -----
+		hk::InputDeviceManager input_device_manager;
+		input_device_manager.LoadKeyboardMouse();
+		input_device_manager.LoadGamepads();
+		
+		hk::PlayerController player_controller;
+
+		if (input_device_manager.GetGamepadDevices().empty() == false)
+		{
+			std::unique_ptr<hk::GamepadInstance> gamepad_instance = std::make_unique<hk::GamepadInstance>();
+			gamepad_instance->AttachDevice(input_device_manager.GetGamepadDevices().front());
+
+			player_controller.AttachControllerInstance(std::move(gamepad_instance));
+		}
+		else
+		{
+			std::unique_ptr<hk::KeyboardMouseInstance> keyboard_instance = std::make_unique<hk::KeyboardMouseInstance>();
+			keyboard_instance->AttachDevice(input_device_manager.GetDefaultKeyboardMouse());
+
+			player_controller.AttachControllerInstance(std::move(keyboard_instance));
+		}
 
 		//----- TIMER -----
 		hk::Timer timer;
@@ -105,9 +135,12 @@ int main(int argc, char* args[])
 		hk::SpriteAnimation sprite_anim;
 		sprite_anim.SetSpriteSheet(&sprite_sheet);
 
-		//----- Sprite -----
-		hk::Sprite sprite{ "Data/Images/kenny.jpg" };
-		sprite.SetPosition(200, 200);
+		//----- GAME OBJECTS -----
+		hk::GameObject game_object{ &hk::TextureManager::Instance().GetTexture("Data/Images/kenny.jpg"), { 400, 200 } };
+
+		//----- SINGLETONS -----
+		hk::ErrorManager::Instance();
+		hk::Logger::Instance();
 
 		//----- MAIN LOOP -----
 		timer.Restart();
@@ -119,15 +152,40 @@ int main(int argc, char* args[])
 			timer.Update();
 
 			SDL_Event e;
-			while (SDL_PollEvent(&e)) 
+			while (SDL_PollEvent(&e))
 			{
 				imgui_manager.UpdateInput(e);
 
 				switch (e.type) 
 				{
+					case SDL_KEYUP:
+					{
+						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Released: %s", SDL_GetScancodeName(e.key.keysym.scancode));
+						player_controller.OnInputChange();
+						break;
+					}
 					case SDL_KEYDOWN:
 					{
-						input_handler.Update(e);
+						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Pressed: %s", SDL_GetScancodeName(e.key.keysym.scancode));
+						player_controller.OnInputChange();
+						break;
+					}
+					case SDL_JOYBUTTONDOWN:
+					{
+						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Joystick %d Pressed: %d", static_cast<int>(e.jbutton.which), static_cast<int>(e.jbutton.button));
+						player_controller.OnInputChange();
+						break;
+					}
+					case SDL_JOYAXISMOTION:
+                    {
+						//Purposely no log here otherwise the log would get spammed with millions of micro-movements
+						player_controller.OnInputChange();
+						break;
+					}
+					case SDL_CONTROLLERDEVICEADDED:
+					case SDL_CONTROLLERDEVICEREMOVED:
+					{
+						//Add device addition/removal here when we get the chance
 						break;
 					}
 					//SDL_QUIT doesn't play nicely with more than one window...
@@ -154,7 +212,7 @@ int main(int argc, char* args[])
 			debug_rect.Draw();
 			debug_line.Draw();
 			sprite_anim.Draw();
-			sprite.Draw();
+			game_object.Draw();
 
 			window.Display();
 
