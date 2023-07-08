@@ -40,7 +40,7 @@ namespace hk
 	bool SpriteSheet::Load(const std::string& image_path)
 	{
 		size_t index = image_path.rfind(".");
-		if (index == -1)
+		if (index == std::string::npos)
 		{
 			return false;
 		}

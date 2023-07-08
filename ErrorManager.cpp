@@ -145,7 +145,7 @@ namespace hk
 		for (int i = static_cast<int>(ErrorSeverity::NUM_OF_SEVERITY) - 1; i >= 0; --i)
 		{
 			std::string table_id = SeverityString(static_cast<ErrorSeverity>(i));
-			ImGui::Text(table_id.data());
+			ImGui::Text("%s", table_id.data());
 
 			static ImGuiTableFlags flags =
 				ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Sortable

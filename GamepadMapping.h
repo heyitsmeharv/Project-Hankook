@@ -11,10 +11,19 @@ namespace hk
 
 	struct GamepadCommandBinding
 	{
+		 GamepadCommandBinding();
+		~GamepadCommandBinding();
+
+		GamepadCommandBinding(GamepadCommandBinding&& rhs);
+		GamepadCommandBinding& operator=(GamepadCommandBinding&& rhs);
+
+		GamepadCommandBinding(const GamepadCommandBinding&) = delete;
+		GamepadCommandBinding& operator=(const GamepadCommandBinding&) = delete;
+
 		std::string					name;
-		SDL_GameControllerButton	button			= SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_INVALID;
-		SDL_GameControllerAxis		joystick_axis	= SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_INVALID;
-		std::unique_ptr<Command>	command			= nullptr;
+		SDL_GameControllerButton	button;
+		SDL_GameControllerAxis		joystick_axis;
+		std::unique_ptr<Command>	command;
 	};
 
 	class GamepadMapping final

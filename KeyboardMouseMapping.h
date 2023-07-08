@@ -11,10 +11,19 @@ namespace hk
 
 	struct KeyMouseCommandBinding
 	{
+		 KeyMouseCommandBinding();
+		~KeyMouseCommandBinding();
+
+		KeyMouseCommandBinding(KeyMouseCommandBinding&& rhs);
+		KeyMouseCommandBinding& operator=(KeyMouseCommandBinding&& rhs);
+
+		KeyMouseCommandBinding(const KeyMouseCommandBinding&) = delete;
+		KeyMouseCommandBinding& operator=(const KeyMouseCommandBinding&) = delete;
+
 		std::string					name;
 		std::vector<SDL_Scancode>	keys;
 		std::vector<Uint32>			mouse_buttons;
-		std::unique_ptr<Command>	command = nullptr;
+		std::unique_ptr<Command>	command;
 	};
 
 	class KeyboardMouseMapping final

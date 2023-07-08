@@ -27,7 +27,7 @@ namespace hk
 			
 				if (are_all_keys_pressed && are_all_mouse_buttons_pressed)
 				{
-					commands.push_back(std::move(binding.command->Clone()));
+					commands.push_back(binding.command->Clone());
 				}
 			}
 		}

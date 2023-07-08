@@ -19,6 +19,12 @@ namespace hk
 
 	struct LogEntry
 	{
+		LogEntry(LogCategory _category, std::string&& _message)
+			: category(_category)
+			, message(std::move(_message))
+		{
+		}
+
 		LogCategory category;
 		std::string message;
 	};
