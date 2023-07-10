@@ -38,7 +38,7 @@ namespace hk
 		KeyMouseCommandBinding& binding = m_bindings.emplace_back();
 		binding.name = "test";
 		binding.keys.push_back(SDL_SCANCODE_W);
-		binding.command = std::make_unique<MoveCommand>(5.0f, 5.0f);
+		binding.command = std::make_unique<MoveCommand>(1, 1);
 	}
 
 	const std::vector<KeyMouseCommandBinding>& KeyboardMouseMapping::GetBindings() const

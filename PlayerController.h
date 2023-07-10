@@ -11,12 +11,12 @@ namespace hk
 	{
 	public:
 				 PlayerController();
-				 PlayerController(GameObject* game_object);
+				 PlayerController(GameObject& game_object);
 		virtual ~PlayerController();
 
 		void OnInputChange() const;
 
-		void AttachGameObject		 (GameObject* game_object);
+		void AttachGameObject		 (GameObject& game_object);
 		void AttachControllerInstance(std::unique_ptr<ControllerInstance>&& controller_instance);
 
 		void SetDisabled(const bool is_disabled);

@@ -18,6 +18,7 @@ namespace hk
 	struct TextureDrawInfo
 	{
 		Vector2i					position = { 0, 0 };
+		Vector2i					dimensions = { -1, -1, };
 		double						angle_in_deg = 0.0;
 		std::optional<SDL_Rect>		clip = std::nullopt;
 		std::optional<SDL_Point>	centre = std::nullopt;

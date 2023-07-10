@@ -7,15 +7,15 @@ namespace hk
 	class MoveCommand : public Command
 	{
 	public:
-		  MoveCommand(/*Transformable& moveable,*/ const float x_delta, const float y_delta);
+		  MoveCommand(const int x_delta, const int y_delta);
 		 ~MoveCommand();
 
 		std::unique_ptr<Command> Clone() const override;
-		void Execute() const override;
+		void Execute(GameObject& game_object) const override;
 
 	private:
-		float m_x_delta;
-		float m_y_delta;
+		int m_x_delta;
+		int m_y_delta;
 
 	};
 }

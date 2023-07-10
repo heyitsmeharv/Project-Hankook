@@ -26,13 +26,16 @@
 // - Game Object Class (diff between sprite, drawable and game object) X
 // - Rework Input Handling X
 // - Logger (Inputs, Commands etc) X
+// - Sprite move with controllers (i.e. keyboard-mouse + ps5)
+// - Spawn more GameObjects on button press (i.e. a gun shooting bullets)
+// - Have proper command pipeline execution (not sporadic around codebase)
+// - Collisions
+// - Database loading
+// - Level loading
 // - Animated Sprite 
 // - Movement
-// - Collision
 // - Clean includes
-// - Make Point & Click Demo
 // - Will probably need a proper Event Pipeline
-// - Database loading
 
 int main(int argc, char* args[])
 {
@@ -136,7 +139,9 @@ int main(int argc, char* args[])
 		sprite_anim.SetSpriteSheet(&sprite_sheet);
 
 		//----- GAME OBJECTS -----
-		hk::GameObject game_object{ &hk::TextureManager::Instance().GetTexture("Data/Images/kenny.jpg"), { 400, 200 } };
+		hk::GameObject root_object{ "root", { 400, 200 }, { 100, 100 }, nullptr };
+		root_object.AddChild(std::make_unique<hk::GameObject>( "child", hk::Vector2i{400, 200}, hk::Vector2i{ 100, 100 }, &hk::TextureManager::Instance().GetTexture("Data/Images/kenny.jpg")));
+		player_controller.AttachGameObject(root_object);
 
 		//----- SINGLETONS -----
 		hk::ErrorManager::Instance();
@@ -209,16 +214,25 @@ int main(int argc, char* args[])
 
 			window.Clear();
 
-			debug_rect.Draw();
-			debug_line.Draw();
-			sprite_anim.Draw();
-			game_object.Draw();
+			//debug_rect.Draw();
+			//debug_line.Draw();
+			//sprite_anim.Draw();
+			root_object.Draw();
 
 			window.Display();
 
 			//----- IMGUI -----
 			imgui_manager.StartFrame();
 			imgui_manager.CallUsers();
+
+			// GameObject is a special case atm as we don't want to call every GameObject
+			// We let the hierarchy handle that
+			if (ImGui::Begin("Game Objects"))
+			{
+				root_object.AddToImGui();
+				ImGui::End();
+			}
+
 			imgui_manager.Draw();
 		}
 

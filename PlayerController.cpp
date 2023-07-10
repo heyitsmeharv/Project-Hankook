@@ -21,9 +21,9 @@ namespace hk
 	{
 	}
 
-	PlayerController::PlayerController(GameObject* game_object)
+	PlayerController::PlayerController(GameObject& game_object)
 		: m_id(GenerateID())
-		, m_game_object(game_object)
+		, m_game_object(&game_object)
 		, m_is_disabled(false)
 		, m_controller_instance(nullptr)
 	{
@@ -36,16 +36,19 @@ namespace hk
 
 	void PlayerController::OnInputChange() const
 	{
-		std::vector<std::unique_ptr<Command>> command_list = m_controller_instance->HandleInput();
-		for (auto& command : command_list)
+		if (m_game_object)
 		{
-			command->Execute();
+			std::vector<std::unique_ptr<Command>> command_list = m_controller_instance->HandleInput();
+			for (auto& command : command_list)
+			{
+				command->Execute(*m_game_object);
+			}
 		}
 	}
 
-	void PlayerController::AttachGameObject(GameObject* game_object)
+	void PlayerController::AttachGameObject(GameObject& game_object)
 	{
-		m_game_object = game_object;
+		m_game_object = &game_object;
 	}
 
 	void PlayerController::AttachControllerInstance(std::unique_ptr<ControllerInstance>&& controller_instance)
