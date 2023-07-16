@@ -71,6 +71,14 @@ namespace hk
 
 	void Texture::Draw(const TextureDrawInfo& info) const
 	{
+		SDL_Color current_colour{};
+
+		if (info.colour_mod.has_value())
+		{
+			SDL_GetTextureColorMod(m_texture, &current_colour.r, &current_colour.g, &current_colour.b);
+			SDL_SetTextureColorMod(m_texture, info.colour_mod->r, info.colour_mod->g, info.colour_mod->b);
+		}
+
 		SDL_Rect render_quad{ info.position.x, info.position.y, info.dimensions.x, info.dimensions.y };
 		if (info.clip.has_value())
 		{
@@ -85,5 +93,10 @@ namespace hk
 							info.angle_in_deg, 
 							info.centre.has_value() ? &info.centre.value() : nullptr, 
 							info.flip);
+
+		if (info.colour_mod.has_value())
+		{
+			SDL_SetTextureColorMod(m_texture, current_colour.r, current_colour.g, current_colour.b);
+		}
 	}
 }

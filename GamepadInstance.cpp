@@ -14,7 +14,7 @@ namespace hk
 		m_device = nullptr;
 	}
 
-	std::vector<std::unique_ptr<Command>> GamepadInstance::HandleInput() const
+	std::vector<std::unique_ptr<Command>> GamepadInstance::Update() const
 	{
 		std::vector<std::unique_ptr<Command>> commands;
 

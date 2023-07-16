@@ -34,11 +34,11 @@ namespace hk
 		m_game_object = nullptr;
 	}
 
-	void PlayerController::OnInputChange() const
+	void PlayerController::Update() const
 	{
 		if (m_game_object)
 		{
-			std::vector<std::unique_ptr<Command>> command_list = m_controller_instance->HandleInput();
+			std::vector<std::unique_ptr<Command>> command_list = m_controller_instance->Update();
 			for (auto& command : command_list)
 			{
 				command->Execute(*m_game_object);

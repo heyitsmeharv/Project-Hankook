@@ -13,7 +13,7 @@ namespace hk
 		 KeyboardMouseInstance();
 		~KeyboardMouseInstance();
 
-		std::vector<std::unique_ptr<Command>> HandleInput() const override;
+		std::vector<std::unique_ptr<Command>> Update() const override;
 
 		void AttachDevice(const KeyboardMouseDevice& device);
 

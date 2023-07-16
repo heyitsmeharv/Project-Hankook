@@ -5,7 +5,7 @@
 
 namespace hk
 {
-	MoveCommand::MoveCommand(const int x_delta, const int y_delta)
+	MoveCommand::MoveCommand(const float x_delta, const float y_delta)
 		: m_x_delta(x_delta)
 		, m_y_delta(y_delta)
 	{		

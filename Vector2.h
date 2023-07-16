@@ -30,6 +30,32 @@ namespace hk
 			x = rhs.x;
 			y = rhs.y;
 		}
+
+		T Magnitude() const
+		{
+			return (T)sqrt((x * x) + (y * y));
+		}
+
+		T MagnitudeSquared() const
+		{
+			return (x * x) + (y * y);
+		}
+
+		Vector2<T>& Normalise()
+		{
+			const T mag = Magnitude();
+
+			x /= mag;
+			y /= mag;
+
+			return *this;
+		}
+
+		Vector2<T> AsNormalised() const
+		{
+			const T mag = Magnitude();
+			return { x / mag, y / mag };
+		}
 	};
 
 	// Operators

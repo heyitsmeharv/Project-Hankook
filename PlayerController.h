@@ -14,7 +14,7 @@ namespace hk
 				 PlayerController(GameObject& game_object);
 		virtual ~PlayerController();
 
-		void OnInputChange() const;
+		void Update() const;
 
 		void AttachGameObject		 (GameObject& game_object);
 		void AttachControllerInstance(std::unique_ptr<ControllerInstance>&& controller_instance);

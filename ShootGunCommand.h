@@ -4,18 +4,14 @@
 
 namespace hk
 {
-	class MoveCommand : public Command
+	class ShootGunCommand : public Command
 	{
 	public:
-		  MoveCommand(const float x_delta, const float y_delta);
-		 ~MoveCommand();
+		ShootGunCommand();
+		~ShootGunCommand();
 
 		std::unique_ptr<Command> Clone() const override;
 		void Execute(GameObject& game_object) const override;
-
-	private:
-		float m_x_delta;
-		float m_y_delta;
 
 	};
 }

@@ -8,16 +8,18 @@ namespace hk
 	{
 	public:
 				 Transformable();
-				 Transformable(const Vector2i& position);
+				 Transformable(const Vector2f& position);
 		virtual ~Transformable();
 
-		virtual void SetPosition(int new_x_pos, int new_y_pos);
-		virtual void SetPosition(const Vector2i& new_pos);
+		const Vector2f& GetPosition() const;
 
-		virtual void MovePosition(int x_delta, int y_delta);
-		virtual void MovePosition(const Vector2i& delta);
+		virtual void SetPosition(float new_x_pos, float new_y_pos);
+		virtual void SetPosition(const Vector2f& new_pos);
+
+		virtual void MovePosition(float x_delta, float y_delta);
+		virtual void MovePosition(const Vector2f& delta);
 
 	protected:
-		Vector2i m_position;
+		Vector2f m_position;
 	};
 }

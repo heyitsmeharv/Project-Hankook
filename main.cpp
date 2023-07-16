@@ -1,5 +1,7 @@
-#include <SDL.h> 
-#include <iostream>  
+#include <SDL.h>
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 #include "DebugShape.h"
 #include "ErrorManager.h"
@@ -41,6 +43,8 @@ int main(int argc, char* args[])
 {
 	argc; args;
 
+	srand(time(NULL));
+
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER) < 0)
 	{
 		hk::Fatal(hk::ErrorCategory::GFX, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -55,6 +59,7 @@ int main(int argc, char* args[])
 		init_data.x_pos = 1000;
 		init_data.y_pos = 200;
 		init_data.flags = SDL_WINDOW_SHOWN;
+		init_data.clear_colour = { 30, 30, 30, 255 };
 
 		hk::Window window{ init_data };
 
@@ -70,20 +75,13 @@ int main(int argc, char* args[])
 		hk::ImGuiManager imgui_manager{ imgui_init_data };
 
 		//----- TEXTURES -----
-		if (hk::TextureManager::Instance().Initialise(window.GetRenderer(), "Data/Images/default.jpg") == false)
+		if (hk::TextureManager::Instance().Initialise(window.GetRenderer(), "Data\\Images\\default.jpg") == false)
 		{
 			hk::Fatal(hk::ErrorCategory::GFX, "TextureManager failed to load, we're in big trouble!");
 			return -1;
 		}
 
-		hk::TextureManager::Instance().LoadDirectory("Data/Images");
-
-		//----- TEXTURE -----
-		hk::TextureInitInfo texture_info;
-		texture_info.filepath = "Data/Images/kenny.jpg";
-		texture_info.renderer = window.GetRenderer();
-
-		hk::TextureManager::Instance().LoadTexture(texture_info);
+		hk::TextureManager::Instance().LoadDirectory("Data\\Images");
 
 		//----- INPUT -----
 		hk::InputDeviceManager input_device_manager;
@@ -133,15 +131,21 @@ int main(int argc, char* args[])
 
 		//----- SPRITE ANIMATION -----
 		hk::SpriteSheet sprite_sheet;
-		sprite_sheet.Load("Data/Sprites/test_sprite_sheet.png");
+		sprite_sheet.Load("Data\\Sprites\\test_sprite_sheet.png");
 
 		hk::SpriteAnimation sprite_anim;
 		sprite_anim.SetSpriteSheet(&sprite_sheet);
 
 		//----- GAME OBJECTS -----
-		hk::GameObject root_object{ "root", { 400, 200 }, { 100, 100 }, nullptr };
-		root_object.AddChild(std::make_unique<hk::GameObject>( "child", hk::Vector2i{400, 200}, hk::Vector2i{ 100, 100 }, &hk::TextureManager::Instance().GetTexture("Data/Images/kenny.jpg")));
-		player_controller.AttachGameObject(root_object);
+		hk::GameObjectInitInfo parent_object_init_data{ "root", { 400, 200 }, { 1, 1 }, nullptr };
+		hk::GameObjectInitInfo child_object_init_data{ "child", { 400, 200 }, { 64, 64 }, &hk::TextureManager::Instance().GetTexture("Data\\Images\\blank_circle_64.png") };
+
+		hk::GameObject root_object{ parent_object_init_data };
+		root_object.AddChild(std::make_unique<hk::GameObject>(child_object_init_data));
+		
+		hk::GameObject::SetRootObject(root_object);
+
+		player_controller.AttachGameObject(*root_object.GetChildren().front().get());
 
 		//----- SINGLETONS -----
 		hk::ErrorManager::Instance();
@@ -166,25 +170,21 @@ int main(int argc, char* args[])
 					case SDL_KEYUP:
 					{
 						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Released: %s", SDL_GetScancodeName(e.key.keysym.scancode));
-						player_controller.OnInputChange();
 						break;
 					}
 					case SDL_KEYDOWN:
 					{
 						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Pressed: %s", SDL_GetScancodeName(e.key.keysym.scancode));
-						player_controller.OnInputChange();
 						break;
 					}
 					case SDL_JOYBUTTONDOWN:
 					{
 						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Joystick %d Pressed: %d", static_cast<int>(e.jbutton.which), static_cast<int>(e.jbutton.button));
-						player_controller.OnInputChange();
 						break;
 					}
 					case SDL_JOYAXISMOTION:
                     {
 						//Purposely no log here otherwise the log would get spammed with millions of micro-movements
-						player_controller.OnInputChange();
 						break;
 					}
 					case SDL_CONTROLLERDEVICEADDED:
@@ -210,6 +210,10 @@ int main(int argc, char* args[])
 				}
 			}
 
+			player_controller.Update();
+
+			hk::GameObject::RootObject()->Update(timer.DeltaTime());
+
 			sprite_anim.Update();
 
 			window.Clear();
@@ -217,7 +221,7 @@ int main(int argc, char* args[])
 			//debug_rect.Draw();
 			//debug_line.Draw();
 			//sprite_anim.Draw();
-			root_object.Draw();
+			hk::GameObject::RootObject()->Draw();
 
 			window.Display();
 
@@ -229,7 +233,7 @@ int main(int argc, char* args[])
 			// We let the hierarchy handle that
 			if (ImGui::Begin("Game Objects"))
 			{
-				root_object.AddToImGui();
+				hk::GameObject::RootObject()->AddToImGui();
 				ImGui::End();
 			}
 

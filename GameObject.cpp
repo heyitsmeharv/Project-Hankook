@@ -6,16 +6,18 @@
 
 namespace hk
 {
-	GameObject::GameObject(std::string&& id, const Vector2i& position, const Vector2i& dimensions, const Texture* texture)
+	GameObject::GameObject(GameObjectInitInfo& info)
 		: Drawable()
 		, Transformable()
-		, m_id(std::move(id))
+		, m_id(std::move(info.id))
 		, m_parent(nullptr)
-		, m_texture(texture)
+		, m_texture(info.texture)
 		, m_is_visible(true)
+		, m_is_alive(true)
+		, m_colour_mod(info.colour_mod)
 	{
-		SetDimensions(dimensions);
-		SetPosition(position);
+		SetDimensions(info.dimensions);
+		SetPosition(info.position);
 	}
 
 	GameObject::~GameObject()
@@ -32,6 +34,22 @@ namespace hk
 		m_parent = nullptr;
 	}
 
+	void GameObject::Update(const double delta_time)
+	{
+		if (IsAlive() && m_children.empty() == false)
+		{
+			for(auto& child : m_children)
+			{
+				if (child)
+				{
+					child->Update(delta_time);
+				}
+			}
+
+			m_children.erase(std::remove_if(m_children.begin(), m_children.end(), [](auto& child) { return child == nullptr || child->IsAlive() == false; }), m_children.end());
+		}
+	}
+
 	void GameObject::Draw() const
 	{
 		if (IsVisible())
@@ -40,10 +58,11 @@ namespace hk
 			{
 				hk::TextureDrawInfo draw_info = {};
 				draw_info.dimensions = m_dimensions;
-				draw_info.position = m_position;
+				draw_info.position = { (int)m_position.x, (int)m_position.y };
 				draw_info.flip = m_flip;
 				draw_info.angle_in_deg = m_rotation_in_deg;
-
+				draw_info.colour_mod = m_colour_mod;
+				
 				m_texture->Draw(draw_info);
 			}
 
@@ -66,13 +85,13 @@ namespace hk
 			if (ImGui::TreeNode("Position"))
 			{
 				//We don't directly access m_position as that bypasses the hierarchy
-				Vector2i new_pos = m_position;
-				if (ImGui::InputInt("X: ", &new_pos.x))
+				Vector2f new_pos = m_position;
+				if (ImGui::InputFloat("X: ", &new_pos.x))
 				{
 					SetPosition(new_pos);
 				}
 
-				if (ImGui::InputInt("Y: ", &new_pos.y))
+				if (ImGui::InputFloat("Y: ", &new_pos.y))
 				{
 					SetPosition(new_pos);
 				}
@@ -138,14 +157,14 @@ namespace hk
 	}
 
 	//----- TRANSFORM -----
-	void GameObject::SetPosition(int new_x_pos, int new_y_pos)
+	void GameObject::SetPosition(float new_x_pos, float new_y_pos)
 	{
 		SetPosition({ new_x_pos, new_y_pos });
 	}
 
-	void GameObject::SetPosition(const Vector2i& new_pos)
+	void GameObject::SetPosition(const Vector2f& new_pos)
 	{
-		Vector2i diff{ new_pos.x - m_position.x, new_pos.y - m_position.y };
+		Vector2f diff{ new_pos.x - m_position.x, new_pos.y - m_position.y };
 		m_position = new_pos;
 
 		for (auto& child : m_children)
@@ -157,12 +176,12 @@ namespace hk
 		}
 	}
 
-	void GameObject::MovePosition(int x_delta, int y_delta)
+	void GameObject::MovePosition(float x_delta, float y_delta)
 	{
 		MovePosition({ x_delta, y_delta });
 	}
 
-	void GameObject::MovePosition(const Vector2i& delta)
+	void GameObject::MovePosition(const Vector2f& delta)
 	{
 		m_position += delta;
 
@@ -175,8 +194,24 @@ namespace hk
 		}
 	}
 
+	//----- LIFETIME -----
+	bool GameObject::IsAlive() const
+	{
+		return m_is_alive;
+	}
+
 	//----- UTILITY -----
-	bool GameObject::IsPointDirectlyWithinObject(const Vector2i& point) const
+	void GameObject::SetRootObject(GameObject& root_object)
+	{
+		m_root_object = &root_object;
+	}
+
+	GameObject* GameObject::RootObject()
+	{
+		return m_root_object;
+	}
+
+	bool GameObject::IsPointDirectlyWithinObject(const Vector2f& point) const
 	{
 		const bool is_within_bounds_x = point.x >= m_position.x && (point.x + m_dimensions.x) <= point.x;
 		const bool is_within_bounds_y = point.y >= m_position.y && (point.y + m_dimensions.y) <= point.y;
@@ -184,7 +219,7 @@ namespace hk
 		return is_within_bounds_x && is_within_bounds_y;
 	}
 
-	bool GameObject::IsPointWithinObjectOrChildren(const Vector2i& point) const
+	bool GameObject::IsPointWithinObjectOrChildren(const Vector2f& point) const
 	{
 		if (IsPointDirectlyWithinObject(point))
 		{

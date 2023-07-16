@@ -22,6 +22,7 @@ namespace hk
 		double						angle_in_deg = 0.0;
 		std::optional<SDL_Rect>		clip = std::nullopt;
 		std::optional<SDL_Point>	centre = std::nullopt;
+		std::optional<SDL_Color>	colour_mod = std::nullopt;
 		SDL_RendererFlip			flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	};
 

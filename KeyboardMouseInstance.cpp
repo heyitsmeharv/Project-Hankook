@@ -2,6 +2,10 @@
 #include "KeyboardMouseInstance.h"
 #include "KeyboardMouseDevice.h"
 
+#include <SDL_keycode.h>
+#include <SDL_keyboard.h>
+#include <SDL_events.h>
+
 namespace hk
 {
 	KeyboardMouseInstance::KeyboardMouseInstance()
@@ -14,7 +18,7 @@ namespace hk
 		m_device = nullptr;
 	}
 
-	std::vector<std::unique_ptr<Command>> KeyboardMouseInstance::HandleInput() const
+	std::vector<std::unique_ptr<Command>> KeyboardMouseInstance::Update() const
 	{
 		std::vector<std::unique_ptr<Command>> commands;
 

@@ -157,6 +157,8 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="ProjectileGameObject.cpp" />
+    <ClCompile Include="ShootGunCommand.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -194,6 +196,8 @@
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="ProjectileGameObject.h" />
+    <ClInclude Include="ShootGunCommand.h" />
     <ClInclude Include="SpriteAnimation.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="Texture.h" />

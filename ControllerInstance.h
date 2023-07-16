@@ -12,6 +12,6 @@ namespace hk
 	public:
 		virtual ~ControllerInstance();
 
-		virtual std::vector<std::unique_ptr<Command>> HandleInput() const = 0;
+		virtual std::vector<std::unique_ptr<Command>> Update() const = 0;
 	};
 }
