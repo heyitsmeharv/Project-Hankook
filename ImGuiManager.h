@@ -3,7 +3,6 @@
 #include <vector>
 #include <SDL_events.h>
 
-#include "imgui/imgui.h"
 #include "Window.h"
 
 namespace hk

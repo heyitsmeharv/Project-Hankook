@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "imgui/imgui.h"
-
 namespace
 {
 	const std::string& SeverityString(const hk::ErrorSeverity severity)

@@ -51,6 +51,14 @@ namespace hk
 	
 	bool SpriteSheet::Load(const std::string& image_path, const std::string& metadata_path)
 	{
+		size_t index = image_path.rfind(".");
+		if (index == std::string::npos)
+		{
+			return false;
+		}
+
+		m_id = image_path.substr(0, index);
+
 		if (LoadTexture(image_path) == false)
 		{
 			return false;
@@ -109,12 +117,16 @@ namespace hk
 		{
 			sprite_height = doc["sprite_height"].GetInt();
 		}
+		if (doc.HasMember("anim_time"))
+		{
+			m_anim_time = doc["anim_time"].GetDouble();
+		}
 
 		SDL_Rect current_rect;
 		current_rect.w = sprite_width;
 		current_rect.h = sprite_height;
 
-		int num_of_columns = m_texture->GetWidth() / sprite_width;
+		int num_of_columns = (m_texture->GetWidth() / sprite_width) + 1;
 		int num_of_rows = m_texture->GetHeight() / sprite_height;
 
 		int current_column = 0;
@@ -122,7 +134,7 @@ namespace hk
 
 		for (int i = 0; i < num_of_sprites; ++i)
 		{
-			current_column = i % num_of_rows;
+			current_column = num_of_rows == 1 ? i : i % num_of_rows;
 			current_row = i / num_of_columns;
 
 			current_rect.x = current_column * sprite_width;

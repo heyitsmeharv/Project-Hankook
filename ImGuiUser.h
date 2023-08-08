@@ -1,13 +1,19 @@
 #pragma once
 
+#include "imgui/imgui.h"
+
 namespace hk
 {
-	class ImGuiUser
+	class IImGuiUser
+	{
+	public:
+		virtual void AddToImGui() = 0;
+	};
+
+	class ImGuiUser : public IImGuiUser
 	{
 	public:
 					 ImGuiUser();
 		 virtual	~ImGuiUser();
-
-		virtual void AddToImGui() = 0;
 	};
 }

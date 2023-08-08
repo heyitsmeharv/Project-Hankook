@@ -4,8 +4,6 @@
 #include <unordered_map>
 #include <limits>
 
-#include "imgui/imgui.h"
-
 namespace hk
 {
 	Logger& Logger::Instance()

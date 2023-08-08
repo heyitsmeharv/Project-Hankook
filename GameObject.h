@@ -27,6 +27,7 @@ namespace hk
 
 	class GameObject	: public Drawable
 						, public Transformable
+						, public IImGuiUser
 	{
 	public:
 				 GameObject(GameObjectInitInfo& init_data);
@@ -66,7 +67,7 @@ namespace hk
 		bool IsPointWithinObjectOrChildren(const Vector2f& point) const;
 
 		//----- DEBUG -----
-		void AddToImGui();
+		void AddToImGui() override;
 
 	protected:
 		std::string					m_id;

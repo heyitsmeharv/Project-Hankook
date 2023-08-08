@@ -1,6 +1,7 @@
 #include "SpriteAnimation.h"
 #include "SpriteSheet.h"
-#include "imgui/imgui.h"
+
+#include <cmath>
 
 namespace hk
 {
@@ -8,6 +9,8 @@ namespace hk
 		: m_current_frame_index(0)
 		, m_is_paused(false)
 		, m_sprite_sheet(nullptr)
+		, m_current_anim_time(0.0)
+		, m_playback_speed(1.0)
 	{
 	}
 
@@ -16,11 +19,29 @@ namespace hk
 		m_sprite_sheet = nullptr;
 	}
 
-	void SpriteAnimation::Update()
+	void SpriteAnimation::Update(const double delta_time)
 	{
 		if (m_sprite_sheet && m_is_paused == false)
 		{
-			m_current_frame_index = ++m_current_frame_index % m_sprite_sheet->NumOfFrames();
+			m_current_anim_time += (delta_time * m_playback_speed);
+			m_current_anim_time = m_current_anim_time > m_sprite_sheet->DefaultAnimTime() ? 0.0 : m_current_anim_time;
+
+			const double frame_length = m_sprite_sheet->FrameLength();
+			const int new_frame = static_cast<int>(std::floor(m_current_anim_time / frame_length));
+
+			if (m_current_anim_time == 0.0)
+			{
+				int i = 10;
+				i++;
+				i++;
+				i++;
+			}
+
+			if (new_frame != m_current_frame_index)
+			{
+				++m_current_frame_index;
+				m_current_frame_index = m_current_frame_index % m_sprite_sheet->NumOfFrames();
+			}
 		}
 	}
 
@@ -41,13 +62,17 @@ namespace hk
 	{
 		if (m_sprite_sheet)
 		{
-			static bool open = true;
-			ImGui::Begin("Sprite Animation", &open);
+			std::string id = "Sprite Animation##" + m_sprite_sheet->Id();
 
-			ImGui::Checkbox("Is Paused", &m_is_paused);
-			ImGui::SliderInt("Current Frame", &m_current_frame_index, 0, m_sprite_sheet->NumOfFrames() - 1);
+			if (ImGui::TreeNode(m_sprite_sheet->Id().data()))
+			{
 
-			ImGui::End();
+				ImGui::Checkbox("Is Paused", &m_is_paused);
+				ImGui::InputDouble("Playback Speed", &m_playback_speed);
+				ImGui::SliderInt("Current Frame", &m_current_frame_index, 0, m_sprite_sheet->NumOfFrames() - 1);
+
+				ImGui::TreePop();
+			}
 		}
 	}
 }

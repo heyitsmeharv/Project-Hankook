@@ -2,7 +2,6 @@
 #include "GameObject.h"
 
 #include "Texture.h"
-#include "imgui/imgui.h"
 
 namespace hk
 {

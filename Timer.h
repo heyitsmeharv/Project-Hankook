@@ -12,7 +12,7 @@ namespace hk
 		Timer();
 
 		void	Restart		();
-		void	Update		();
+		double	Update		();
 		void	Pause		();
 		void	Resume		();
 

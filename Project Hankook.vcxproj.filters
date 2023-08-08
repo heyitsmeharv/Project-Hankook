@@ -67,6 +67,18 @@
     <Filter Include="Source Files\GameObjects">
       <UniqueIdentifier>{93c52514-b556-4ce8-b505-725be61fcd5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameLogic">
+      <UniqueIdentifier>{293bafbe-b3f5-4c23-b323-73ac068e8888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLogic">
+      <UniqueIdentifier>{451c85e0-6aa4-4ccf-a656-2c5b4b380fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLogic\Tamagotchi">
+      <UniqueIdentifier>{6fd52fb3-9626-44e3-aaee-953fcc6a30b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameLogic\Tamagotchi">
+      <UniqueIdentifier>{adc20b86-fb9e-4dcb-ad9f-7be31a1defea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -170,6 +182,24 @@
     </ClCompile>
     <ClCompile Include="ProjectileGameObject.cpp">
       <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="PetModel.cpp">
+      <Filter>Source Files\GameLogic\Tamagotchi</Filter>
+    </ClCompile>
+    <ClCompile Include="TamagotchiModel.cpp">
+      <Filter>Source Files\GameLogic\Tamagotchi</Filter>
+    </ClCompile>
+    <ClCompile Include="Clock.cpp">
+      <Filter>Source Files\GameLogic\Tamagotchi</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files\GameLogic\Tamagotchi</Filter>
+    </ClCompile>
+    <ClCompile Include="AutomaticClock.cpp">
+      <Filter>Source Files\GameLogic\Tamagotchi</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Source Files\GameLogic\Tamagotchi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +313,27 @@
     </ClInclude>
     <ClInclude Include="ProjectileGameObject.h">
       <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="IModel.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Clock.h">
+      <Filter>Header Files\GameLogic\Tamagotchi</Filter>
+    </ClInclude>
+    <ClInclude Include="PetModel.h">
+      <Filter>Header Files\GameLogic\Tamagotchi</Filter>
+    </ClInclude>
+    <ClInclude Include="TamagotchiModel.h">
+      <Filter>Header Files\GameLogic\Tamagotchi</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header Files\GameLogic\Tamagotchi</Filter>
+    </ClInclude>
+    <ClInclude Include="AutomaticClock.h">
+      <Filter>Header Files\GameLogic\Tamagotchi</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files\GameLogic\Tamagotchi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@
 #include "PlayerController.h"
 #include "SpriteAnimation.h"
 #include "SpriteSheet.h"
+#include "TamagotchiModel.h"
 #include "TextureManager.h"
 #include "Timer.h"
 #include "Vector2.h"
@@ -28,8 +29,11 @@
 // - Game Object Class (diff between sprite, drawable and game object) X
 // - Rework Input Handling X
 // - Logger (Inputs, Commands etc) X
-// - Sprite move with controllers (i.e. keyboard-mouse + ps5)
-// - Spawn more GameObjects on button press (i.e. a gun shooting bullets)
+// - Sprite move with controllers (i.e. keyboard-mouse + ps5) X
+// - Spawn more GameObjects on button press (i.e. a gun shooting bullets) X
+// - Create a model class for game logic execution
+// - Create a basic tamagotchi or something like that
+// - Create a basic puzzle game? 
 // - Have proper command pipeline execution (not sporadic around codebase)
 // - Collisions
 // - Database loading
@@ -44,6 +48,9 @@ int main(int argc, char* args[])
 	argc; args;
 
 	srand(time(NULL));
+
+	hk::TamagotchiModel model;
+	model.Initialise();
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER) < 0)
 	{
@@ -136,6 +143,12 @@ int main(int argc, char* args[])
 		hk::SpriteAnimation sprite_anim;
 		sprite_anim.SetSpriteSheet(&sprite_sheet);
 
+		hk::SpriteSheet cat_walk_sheet;
+		cat_walk_sheet.Load("Data\\Sprites\\cat_walk.png");
+
+		hk::SpriteAnimation cat_walk_anim;
+		cat_walk_anim.SetSpriteSheet(&cat_walk_sheet);
+
 		//----- GAME OBJECTS -----
 		hk::GameObjectInitInfo parent_object_init_data{ "root", { 400, 200 }, { 1, 1 }, nullptr };
 		hk::GameObjectInitInfo child_object_init_data{ "child", { 400, 200 }, { 64, 64 }, &hk::TextureManager::Instance().GetTexture("Data\\Images\\blank_circle_64.png") };
@@ -212,15 +225,18 @@ int main(int argc, char* args[])
 
 			player_controller.Update();
 
+			model.Update(timer.DeltaTime());
 			hk::GameObject::RootObject()->Update(timer.DeltaTime());
 
-			sprite_anim.Update();
+			sprite_anim.Update(timer.DeltaTime());
+			cat_walk_anim.Update(timer.DeltaTime());
 
 			window.Clear();
 
 			//debug_rect.Draw();
 			//debug_line.Draw();
-			//sprite_anim.Draw();
+			sprite_anim.Draw();
+			cat_walk_anim.Draw();
 			hk::GameObject::RootObject()->Draw();
 
 			window.Display();
@@ -229,13 +245,24 @@ int main(int argc, char* args[])
 			imgui_manager.StartFrame();
 			imgui_manager.CallUsers();
 
+			// We want sprites to be organised
+			if (ImGui::Begin("Sprite Animations"))
+			{
+				sprite_anim.AddToImGui();
+				cat_walk_anim.AddToImGui();
+			}
+			ImGui::End();
+
 			// GameObject is a special case atm as we don't want to call every GameObject
 			// We let the hierarchy handle that
 			if (ImGui::Begin("Game Objects"))
 			{
 				hk::GameObject::RootObject()->AddToImGui();
-				ImGui::End();
 			}
+			ImGui::End();
+
+			//static bool open = true;
+			//ImGui::ShowDemoWindow(&open);
 
 			imgui_manager.Draw();
 		}

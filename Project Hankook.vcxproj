@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AutomaticClock.cpp" />
+    <ClCompile Include="Clock.cpp" />
     <ClCompile Include="ControllerInstance.cpp" />
     <ClCompile Include="DebugShape.cpp" />
     <ClCompile Include="Drawable.cpp" />
@@ -156,24 +158,31 @@
     <ClCompile Include="KeyboardMouseMapping.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="PetModel.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="ProjectileGameObject.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ShootGunCommand.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
+    <ClCompile Include="TamagotchiModel.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transformable.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="AutomaticClock.h" />
+    <ClInclude Include="Clock.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="ControllerInstance.h" />
     <ClInclude Include="DebugShape.h" />
     <ClInclude Include="ErrorManager.h" />
+    <ClInclude Include="IModel.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GamepadDevice.h" />
     <ClInclude Include="GamepadInstance.h" />
@@ -195,13 +204,17 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="Drawable.h" />
+    <ClInclude Include="PetModel.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="ProjectileGameObject.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="ShootGunCommand.h" />
     <ClInclude Include="SpriteAnimation.h" />
     <ClInclude Include="SpriteSheet.h" />
+    <ClInclude Include="TamagotchiModel.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transformable.h" />
     <ClInclude Include="Vector2.h" />

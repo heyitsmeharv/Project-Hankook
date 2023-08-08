@@ -1,7 +1,5 @@
 #include "Timer.h"
 
-#include "imgui/imgui.h"
-
 namespace
 {
 	std::chrono::high_resolution_clock::time_point CurrentTick()
@@ -25,7 +23,7 @@ namespace hk
 		m_last_tick = CurrentTick();
 	}
 
-	void Timer::Update()
+	double Timer::Update()
 	{
 		if (m_is_paused == false)
 		{
@@ -36,6 +34,7 @@ namespace hk
 		}
 		
 		m_total_time += m_delta_time;
+		return m_delta_time.count();
 	}
 
 	void Timer::Pause()
