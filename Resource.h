@@ -3,10 +3,13 @@
 #include <string>
 
 #include "ImGuiUser.h"
+#include "ListenerReporter.h"
 #include "Time.h"
 
 namespace hk
 {
+	struct ResourceChangedEvent;
+
 	struct ResourceInitInfo
 	{
 		std::string id;
@@ -18,31 +21,35 @@ namespace hk
 		TimeData	starting_decay_rate;
 	};
 
-	class Resource : public IImGuiUser
+	class Resource 
+		: public IImGuiUser
+		, public Utils::Reporter<ResourceChangedEvent>
 	{
 	public:
 		Resource() = default;
 		Resource(const ResourceInitInfo& init_info);
 
-		void			Initialise(const TimePoint& current_time);
+		void				Initialise(const TimePoint& current_time);
 
-		void			OnTimeChange(const TimePoint& current_time);
+		void				OnTimeChange(const TimePoint& current_time);
 
-		void			ApplyDecay(const TimePoint& current_time);
+		void				ApplyDecay(const TimePoint& current_time);
 
-		float			CurrentAmount() const;
-		void			ChangeAmount(float amount_delta);
-		void			SetCurrentAmount(float new_amount);
+		const std::string&	Id() const;
 
-		float			CurrentDecayAmount() const;
-		void			ChangeDecayAmount(float decay_delta);
-		void			SetDecayAmount(float decay_amount);
+		float				CurrentAmount() const;
+		void				ChangeAmount(float amount_delta);
+		void				SetCurrentAmount(float new_amount);
 
-		const TimeData& CurrentDecayRate() const;
-		void			ChangeDecayRate(const TimeData& decay_delta);
-		void			SetDecayRate(const TimeData& decay_rate);
+		float				CurrentDecayAmount() const;
+		void				ChangeDecayAmount(float decay_delta);
+		void				SetDecayAmount(float decay_amount);
 
-		void			AddToImGui() override;
+		const TimeData&		CurrentDecayRate() const;
+		void				ChangeDecayRate(const TimeData& decay_delta);
+		void				SetDecayRate(const TimeData& decay_rate);
+
+		void				AddToImGui() override;
 
 	private:
 		std::string m_id;

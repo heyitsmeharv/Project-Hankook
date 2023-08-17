@@ -36,7 +36,7 @@ namespace hk
 				void Destroy();
 
 		virtual void Update	(const double delta_time);
-				void Draw	() const override;
+				void Draw	(const DrawInfo& draw_info) const override;
 
 
 		//----- HIERARCHY -----

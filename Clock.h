@@ -1,10 +1,14 @@
 #pragma once
 
+#include "ListenerReporter.h"
+
 #include "Time.h"
 
 namespace hk
 {
-	class Clock
+	struct TimeChangedEvent;
+
+	class Clock : public Utils::Reporter<TimeChangedEvent>
 	{
 	public:
 		Clock(const TimeData& time_lengths);

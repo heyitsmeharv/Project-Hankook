@@ -9,7 +9,7 @@ namespace hk
 	{
 	}
 
-	bool AutomaticClock::Update(const double delta_time)
+	void AutomaticClock::Update(const double delta_time)
 	{
 		m_time_til_next_step -= delta_time;
 
@@ -19,10 +19,6 @@ namespace hk
 			m_time_til_next_step = m_step_info.seconds_per_step;
 
 			printf("%dh %dm %fs \n", m_time.hour, m_time.minute, m_time.second);
-
-			return true;
 		}
-
-		return false;
 	}
 }

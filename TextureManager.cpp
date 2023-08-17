@@ -5,6 +5,16 @@
 
 #include "ErrorManager.h"
 
+namespace
+{
+	std::string CleanPath(const std::string& messy_path) 
+	{
+		std::string clean_path = messy_path;
+		std::replace(clean_path.begin(), clean_path.end(), '/', '\\');
+		return clean_path;
+	}
+}
+
 namespace hk
 {
 	TextureManager::TextureManager()
@@ -47,7 +57,7 @@ namespace hk
 	{
 		init_info.renderer = m_renderer;
 
-		auto [itr, did_insert] = m_textures.emplace(init_info.filepath, init_info);
+		auto [itr, did_insert] = m_textures.emplace(CleanPath(init_info.filepath), init_info);
 
 		//If the texture fails to load, we don't want a bad entry hanging around
 		//so remove it from the list so we can't find it and reference it later
@@ -90,7 +100,7 @@ namespace hk
 
 	const hk::Texture& TextureManager::GetTexture(const std::string& filepath) const
 	{
-		const auto& itr = m_textures.find(filepath);
+		const auto& itr = m_textures.find(CleanPath(filepath));
 		if (itr != m_textures.end())
 		{
 			return itr->second;

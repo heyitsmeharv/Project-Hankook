@@ -45,6 +45,8 @@ namespace hk
 	TimeData operator-(const TimeData& lhs, const TimeData& rhs);
 	const TimeData& operator-=(TimeData& lhs, const TimeData& rhs);
 
+	TimeData operator-(const TimeData& time);
+
 	bool operator>(const TimeData& lhs, const TimeData& rhs);
 	bool operator>=(const TimeData& lhs, const TimeData& rhs);
 	bool operator<(const TimeData& lhs, const TimeData& rhs);

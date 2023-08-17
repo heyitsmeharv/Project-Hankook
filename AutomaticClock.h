@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Clock.h"
-#include "Time.h"
 
 namespace hk
 {
@@ -16,7 +15,7 @@ namespace hk
 	public:
 		AutomaticClock(const TimeData& time_lengths, ClockStepInfo&& step_info);
 
-		bool Update(const double delta_time);
+		void Update(const double delta_time);
 
 	private:
 		ClockStepInfo	m_step_info;

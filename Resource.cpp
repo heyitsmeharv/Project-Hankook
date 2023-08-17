@@ -1,4 +1,5 @@
 #include "Resource.h"
+#include "ResourceChangedEvent.h"
 
 #include <algorithm>
 
@@ -33,11 +34,16 @@ namespace hk
 
 	void Resource::ApplyDecay(const TimePoint& current_time)
 	{
-		ChangeAmount(-m_current_amount);
+		ChangeAmount(-m_current_decay_amount);
 
 		m_last_decay_time = current_time;
 		m_next_decay_time = current_time + m_current_decay_rate;
 		m_next_decay_time.Wrap();
+	}
+
+	const std::string& Resource::Id() const
+	{
+		return m_id;
 	}
 
 	float Resource::CurrentAmount() const
@@ -47,8 +53,17 @@ namespace hk
 
 	void Resource::ChangeAmount(float amount_delta)
 	{
+		ResourceChangedEvent msg;
+		msg.id = m_id;
+		msg.previous_amount = m_current_amount;
+		msg.change_in_amount = amount_delta;
+
 		m_current_amount += amount_delta;
 		m_current_amount = std::clamp(m_current_amount, m_min_amount, m_max_amount);
+
+		msg.new_amount = m_current_amount;
+
+		NotifyListeners(msg);
 	}
 
 	void Resource::SetCurrentAmount(float new_amount)

@@ -1,4 +1,6 @@
 #include "PetModel.h"
+#include "ResourceChangedEvent.h"
+#include "TimeChangedEvent.h"
 
 namespace hk
 {
@@ -11,7 +13,7 @@ namespace hk
 		happiness_info.min_amount = 0.0f;
 		happiness_info.max_amount = 100.0f;
 		happiness_info.starting_amount = 100.0f;
-		happiness_info.starting_decay_amount = 5.0f;
+		happiness_info.starting_decay_amount = 47.5f;
 		happiness_info.starting_decay_rate = TimeData{ 0, 15, 0.0 };
 
 		m_happiness = Resource{ happiness_info };
@@ -21,10 +23,33 @@ namespace hk
 		fullness_info.min_amount = 0.0f;
 		fullness_info.max_amount = 100.0f;
 		fullness_info.starting_amount = 100.0f;
-		fullness_info.starting_decay_amount = 5.0f;
+		fullness_info.starting_decay_amount = 47.5f;
 		fullness_info.starting_decay_rate = TimeData{ 0, 15, 0.0 };
 
 		m_fullness = Resource{ fullness_info };
+
+		static_cast<Utils::Reporter<ResourceChangedEvent>*>(&m_happiness)->AddListener(*this);
+		static_cast<Utils::Reporter<ResourceChangedEvent>*>(&m_fullness)->AddListener(*this);
+
+		m_thresholds =
+		{
+			{ "Happiness",
+				{
+					{ 50.0f, m_name + " is getting grumpy!\n" },
+					{ 25.0f, m_name + " is very frustrated!\n" },
+					{ 0.0f, m_name + " is angry and ran away!\n" }
+				}
+			},
+			{ "Fullness", 
+				{
+					{ 75.0f, m_name + " could eat!\n" },
+					{ 50.0f, m_name + " is hungry!\n" },
+					{ 25.0f, m_name + " is really hungry!\n" },
+					{ 10.0f, m_name + " is starving!\n" },
+					{ 0.0f, m_name + " is famished and has run away!\n" }
+				}
+			}
+		};
 	}
 
 
@@ -34,19 +59,45 @@ namespace hk
 		m_fullness.Initialise(current_time);
 	}
 
-	void PetModel::OnTimeChange(const TimePoint& current_time)
+	void PetModel::Notify(const ResourceChangedEvent& msg)
 	{
-		m_happiness.OnTimeChange(current_time);
-		if (m_happiness.CurrentAmount() <= 0.0f)
+		auto CheckResourceThreshold = [&](const Resource& resource) 
 		{
-			printf("%s felt unhappy and ran away \n", m_name.data());
-		}
+			const auto& resource_thresholds_itr = m_thresholds.find(resource.Id());
+			if (resource_thresholds_itr != m_thresholds.end())
+			{
+				auto threshold_itr = resource_thresholds_itr->second.rbegin();
+				for (; threshold_itr != resource_thresholds_itr->second.rend(); threshold_itr++)
+				{
+					if (resource.CurrentAmount() <= threshold_itr->amount && msg.previous_amount > threshold_itr->amount)
+					{
+						break;
+					}
+				}
 
-		m_fullness.OnTimeChange(current_time);
-		if (m_fullness.CurrentAmount() <= 0.0f)
+				if (threshold_itr != resource_thresholds_itr->second.rend())
+				{
+					printf("%s : %f \n", threshold_itr->text.data(), resource.CurrentAmount());
+				}
+			}
+		};
+
+		if (msg.id == m_happiness.Id())
 		{
-			printf("%s was famished and ran way \n", m_name.data());
+			CheckResourceThreshold(m_happiness);
 		}
+		else if(msg.id == m_fullness.Id())
+		{
+			CheckResourceThreshold(m_fullness);
+		}
+	}
+
+	void PetModel::Notify(const TimeChangedEvent& msg)
+	{
+		//This seems suspect tbh, should the resource just listen?
+		//Knee-jerk says yes but for some reason I'm reluctant as it causes more disconnected code
+		m_happiness.OnTimeChange(msg.new_time);
+		m_fullness.OnTimeChange(msg.new_time);
 	}
 
 	void PetModel::AddToImGui()

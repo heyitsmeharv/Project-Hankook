@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AutomaticClock.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="ControllerInstance.cpp" />
     <ClCompile Include="DebugShape.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transformable.cpp" />
@@ -177,6 +179,7 @@
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="AutomaticClock.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="ControllerInstance.h" />
@@ -207,14 +210,18 @@
     <ClInclude Include="PetModel.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="ProjectileGameObject.h" />
+    <ClInclude Include="ListenerReporter.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceChangedEvent.h" />
     <ClInclude Include="ShootGunCommand.h" />
     <ClInclude Include="SpriteAnimation.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="TamagotchiModel.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Tilemap.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="TimeChangedEvent.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transformable.h" />
     <ClInclude Include="Vector2.h" />

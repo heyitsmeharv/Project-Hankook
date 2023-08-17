@@ -79,6 +79,21 @@
     <Filter Include="Header Files\GameLogic\Tamagotchi">
       <UniqueIdentifier>{adc20b86-fb9e-4dcb-ad9f-7be31a1defea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{244aa8a2-d83a-40fe-9566-c95cccb8691e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Map">
+      <UniqueIdentifier>{0ebd3050-1f4d-4e22-9b71-ff3b12f03f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map">
+      <UniqueIdentifier>{2f6ced8f-0d82-4c68-a894-730183516734}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{a76acb63-23a5-4a9e-b665-5aaeaf8bac50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{f05392a6-b5d0-41b4-b773-5f422b4395a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -200,6 +215,12 @@
     </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Source Files\GameLogic\Tamagotchi</Filter>
+    </ClCompile>
+    <ClCompile Include="Tilemap.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +355,21 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files\GameLogic\Tamagotchi</Filter>
+    </ClInclude>
+    <ClInclude Include="ListenerReporter.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeChangedEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceChangedEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Tilemap.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Cameras</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

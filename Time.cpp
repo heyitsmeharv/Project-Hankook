@@ -185,6 +185,11 @@ namespace hk
 		return TimeData{ lhs.hours - rhs.hours, lhs.minutes - rhs.minutes, lhs.seconds - rhs.seconds };
 	}
 
+	TimeData operator-(const TimeData& time)
+	{
+		return TimeData{ -time.hours, -time.minutes, -time.seconds };
+	}
+
 	const TimeData& operator-=(TimeData& lhs, const TimeData& rhs)
 	{
 		lhs.hours -= rhs.hours;

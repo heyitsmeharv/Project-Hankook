@@ -6,13 +6,18 @@
 
 namespace hk
 {
+	struct DrawInfo
+	{
+		SDL_Rect viewport_rect;
+	};
+
 	class Drawable
 	{
 	public:
 				 Drawable();
 		virtual ~Drawable();
 
-		virtual void Draw() const = 0;
+		virtual void Draw(const DrawInfo&) const = 0;
 
 		virtual void SetDimensions(const Vector2i& new_dimensions);
 		virtual void SetWidth(const int width);

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "Camera.h"
 #include "DebugShape.h"
 #include "ErrorManager.h"
 #include "GameObject.h"
@@ -16,6 +17,7 @@
 #include "SpriteSheet.h"
 #include "TamagotchiModel.h"
 #include "TextureManager.h"
+#include "Tilemap.h"
 #include "Timer.h"
 #include "Vector2.h"
 #include "Window.h"
@@ -66,7 +68,7 @@ int main(int argc, char* args[])
 		init_data.x_pos = 1000;
 		init_data.y_pos = 200;
 		init_data.flags = SDL_WINDOW_SHOWN;
-		init_data.clear_colour = { 30, 30, 30, 255 };
+		init_data.clear_colour = { 100, 100, 100, 255 };
 
 		hk::Window window{ init_data };
 
@@ -81,6 +83,10 @@ int main(int argc, char* args[])
 
 		hk::ImGuiManager imgui_manager{ imgui_init_data };
 
+		//----- SINGLETONS -----
+		hk::ErrorManager::Instance();
+		hk::Logger::Instance();
+
 		//----- TEXTURES -----
 		if (hk::TextureManager::Instance().Initialise(window.GetRenderer(), "Data\\Images\\default.jpg") == false)
 		{
@@ -89,6 +95,7 @@ int main(int argc, char* args[])
 		}
 
 		hk::TextureManager::Instance().LoadDirectory("Data\\Images");
+		hk::TextureManager::Instance().LoadDirectory("Data\\Tilemap");
 
 		//----- INPUT -----
 		hk::InputDeviceManager input_device_manager;
@@ -114,6 +121,13 @@ int main(int argc, char* args[])
 
 		//----- TIMER -----
 		hk::Timer timer;
+
+		//----- CAMERA -----
+		hk::CameraInitInfo camera_info;
+		camera_info.position = { 0.0f, 0.0f };
+		camera_info.dimensions = { 500, 500 };
+
+		hk::Camera camera{ camera_info };
 
 		//----- DEBUG SHAPES -----
 		hk::DebugRectInfo rect_info;
@@ -160,9 +174,9 @@ int main(int argc, char* args[])
 
 		player_controller.AttachGameObject(*root_object.GetChildren().front().get());
 
-		//----- SINGLETONS -----
-		hk::ErrorManager::Instance();
-		hk::Logger::Instance();
+		//----- TILE MAP -----
+		hk::Tilemap tilemap{ "Data\\Tilemap\\demo_project.json" };
+		tilemap.Load();
 
 		//----- MAIN LOOP -----
 		timer.Restart();
@@ -187,6 +201,23 @@ int main(int argc, char* args[])
 					}
 					case SDL_KEYDOWN:
 					{
+						if (e.key.keysym.scancode == SDL_SCANCODE_W)
+						{
+							camera.MovePosition({ 0.0f, -1.0f });
+						}
+						if(e.key.keysym.scancode == SDL_SCANCODE_S)
+						{
+							camera.MovePosition({ 0.0f, 1.0f });
+						}
+						if (e.key.keysym.scancode == SDL_SCANCODE_A)
+						{
+							camera.MovePosition({ -1.0f, 0.0f });
+						}
+						if (e.key.keysym.scancode == SDL_SCANCODE_D)
+						{
+							camera.MovePosition({ 1.0f, 0.0f });
+						}
+
 						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Pressed: %s", SDL_GetScancodeName(e.key.keysym.scancode));
 						break;
 					}
@@ -233,11 +264,16 @@ int main(int argc, char* args[])
 
 			window.Clear();
 
+			hk::DrawInfo draw_info;
+			draw_info.viewport_rect = camera.GetCameraRect();
+
+			tilemap.Draw(draw_info);
+
 			//debug_rect.Draw();
 			//debug_line.Draw();
 			sprite_anim.Draw();
 			cat_walk_anim.Draw();
-			hk::GameObject::RootObject()->Draw();
+			hk::GameObject::RootObject()->Draw(draw_info);
 
 			window.Display();
 

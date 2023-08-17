@@ -56,6 +56,11 @@ namespace hk
 			const T mag = Magnitude();
 			return { x / mag, y / mag };
 		}
+
+		bool IsZeroed() const
+		{
+			return x == T{ 0 } && y == T{ 0 };
+		}
 	};
 
 	// Operators

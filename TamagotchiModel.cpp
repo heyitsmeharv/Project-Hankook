@@ -17,6 +17,8 @@ namespace hk
 		//m_clock.MoveBackward({ 1, 10,  1.6 });	//22h  56m  0.5s
 		//m_clock.MoveBackward({ 36, 0, 0.0 });	//10h  56m  0.5s
 
+		static_cast<Utils::Reporter<TimeChangedEvent>&>(m_clock).AddListener(m_pet_model);
+
 		m_pet_model.Initialise(m_clock.GetTime());
 	}
 
@@ -27,10 +29,7 @@ namespace hk
 
 	void TamagotchiModel::Update(const double delta_time)
 	{
-		if (m_clock.Update(delta_time))
-		{
-			m_pet_model.OnTimeChange(m_clock.GetTime());
-		}
+		m_clock.Update(delta_time);
 	}
 
 	void TamagotchiModel::AddToImGui()

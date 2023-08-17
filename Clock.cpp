@@ -1,6 +1,7 @@
 #include "Clock.h"
 
 #include <cmath>
+#include "TimeChangedEvent.h"
 
 namespace hk
 {
@@ -23,13 +24,19 @@ namespace hk
 	
 	void Clock::MoveForward(const TimeData& delta)
 	{
+		TimeChangedEvent msg;
+		msg.old_time = m_time;
+		msg.step_amount = delta;
+
 		m_time += delta;
 		m_time.Wrap();
+
+		msg.new_time = m_time;
+		NotifyListeners(msg);
 	}
 
 	void Clock::MoveBackward(const TimeData& delta)
 	{
-		m_time -= delta;
-		m_time.Wrap();
+		MoveForward(-delta);
 	}
 }
