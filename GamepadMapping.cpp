@@ -1,6 +1,6 @@
-#include "Command.h"
+#include "InputCommand.h"
 #include "GamepadMapping.h"
-#include "MoveCommand.h"
+#include "MoveCameraInputCommand.h"
 
 namespace hk
 {
@@ -40,17 +40,17 @@ namespace hk
 		GamepadCommandBinding& binding = m_bindings.emplace_back();
 		binding.name = "button_test";
 		binding.button = SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
-		binding.command = std::make_unique<MoveCommand>(5.0f, 5.0f);
+		binding.command = std::make_unique<MoveCameraInputCommand>(5.0f, 5.0f);
 		
 		GamepadCommandBinding& binding2 = m_bindings.emplace_back();
 		binding2.name = "joystick_x_test";
 		binding2.joystick_axis = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX;
-		binding2.command = std::make_unique<MoveCommand>(5.0f, 0.0f);
+		binding2.command = std::make_unique<MoveCameraInputCommand>(5.0f, 0.0f);
 		
 		GamepadCommandBinding& binding3 = m_bindings.emplace_back();
 		binding3.name = "joystick_y_test";
 		binding3.joystick_axis = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY;
-		binding3.command = std::make_unique<MoveCommand>(0.0f, 5.0f);
+		binding3.command = std::make_unique<MoveCameraInputCommand>(0.0f, 5.0f);
 	}
 
 	const std::vector<GamepadCommandBinding>& GamepadMapping::GetBindings() const

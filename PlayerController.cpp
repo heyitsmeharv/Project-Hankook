@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "InputCommand.h"
 #include "PlayerController.h"
 #include "ControllerInstance.h"
 
@@ -16,14 +16,16 @@ namespace hk
 	PlayerController::PlayerController()
 		: m_id(GenerateID())
 		, m_game_object(nullptr)
+		, m_camera(nullptr)
 		, m_is_disabled(false)
 		, m_controller_instance(nullptr)
 	{
 	}
 
-	PlayerController::PlayerController(GameObject& game_object)
+	PlayerController::PlayerController(GameObject& game_object, Camera* camera)
 		: m_id(GenerateID())
 		, m_game_object(&game_object)
+		, m_camera(camera)
 		, m_is_disabled(false)
 		, m_controller_instance(nullptr)
 	{
@@ -38,10 +40,10 @@ namespace hk
 	{
 		if (m_game_object)
 		{
-			std::vector<std::unique_ptr<Command>> command_list = m_controller_instance->Update();
+			std::vector<std::unique_ptr<InputCommand>> command_list = m_controller_instance->Update();
 			for (auto& command : command_list)
 			{
-				command->Execute(*m_game_object);
+				command->Execute(*m_game_object, m_camera);
 			}
 		}
 	}
@@ -49,6 +51,11 @@ namespace hk
 	void PlayerController::AttachGameObject(GameObject& game_object)
 	{
 		m_game_object = &game_object;
+	}
+
+	void PlayerController::AttachCamera(Camera& camera)
+	{
+		m_camera = &camera;
 	}
 
 	void PlayerController::AttachControllerInstance(std::unique_ptr<ControllerInstance>&& controller_instance)

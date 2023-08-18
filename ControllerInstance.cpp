@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "InputCommand.h"
 #include "ControllerInstance.h"
 
 namespace hk

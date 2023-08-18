@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "ShootGunCommand.h"
+#include "ShootGunInputCommand.h"
 #include "Logger.h"
 
 #include "ProjectileGameObject.h"
@@ -8,20 +8,20 @@
 
 namespace hk
 {
-	ShootGunCommand::ShootGunCommand()
+	ShootGunInputCommand::ShootGunInputCommand()
 	{
 	}
 
-	ShootGunCommand::~ShootGunCommand()
+	ShootGunInputCommand::~ShootGunInputCommand()
 	{
 	}
 
-	std::unique_ptr<Command> ShootGunCommand::Clone() const
+	std::unique_ptr<InputCommand> ShootGunInputCommand::Clone() const
 	{
-		return std::make_unique<ShootGunCommand>(*this);
+		return std::make_unique<ShootGunInputCommand>(*this);
 	}
 
-	void ShootGunCommand::Execute(GameObject& game_object) const
+	void ShootGunInputCommand::Execute(GameObject& game_object, Camera*) const
 	{
 		hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "ShootGunCommand Executed");
 

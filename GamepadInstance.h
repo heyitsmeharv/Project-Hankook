@@ -13,7 +13,7 @@ namespace hk
 		 GamepadInstance();
 		~GamepadInstance();
 
-		std::vector<std::unique_ptr<Command>> Update() const override;
+		std::vector<std::unique_ptr<InputCommand>> Update() const override;
 
 		void AttachDevice(const GamepadDevice& device);
 

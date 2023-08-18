@@ -7,7 +7,7 @@
 
 namespace hk
 {
-	class Command;
+	class InputCommand;
 
 	struct KeyMouseCommandBinding
 	{
@@ -20,10 +20,10 @@ namespace hk
 		KeyMouseCommandBinding(const KeyMouseCommandBinding&) = delete;
 		KeyMouseCommandBinding& operator=(const KeyMouseCommandBinding&) = delete;
 
-		std::string					name;
-		std::vector<SDL_Scancode>	keys;
-		std::vector<Uint32>			mouse_buttons;
-		std::unique_ptr<Command>	command;
+		std::string						name;
+		std::vector<SDL_Scancode>		keys;
+		std::vector<Uint32>				mouse_buttons;
+		std::unique_ptr<InputCommand>	command;
 	};
 
 	class KeyboardMouseMapping final

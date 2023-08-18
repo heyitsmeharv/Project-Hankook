@@ -5,13 +5,13 @@
 
 namespace hk
 {
-	class Command;
+	class InputCommand;
 
 	class ControllerInstance
 	{
 	public:
 		virtual ~ControllerInstance();
 
-		virtual std::vector<std::unique_ptr<Command>> Update() const = 0;
+		virtual std::vector<std::unique_ptr<InputCommand>> Update() const = 0;
 	};
 }

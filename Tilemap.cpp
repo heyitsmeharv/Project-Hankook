@@ -13,9 +13,10 @@
 
 namespace hk
 {
-	Tilemap::Tilemap(const std::string& filepath) :
-		m_filepath(filepath),
-		m_dimensions()
+	Tilemap::Tilemap(const std::string& filepath) 
+		: Transformable()
+		, Drawable()
+		, m_filepath(filepath)
 	{
 	}
 
@@ -39,8 +40,11 @@ namespace hk
 				//std::unordered_map<int, std::vector<std::unique_ptr<Component>>> tile_components_list;
 
 				//Load global terrain info
-				m_dimensions.x = doc["width"].GetInt();
-				m_dimensions.y = doc["height"].GetInt();
+				m_grid_dimensions.x = doc["width"].GetInt();
+				m_grid_dimensions.y = doc["height"].GetInt();
+
+				m_dimensions.x = m_grid_dimensions.x * doc["tilewidth"].GetInt();
+				m_dimensions.y = m_grid_dimensions.y * doc["tileheight"].GetInt();
 
 				//Load tileset info
 				const Value& tilesets = doc["tilesets"];
@@ -182,14 +186,14 @@ namespace hk
 		for (auto& layer : m_layers)
 		{
 			//layer.vertices.setPrimitiveType(sf::PrimitiveType::Quads);
-			layer.vertices.resize(m_dimensions.x * m_dimensions.y * 4);	//4 for each vert of the quad
+			layer.vertices.resize(m_grid_dimensions.x * m_grid_dimensions.y * 4);	//4 for each vert of the quad
 
-			for (int x = 0; x < m_dimensions.x; x++)
+			for (int x = 0; x < m_grid_dimensions.x; x++)
 			{
-				for (int y = 0; y < m_dimensions.y; y++)
+				for (int y = 0; y < m_grid_dimensions.y; y++)
 				{
 					//get the current tile
-					const int tile_number = layer.tile_data[x + (y * m_dimensions.x)] - 1;
+					const int tile_number = layer.tile_data[x + (y * m_grid_dimensions.x)] - 1;
 					if (tile_number < 0)
 					{
 						continue;
@@ -206,7 +210,7 @@ namespace hk
 					const float tv = normalised_tile_size_y * tile_y_index;
 
 					// get a pointer to the current tile's quad
-					const int starting_index = (x + y * m_dimensions.x) * 4;
+					const int starting_index = (x + y * m_grid_dimensions.x) * 4;
 					SDL_Vertex* quad = &layer.vertices[starting_index];
 
 					// define its 4 corners

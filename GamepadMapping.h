@@ -7,7 +7,7 @@
 
 namespace hk
 {
-	class Command;
+	class InputCommand;
 
 	struct GamepadCommandBinding
 	{
@@ -20,10 +20,10 @@ namespace hk
 		GamepadCommandBinding(const GamepadCommandBinding&) = delete;
 		GamepadCommandBinding& operator=(const GamepadCommandBinding&) = delete;
 
-		std::string					name;
-		SDL_GameControllerButton	button;
-		SDL_GameControllerAxis		joystick_axis;
-		std::unique_ptr<Command>	command;
+		std::string						name;
+		SDL_GameControllerButton		button;
+		SDL_GameControllerAxis			joystick_axis;
+		std::unique_ptr<InputCommand>	command;
 	};
 
 	class GamepadMapping final

@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "InputCommand.h"
 #include "KeyboardMouseInstance.h"
 #include "KeyboardMouseDevice.h"
 
@@ -18,9 +18,9 @@ namespace hk
 		m_device = nullptr;
 	}
 
-	std::vector<std::unique_ptr<Command>> KeyboardMouseInstance::Update() const
+	std::vector<std::unique_ptr<InputCommand>> KeyboardMouseInstance::Update() const
 	{
-		std::vector<std::unique_ptr<Command>> commands;
+		std::vector<std::unique_ptr<InputCommand>> commands;
 
 		if (m_device)
 		{

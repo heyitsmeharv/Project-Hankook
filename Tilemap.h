@@ -50,7 +50,7 @@ namespace hk
 	{
 	private:
 		std::string				m_filepath;
-		Vector2i				m_dimensions;
+		Vector2i				m_grid_dimensions;
 
 		std::vector<Tileset>	m_tilesets;
 		std::vector<Layer>		m_layers;

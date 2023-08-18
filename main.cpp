@@ -61,16 +61,16 @@ int main(int argc, char* args[])
 	else
 	{
 		//----- WINDOW -----
-		hk::WindowInitData init_data;
-		init_data.window_title = "Project Hankook";
-		init_data.width = 800;
-		init_data.height = 800;
-		init_data.x_pos = 1000;
-		init_data.y_pos = 200;
-		init_data.flags = SDL_WINDOW_SHOWN;
-		init_data.clear_colour = { 100, 100, 100, 255 };
+		hk::WindowInitData window_init_data;
+		window_init_data.window_title = "Project Hankook";
+		window_init_data.width = 800;
+		window_init_data.height = 800;
+		window_init_data.x_pos = 1000;
+		window_init_data.y_pos = 200;
+		window_init_data.flags = SDL_WINDOW_SHOWN;
+		window_init_data.clear_colour = { 100, 100, 100, 255 };
 
-		hk::Window window{ init_data };
+		hk::Window window{ window_init_data };
 
 		//----- IMGUI -----
 		hk::WindowInitData imgui_init_data;
@@ -122,10 +122,15 @@ int main(int argc, char* args[])
 		//----- TIMER -----
 		hk::Timer timer;
 
+		//----- TILE MAP -----
+		hk::Tilemap tilemap{ "Data\\Tilemap\\demo_project.json" };
+		tilemap.Load();
+
 		//----- CAMERA -----
 		hk::CameraInitInfo camera_info;
 		camera_info.position = { 0.0f, 0.0f };
-		camera_info.dimensions = { 500, 500 };
+		camera_info.dimensions = { window_init_data.width, window_init_data.height };
+		camera_info.contraints = SDL_FRect{ tilemap.GetPosition().x, tilemap.GetPosition().y, static_cast<float>(tilemap.GetDimensions().x), static_cast<float>(tilemap.GetDimensions().y) };
 
 		hk::Camera camera{ camera_info };
 
@@ -172,11 +177,9 @@ int main(int argc, char* args[])
 		
 		hk::GameObject::SetRootObject(root_object);
 
+		//----- CONTROLLER -----
 		player_controller.AttachGameObject(*root_object.GetChildren().front().get());
-
-		//----- TILE MAP -----
-		hk::Tilemap tilemap{ "Data\\Tilemap\\demo_project.json" };
-		tilemap.Load();
+		player_controller.AttachCamera(camera);
 
 		//----- MAIN LOOP -----
 		timer.Restart();
@@ -201,23 +204,6 @@ int main(int argc, char* args[])
 					}
 					case SDL_KEYDOWN:
 					{
-						if (e.key.keysym.scancode == SDL_SCANCODE_W)
-						{
-							camera.MovePosition({ 0.0f, -1.0f });
-						}
-						if(e.key.keysym.scancode == SDL_SCANCODE_S)
-						{
-							camera.MovePosition({ 0.0f, 1.0f });
-						}
-						if (e.key.keysym.scancode == SDL_SCANCODE_A)
-						{
-							camera.MovePosition({ -1.0f, 0.0f });
-						}
-						if (e.key.keysym.scancode == SDL_SCANCODE_D)
-						{
-							camera.MovePosition({ 1.0f, 0.0f });
-						}
-
 						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Pressed: %s", SDL_GetScancodeName(e.key.keysym.scancode));
 						break;
 					}

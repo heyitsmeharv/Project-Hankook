@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Commands">
-      <UniqueIdentifier>{e1558de3-af4b-4b06-be16-d260a333134f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Commands">
-      <UniqueIdentifier>{46b70804-b1cf-49ce-9f92-4615c1361395}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{a0c3bb95-8b34-4ac8-beb5-284225bf666c}</UniqueIdentifier>
     </Filter>
@@ -94,6 +88,30 @@
     <Filter Include="Source Files\Cameras">
       <UniqueIdentifier>{f05392a6-b5d0-41b4-b773-5f422b4395a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input\Commands">
+      <UniqueIdentifier>{b8d67289-5dd1-4f6e-9805-471f15c0733e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input\Commands">
+      <UniqueIdentifier>{abee0056-e936-4448-9e05-dae8f2562e3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input\Mappings">
+      <UniqueIdentifier>{a977e29e-0eb5-413d-8f05-e90bf1c38590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input\Devices">
+      <UniqueIdentifier>{95d8d664-20f3-41df-98ea-7ef1c35e4291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input\Instances">
+      <UniqueIdentifier>{2e9bd7fd-60b2-42ad-8b2d-a2172f994020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input\Mappings">
+      <UniqueIdentifier>{4a630fc8-e311-4dff-b2d2-9d13bf3be9cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input\Devices">
+      <UniqueIdentifier>{2b9ae54a-0e41-4636-b02b-1c8f1c4ac4e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input\Instances">
+      <UniqueIdentifier>{d65526dd-7273-4c6f-99bf-ffddad4a1c88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,12 +122,6 @@
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyboardMouseDevice.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveCommand.cpp">
-      <Filter>Source Files\Commands</Filter>
     </ClCompile>
     <ClCompile Include="DebugShape.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -168,32 +180,11 @@
     <ClCompile Include="PlayerController.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="KeyboardMouseMapping.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyboardMouseInstance.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="ControllerInstance.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
     <ClCompile Include="InputDeviceManager.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="GamepadDevice.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="GamepadMapping.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="GamepadInstance.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="ShootGunCommand.cpp">
-      <Filter>Source Files\Commands</Filter>
     </ClCompile>
     <ClCompile Include="ProjectileGameObject.cpp">
       <Filter>Source Files\GameObjects</Filter>
@@ -222,6 +213,36 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="MoveObjectInputCommand.cpp">
+      <Filter>Source Files\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootGunInputCommand.cpp">
+      <Filter>Source Files\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCameraInputCommand.cpp">
+      <Filter>Source Files\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="GamepadMapping.cpp">
+      <Filter>Source Files\Input\Mappings</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardMouseMapping.cpp">
+      <Filter>Source Files\Input\Mappings</Filter>
+    </ClCompile>
+    <ClCompile Include="GamepadDevice.cpp">
+      <Filter>Source Files\Input\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardMouseDevice.cpp">
+      <Filter>Source Files\Input\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="GamepadInstance.cpp">
+      <Filter>Source Files\Input\Instances</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerInstance.cpp">
+      <Filter>Source Files\Input\Instances</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardMouseInstance.cpp">
+      <Filter>Source Files\Input\Instances</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -229,15 +250,6 @@
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyboardMouseDevice.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveCommand.h">
-      <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="DebugShape.h">
       <Filter>Header Files\Graphics</Filter>
@@ -305,32 +317,11 @@
     <ClInclude Include="PlayerController.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="KeyboardMouseMapping.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllerInstance.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyboardMouseInstance.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
     <ClInclude Include="InputDeviceManager.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="GamepadDevice.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="GamepadMapping.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="GamepadInstance.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Header Files\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="ShootGunCommand.h">
-      <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="ProjectileGameObject.h">
       <Filter>Header Files\GameObjects</Filter>
@@ -370,6 +361,39 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="InputCommand.h">
+      <Filter>Header Files\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveObjectInputCommand.h">
+      <Filter>Header Files\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootGunInputCommand.h">
+      <Filter>Header Files\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCameraInputCommand.h">
+      <Filter>Header Files\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GamepadDevice.h">
+      <Filter>Header Files\Input\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardMouseDevice.h">
+      <Filter>Header Files\Input\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="GamepadMapping.h">
+      <Filter>Header Files\Input\Mappings</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardMouseMapping.h">
+      <Filter>Header Files\Input\Mappings</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerInstance.h">
+      <Filter>Header Files\Input\Instances</Filter>
+    </ClInclude>
+    <ClInclude Include="GamepadInstance.h">
+      <Filter>Header Files\Input\Instances</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardMouseInstance.h">
+      <Filter>Header Files\Input\Instances</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

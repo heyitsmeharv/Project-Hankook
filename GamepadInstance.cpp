@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "InputCommand.h"
 #include "GamepadInstance.h"
 #include "GamepadDevice.h"
 
@@ -14,9 +14,9 @@ namespace hk
 		m_device = nullptr;
 	}
 
-	std::vector<std::unique_ptr<Command>> GamepadInstance::Update() const
+	std::vector<std::unique_ptr<InputCommand>> GamepadInstance::Update() const
 	{
-		std::vector<std::unique_ptr<Command>> commands;
+		std::vector<std::unique_ptr<InputCommand>> commands;
 
 		if (m_device)
 		{
