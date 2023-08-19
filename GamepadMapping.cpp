@@ -6,8 +6,6 @@ namespace hk
 {
 	GamepadCommandBinding::GamepadCommandBinding()
 		: name()
-		, button(SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_INVALID)
-		, joystick_axis(SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_INVALID)
 		, command(nullptr)
 
 	{
@@ -20,16 +18,12 @@ namespace hk
 	GamepadCommandBinding::GamepadCommandBinding(GamepadCommandBinding&& rhs)
 	{
 		name = std::move(rhs.name);
-		button = rhs.button;
-		joystick_axis = rhs.joystick_axis;
 		command = std::move(rhs.command);
 	}
 
 	GamepadCommandBinding& GamepadCommandBinding::operator=(GamepadCommandBinding&& rhs)
 	{
 		name = std::move(rhs.name);
-		button = rhs.button;
-		joystick_axis = rhs.joystick_axis;
 		command = std::move(rhs.command);
 		return *this;
 	}
@@ -37,25 +31,44 @@ namespace hk
 	GamepadMapping::GamepadMapping()
 		: m_deadzone(8000)
 	{
-		GamepadCommandBinding& binding = m_bindings.emplace_back();
-		binding.name = "button_test";
-		binding.button = SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
-		binding.command = std::make_unique<MoveCameraInputCommand>(5.0f, 5.0f);
+		GamepadButtonBinding& button_binding = m_button_bindings.emplace_back();
+		button_binding.name = "button_test";
+		button_binding.button = SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+		button_binding.command = std::make_unique<MoveCameraInputCommand>(5.0f, 5.0f);
 		
-		GamepadCommandBinding& binding2 = m_bindings.emplace_back();
-		binding2.name = "joystick_x_test";
-		binding2.joystick_axis = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX;
-		binding2.command = std::make_unique<MoveCameraInputCommand>(5.0f, 0.0f);
+		GamepadJoystickBinding& right_binding = m_joystick_bindings.emplace_back();
+		right_binding.name = "joystick_right_test";
+		right_binding.joystick_axis = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX;
+		right_binding.is_positive = true;
+		right_binding.command = std::make_unique<MoveCameraInputCommand>(5.0f, 0.0f);
 		
-		GamepadCommandBinding& binding3 = m_bindings.emplace_back();
-		binding3.name = "joystick_y_test";
-		binding3.joystick_axis = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY;
-		binding3.command = std::make_unique<MoveCameraInputCommand>(0.0f, 5.0f);
+		GamepadJoystickBinding& left_binding = m_joystick_bindings.emplace_back();
+		left_binding.name = "joystick_left_test";
+		left_binding.joystick_axis = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX;
+		left_binding.is_positive = false;
+		left_binding.command = std::make_unique<MoveCameraInputCommand>(-5.0f, 0.0f);
+
+		GamepadJoystickBinding& up_binding = m_joystick_bindings.emplace_back();
+		up_binding.name = "joystick_up_test";
+		up_binding.joystick_axis = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY;
+		up_binding.is_positive = false;
+		up_binding.command = std::make_unique<MoveCameraInputCommand>(0.0f, -5.0f);
+
+		GamepadJoystickBinding& down_binding = m_joystick_bindings.emplace_back();
+		down_binding.name = "joystick_down_test";
+		down_binding.joystick_axis = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY;
+		down_binding.is_positive = true;
+		down_binding.command = std::make_unique<MoveCameraInputCommand>(0.0f, 5.0f);
 	}
 
-	const std::vector<GamepadCommandBinding>& GamepadMapping::GetBindings() const
+	const std::vector<GamepadButtonBinding>& GamepadMapping::GetButtonBindings() const
 	{
-		return m_bindings;
+		return m_button_bindings;
+	}
+
+	const std::vector<GamepadJoystickBinding>& GamepadMapping::GetJoystickBindings() const
+	{
+		return m_joystick_bindings;
 	}
 
 	int GamepadMapping::GetDeadZone() const

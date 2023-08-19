@@ -20,6 +20,12 @@ namespace hk
 		return std::make_unique<MoveObjectInputCommand>(*this);
 	}
 
+	void MoveObjectInputCommand::ConfigureFromDeviceInput(const DeviceInputInfo& info)
+	{
+		m_x_delta *= info.press_modifier;
+		m_y_delta *= info.press_modifier;
+	}
+
 	void MoveObjectInputCommand::Execute(GameObject& game_object, Camera*) const
 	{
 		hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "MoveObjectInputCommand Executed with x: %f, y: %f", m_x_delta, m_y_delta);

@@ -21,6 +21,10 @@ namespace hk
 		return std::make_unique<ShootGunInputCommand>(*this);
 	}
 
+	void ShootGunInputCommand::ConfigureFromDeviceInput(const DeviceInputInfo&)
+	{
+	}
+
 	void ShootGunInputCommand::Execute(GameObject& game_object, Camera*) const
 	{
 		hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "ShootGunCommand Executed");

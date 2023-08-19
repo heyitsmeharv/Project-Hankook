@@ -20,6 +20,12 @@ namespace hk
 		return std::make_unique<MoveCameraInputCommand>(*this);
 	}
 
+	void MoveCameraInputCommand::ConfigureFromDeviceInput(const DeviceInputInfo& info)
+	{
+		m_x_delta *= info.press_modifier;
+		m_y_delta *= info.press_modifier;
+	}
+
 	void MoveCameraInputCommand::Execute(GameObject&, Camera* camera) const
 	{
 		if (camera)

@@ -21,21 +21,32 @@ namespace hk
 		GamepadCommandBinding& operator=(const GamepadCommandBinding&) = delete;
 
 		std::string						name;
-		SDL_GameControllerButton		button;
-		SDL_GameControllerAxis			joystick_axis;
 		std::unique_ptr<InputCommand>	command;
 	};
 
-	class GamepadMapping final
+	struct GamepadButtonBinding : public GamepadCommandBinding
+	{
+		SDL_GameControllerButton button;
+	};
+
+	struct GamepadJoystickBinding : public GamepadCommandBinding
+	{
+		SDL_GameControllerAxis	joystick_axis;
+		bool					is_positive;
+	};
+
+	class GamepadMapping
 	{
 	public:
 		GamepadMapping();
 
-		const std::vector<GamepadCommandBinding>&	GetBindings() const;
-		int											GetDeadZone() const;
+		const std::vector<GamepadButtonBinding>&	GetButtonBindings	() const;
+		const std::vector<GamepadJoystickBinding>&	GetJoystickBindings	() const;
+		int											GetDeadZone			() const;
 
 	private:
-		std::vector<GamepadCommandBinding>	m_bindings;
+		std::vector<GamepadButtonBinding>	m_button_bindings;
+		std::vector<GamepadJoystickBinding>	m_joystick_bindings;
 		int									m_deadzone;
 	};
 }
