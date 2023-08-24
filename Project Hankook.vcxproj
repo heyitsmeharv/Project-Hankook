@@ -157,6 +157,7 @@
     <ClCompile Include="KeyboardMouseDevice.cpp" />
     <ClCompile Include="KeyboardMouseInstance.cpp" />
     <ClCompile Include="KeyboardMouseMapping.cpp" />
+    <ClCompile Include="LockOnAttachment.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MoveCameraInputCommand.cpp" />
     <ClCompile Include="MoveObjectInputCommand.cpp" />
@@ -172,6 +173,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Tilemap.cpp" />
+    <ClCompile Include="TilemapLayer.cpp" />
+    <ClCompile Include="TilemapObjectLayer.cpp" />
+    <ClCompile Include="TilemapTileLayer.cpp" />
+    <ClCompile Include="Tileset.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transformable.cpp" />
@@ -181,6 +186,7 @@
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="AutomaticClock.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraAttachment.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="InputCommand.h" />
     <ClInclude Include="ControllerInstance.h" />
@@ -205,6 +211,7 @@
     <ClInclude Include="KeyboardMouseDevice.h" />
     <ClInclude Include="KeyboardMouseInstance.h" />
     <ClInclude Include="KeyboardMouseMapping.h" />
+    <ClInclude Include="LockOnAttachment.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MoveCameraInputCommand.h" />
     <ClInclude Include="MoveObjectInputCommand.h" />
@@ -222,6 +229,10 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Tilemap.h" />
+    <ClInclude Include="TilemapLayer.h" />
+    <ClInclude Include="TilemapObjectLayer.h" />
+    <ClInclude Include="TilemapTileLayer.h" />
+    <ClInclude Include="Tileset.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="TimeChangedEvent.h" />
     <ClInclude Include="Timer.h" />

@@ -112,6 +112,18 @@
     <Filter Include="Header Files\Input\Instances">
       <UniqueIdentifier>{d65526dd-7273-4c6f-99bf-ffddad4a1c88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Cameras\Attachments">
+      <UniqueIdentifier>{bc8807d8-dd80-4c87-9a09-3e4468dad428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras\Attachments">
+      <UniqueIdentifier>{931a5359-d519-4b9e-82fe-f65667376e22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Map\Layers">
+      <UniqueIdentifier>{468c55ad-d830-43fa-b91c-9b659f539f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map\Layers">
+      <UniqueIdentifier>{4f368a63-d246-4aaa-839e-7da9972aeb06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -242,6 +254,21 @@
     </ClCompile>
     <ClCompile Include="KeyboardMouseInstance.cpp">
       <Filter>Source Files\Input\Instances</Filter>
+    </ClCompile>
+    <ClCompile Include="LockOnAttachment.cpp">
+      <Filter>Source Files\Cameras\Attachments</Filter>
+    </ClCompile>
+    <ClCompile Include="TilemapLayer.cpp">
+      <Filter>Source Files\Map\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="TilemapTileLayer.cpp">
+      <Filter>Source Files\Map\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="TilemapObjectLayer.cpp">
+      <Filter>Source Files\Map\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tileset.cpp">
+      <Filter>Source Files\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +421,24 @@
     </ClInclude>
     <ClInclude Include="KeyboardMouseInstance.h">
       <Filter>Header Files\Input\Instances</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraAttachment.h">
+      <Filter>Header Files\Cameras\Attachments</Filter>
+    </ClInclude>
+    <ClInclude Include="LockOnAttachment.h">
+      <Filter>Header Files\Cameras\Attachments</Filter>
+    </ClInclude>
+    <ClInclude Include="TilemapLayer.h">
+      <Filter>Header Files\Map\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="TilemapTileLayer.h">
+      <Filter>Header Files\Map\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tileset.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="TilemapObjectLayer.h">
+      <Filter>Header Files\Map\Layers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

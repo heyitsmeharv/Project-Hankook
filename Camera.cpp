@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "CameraAttachment.h"
 
 #include <algorithm>
 
@@ -13,6 +14,18 @@ namespace hk
 		{
 			m_constraints->w -= m_dimensions.x;
 			m_constraints->h -= m_dimensions.y;
+		}
+	}
+
+	Camera::~Camera()
+	{
+	}
+
+	void Camera::Update()
+	{
+		for (auto& attachment : m_attachments)
+		{
+			attachment->Update(*this);
 		}
 	}
 
@@ -65,5 +78,10 @@ namespace hk
 			m_position.x = std::clamp(m_position.x, m_constraints->x, m_constraints->w);
 			m_position.y = std::clamp(m_position.y, m_constraints->y, m_constraints->h);
 		}
+	}
+
+	void Camera::AddAttachment(std::unique_ptr<CameraAttachment>&& attachment)
+	{
+		m_attachments.push_back(std::move(attachment));
 	}
 }

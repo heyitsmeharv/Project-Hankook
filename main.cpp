@@ -11,6 +11,7 @@
 #include "ImGuiManager.h"
 #include "InputDeviceManager.h"
 #include "KeyboardMouseInstance.h"
+#include "LockOnAttachment.h"
 #include "Logger.h"
 #include "PlayerController.h"
 #include "SpriteAnimation.h"
@@ -44,6 +45,15 @@
 // - Movement
 // - Clean includes
 // - Will probably need a proper Event Pipeline
+
+
+// - Add a character that's controlled
+// - Add item in level
+// - Allow for interaction with item
+// - On interaction, load a 2D puzzle
+// - Have pet follow character
+// - Create button on UI
+// - On button press, show Pet info
 
 int main(int argc, char* args[])
 {
@@ -169,8 +179,8 @@ int main(int argc, char* args[])
 		cat_walk_anim.SetSpriteSheet(&cat_walk_sheet);
 
 		//----- GAME OBJECTS -----
-		hk::GameObjectInitInfo parent_object_init_data{ "root", { 400, 200 }, { 1, 1 }, nullptr };
-		hk::GameObjectInitInfo child_object_init_data{ "child", { 400, 200 }, { 64, 64 }, &hk::TextureManager::Instance().GetTexture("Data\\Images\\blank_circle_64.png") };
+		hk::GameObjectInitInfo parent_object_init_data{ "root", { 0, 0 }, { 1, 1 }, nullptr };
+		hk::GameObjectInitInfo child_object_init_data{ "child", { 100, 100 }, { 64, 64 }, &hk::TextureManager::Instance().GetTexture("Data\\Images\\blank_circle_64.png") };
 
 		hk::GameObject root_object{ parent_object_init_data };
 		root_object.AddChild(std::make_unique<hk::GameObject>(child_object_init_data));
@@ -180,6 +190,9 @@ int main(int argc, char* args[])
 		//----- CONTROLLER -----
 		player_controller.AttachGameObject(*root_object.GetChildren().front().get());
 		player_controller.AttachCamera(camera);
+
+		//----- CAMERA ATTACHMENTS -----
+		camera.AddAttachment(std::make_unique<hk::LockOnAttachment>(*root_object.GetChildren().front().get(), hk::Vector2f{ camera.GetDimensions().x * 0.5f, camera.GetDimensions().y * 0.5f }));
 
 		//----- MAIN LOOP -----
 		timer.Restart();
@@ -241,6 +254,7 @@ int main(int argc, char* args[])
 			}
 
 			player_controller.Update();
+			camera.Update();
 
 			model.Update(timer.DeltaTime());
 			hk::GameObject::RootObject()->Update(timer.DeltaTime());
@@ -257,8 +271,8 @@ int main(int argc, char* args[])
 
 			//debug_rect.Draw();
 			//debug_line.Draw();
-			sprite_anim.Draw();
-			cat_walk_anim.Draw();
+			//sprite_anim.Draw();
+			//cat_walk_anim.Draw();
 			hk::GameObject::RootObject()->Draw(draw_info);
 
 			window.Display();

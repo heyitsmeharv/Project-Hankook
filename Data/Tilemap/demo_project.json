@@ -25,9 +25,49 @@
          "width":64,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"interactables",
+         "objects":[
+                {
+                 "height":32,
+                 "id":4,
+                 "name":"chest_test",
+                 "properties":[
+                        {
+                         "name":"is_open",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"treasure",
+                 "visible":true,
+                 "width":32,
+                 "x":608,
+                 "y":256
+                }, 
+                {
+                 "gid":184,
+                 "height":32,
+                 "id":5,
+                 "name":"shading_test",
+                 "rotation":0,
+                 "type":"shading",
+                 "visible":true,
+                 "width":32,
+                 "x":608,
+                 "y":352
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":3,
- "nextobjectid":1,
+ "nextlayerid":4,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.1",

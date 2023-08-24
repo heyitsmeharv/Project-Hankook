@@ -1,6 +1,6 @@
 #include "InputCommand.h"
 #include "KeyboardMouseMapping.h"
-#include "MoveCameraInputCommand.h"
+#include "MoveObjectInputCommand.h"
 #include "ShootGunInputCommand.h"
 
 namespace hk
@@ -39,22 +39,22 @@ namespace hk
 		KeyMouseCommandBinding& w_binding = m_bindings.emplace_back();
 		w_binding.name = "w";
 		w_binding.keys.push_back(SDL_SCANCODE_W);
-		w_binding.command = std::make_unique<MoveCameraInputCommand>(0.0f, -1.0f);
+		w_binding.command = std::make_unique<MoveObjectInputCommand>(0.0f, -5.0f);
 
 		KeyMouseCommandBinding& s_binding = m_bindings.emplace_back();
 		s_binding.name = "s";
 		s_binding.keys.push_back(SDL_SCANCODE_S);
-		s_binding.command = std::make_unique<MoveCameraInputCommand>(0.0f, 1.0f);
+		s_binding.command = std::make_unique<MoveObjectInputCommand>(0.0f, 5.0f);
 
 		KeyMouseCommandBinding& a_binding = m_bindings.emplace_back();
 		a_binding.name = "a";
 		a_binding.keys.push_back(SDL_SCANCODE_A);
-		a_binding.command = std::make_unique<MoveCameraInputCommand>(-1.0f, 0.0f);
+		a_binding.command = std::make_unique<MoveObjectInputCommand>(-5.0f, 0.0f);
 
 		KeyMouseCommandBinding& d_binding = m_bindings.emplace_back();
 		d_binding.name = "d";
 		d_binding.keys.push_back(SDL_SCANCODE_D);
-		d_binding.command = std::make_unique<MoveCameraInputCommand>(1.0f, 0.0f);
+		d_binding.command = std::make_unique<MoveObjectInputCommand>(5.0f, 0.0f);
 
 		KeyMouseCommandBinding& shoot_binding = m_bindings.emplace_back();
 		shoot_binding.name = "d";

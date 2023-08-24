@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="6">
  <editorsettings>
   <export target="demo_project.json" format="json"/>
  </editorsettings>
@@ -142,4 +142,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="3" name="interactables">
+  <object id="4" name="chest_test" type="treasure" x="608" y="256" width="32" height="32">
+   <properties>
+    <property name="is_open" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="5" name="shading_test" type="shading" gid="184" x="608" y="352" width="32" height="32"/>
+ </objectgroup>
 </map>
