@@ -108,14 +108,4 @@ namespace hk
 
 		return m_default_texture;
 	}
-
-	TextureManager& TextureManager::Instance()
-	{
-		if (m_instance == nullptr)
-		{
-			m_instance = new TextureManager{};
-		}
-
-		return *m_instance;
-	}
 }

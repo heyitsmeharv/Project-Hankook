@@ -8,12 +8,10 @@
 
 namespace hk
 {
-	class  Texture;
-	struct TextureInitInfo;
-
 	class TextureManager
 	{
 	public:
+		 TextureManager();
 		~TextureManager();
 
 		[[nodiscard]]
@@ -31,14 +29,5 @@ namespace hk
 		SDL_Renderer*								m_renderer;
 		std::unordered_map<std::string, Texture>	m_textures;
 		Texture										m_default_texture;
-
-	
-	//Singleton stuff
-	public:
-		static TextureManager& Instance();
-
-	private:
-		TextureManager();
-		static inline TextureManager* m_instance = nullptr;
 	};
 }

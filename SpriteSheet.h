@@ -14,8 +14,7 @@ namespace hk
 		 SpriteSheet();
 		~SpriteSheet();
 
-		bool	Load(const std::string& image_path);
-		bool	Load(const std::string& image_path, const std::string& metadata_path);
+		bool	Load(const Texture& texture, const std::string& metadata_path);
 
 		void	Destroy();
 
@@ -27,7 +26,6 @@ namespace hk
 		double				FrameLength		() const { return DefaultAnimTime() / NumOfFrames(); }
 
 	private:
-		bool	LoadTexture(const std::string& image_path);
 		bool	LoadSpriteSheet(const std::string& metadata_path);
 
 	private:

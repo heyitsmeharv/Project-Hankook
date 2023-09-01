@@ -30,13 +30,13 @@ namespace hk
 						, public IImGuiUser
 	{
 	public:
-				 GameObject(GameObjectInitInfo& init_data);
+				 GameObject(GameObjectInitInfo& init_info);
 		virtual ~GameObject();
 
 				void Destroy();
 
 		virtual void Update	(const double delta_time);
-				void Draw	(const DrawInfo& draw_info) const override;
+				void Draw	() const override;
 
 
 		//----- HIERARCHY -----

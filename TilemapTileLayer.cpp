@@ -70,26 +70,24 @@ namespace hk
 				}
 
 				// find its position in the tileset texture
-				const int tile_x_index = tile_number % tileset.dimensions.x;
-				const float tile_y_index = std::floor((float)(tile_number / tileset.dimensions.x));
-
-				const float normalised_tile_size_x = static_cast<float>(tileset.tile_dimensions.x) / static_cast<float>(tileset_image_size.x);
-				const float normalised_tile_size_y = static_cast<float>(tileset.tile_dimensions.y) / static_cast<float>(tileset_image_size.y);
-
-				const float tu = normalised_tile_size_x * tile_x_index;
-				const float tv = normalised_tile_size_y * tile_y_index;
+				const Vector2f uv = FindUVCoords(tile_number, tileset);
+				const float tu = uv.x;
+				const float tv = uv.y;
 
 				// get a pointer to the current tile's quad
 				const int starting_index = (x + y * map_grid_dimensions.x) * 4;
 				SDL_Vertex* quad = &m_vertices[starting_index];
 
-				// define its 4 corners
+				// define its 4 corners - TL = 0, TR = 1, BR = 2, BL = 3
 				quad[0].position = { static_cast<float>(x * tileset.tile_dimensions.x),		static_cast<float>(y * tileset.tile_dimensions.y) };
 				quad[1].position = { static_cast<float>((x + 1) * tileset.tile_dimensions.x), static_cast<float>(y * tileset.tile_dimensions.y) };
 				quad[2].position = { static_cast<float>((x + 1) * tileset.tile_dimensions.x), static_cast<float>((y + 1) * tileset.tile_dimensions.y) };
 				quad[3].position = { static_cast<float>(x * tileset.tile_dimensions.x),		static_cast<float>((y + 1) * tileset.tile_dimensions.y) };
 
 				// define its 4 texture coordinates
+				const float normalised_tile_size_x = static_cast<float>(tileset.tile_dimensions.x) / static_cast<float>(tileset_image_size.x);
+				const float normalised_tile_size_y = static_cast<float>(tileset.tile_dimensions.y) / static_cast<float>(tileset_image_size.y);
+
 				quad[0].tex_coord = { tu, tv };
 				quad[1].tex_coord = { tu + normalised_tile_size_x, tv };
 				quad[2].tex_coord = { tu + normalised_tile_size_x, tv + normalised_tile_size_y };

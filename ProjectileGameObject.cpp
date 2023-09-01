@@ -2,12 +2,12 @@
 
 namespace hk
 {
-	ProjectileGameObject::ProjectileGameObject(ProjectileGameObjectInitInfo& init_data)
-		: GameObject(init_data)
-		, m_direction(init_data.direction.AsNormalised())
-		, m_velocity(init_data.velocity)
-		, m_original_lifetime(init_data.lifetime)
-		, m_current_lifetime(init_data.lifetime)
+	ProjectileGameObject::ProjectileGameObject(ProjectileGameObjectInitInfo& init_info)
+		: GameObject(init_info)
+		, m_direction(init_info.direction.AsNormalised())
+		, m_velocity(init_info.velocity)
+		, m_original_lifetime(init_info.lifetime)
+		, m_current_lifetime(init_info.lifetime)
 	{
 	}
 

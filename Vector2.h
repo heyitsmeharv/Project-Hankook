@@ -57,6 +57,19 @@ namespace hk
 			return { x / mag, y / mag };
 		}
 
+		Vector2<T>& Absolute()
+		{
+			x = std::abs(x);
+			y = std::abs(y);
+
+			return *this;
+		}
+
+		Vector2<T> AsAbsoluted() const
+		{
+			return { std::abs(x), std::abs(y) };
+		}
+
 		bool IsZeroed() const
 		{
 			return x == T{ 0 } && y == T{ 0 };
@@ -83,25 +96,25 @@ namespace hk
 	}
 
 	template<typename T>
-	Vector2<T> operator+(Vector2<T> lhs, const Vector2<T>& rhs)
+	Vector2<T> operator+(const Vector2<T>& lhs, const Vector2<T>& rhs)
 	{
 		return { lhs.x + rhs.x, lhs.y + rhs.y };
 	}
 
 	template<typename T>
-	Vector2<T> operator-(Vector2<T> lhs, const Vector2<T>& rhs)
+	Vector2<T> operator-(const Vector2<T>& lhs, const Vector2<T>& rhs)
 	{
 		return { lhs.x - rhs.x, lhs.y - rhs.y };
 	}
 
 	template<typename T>
-	Vector2<T> operator*(Vector2<T> lhs, const Vector2<T>& rhs)
+	Vector2<T> operator*(const Vector2<T>& lhs, const Vector2<T>& rhs)
 	{
 		return { lhs.x * rhs.x, lhs.y * rhs.y };
 	}
 
 	template<typename T>
-	Vector2<T> operator/(Vector2<T> lhs, const Vector2<T>& rhs)
+	Vector2<T> operator/(const Vector2<T>& lhs, const Vector2<T>& rhs)
 	{
 		return { lhs.x / rhs.x, lhs.y / rhs.y };
 	}

@@ -33,6 +33,7 @@ namespace hk
 
 	PlayerController::~PlayerController()
 	{
+		m_camera = nullptr;
 		m_game_object = nullptr;
 	}
 

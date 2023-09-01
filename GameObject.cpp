@@ -1,6 +1,8 @@
-#include "InputCommand.h"
 #include "GameObject.h"
 
+#include "Engine.h"
+#include "InputCommand.h"
+#include "TextureDrawRequest.h"
 #include "Texture.h"
 
 namespace hk
@@ -49,28 +51,30 @@ namespace hk
 		}
 	}
 
-	void GameObject::Draw(const DrawInfo& draw_info) const
+	void GameObject::Draw() const
 	{
 		if (IsVisible())
 		{
 			if (m_texture)
 			{
-				hk::TextureDrawInfo texture_draw_info = {};
-				texture_draw_info.dimensions = m_dimensions;
-				texture_draw_info.position = { (int)m_position.x, (int)m_position.y };
-				texture_draw_info.flip = m_flip;
-				texture_draw_info.angle_in_deg = m_rotation_in_deg;
-				texture_draw_info.colour_mod = m_colour_mod;
-				texture_draw_info.viewport_rect = draw_info.viewport_rect;
-				
-				m_texture->Draw(texture_draw_info);
+				std::unique_ptr<TextureDrawRequest> draw_request = std::make_unique<TextureDrawRequest>();
+
+				draw_request->texture = m_texture;
+				draw_request->draw_info.dimensions = m_dimensions;
+				draw_request->draw_info.position = { (int)m_position.x, (int)m_position.y };
+				draw_request->draw_info.flip = m_flip;
+				draw_request->draw_info.angle_in_deg = m_rotation_in_deg;
+				draw_request->draw_info.colour_mod = m_colour_mod;
+				draw_request->draw_info.viewport_rect = GetEngine().GetCameraManager().CurrentCamera()->GetCameraRect();
+
+				AddDrawToQueue(std::move(draw_request));
 			}
 
 			for (const auto& child : m_children)
 			{
 				if (child)
 				{
-					child->Draw(draw_info);
+					child->Draw();
 				}
 			}
 		}

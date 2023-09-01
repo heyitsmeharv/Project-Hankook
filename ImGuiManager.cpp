@@ -4,10 +4,12 @@
 #include "imgui/imgui_impl_sdl2.h"
 #include "imgui/imgui_impl_sdlrenderer2.h"
 
+#include "Window.h"
+
 namespace hk
 {
-	ImGuiManager::ImGuiManager(const hk::WindowInitData& init_data)
-		: m_window(init_data)
+	ImGuiManager::ImGuiManager(hk::Window& window)
+		: m_window(window)
 	{
 		Create();
 	}
@@ -41,8 +43,6 @@ namespace hk
 			ImGui_ImplSDL2_Shutdown();
 			ImGui::DestroyContext();
 		}
-
-		m_window.Destroy();
 	}
 
 	void ImGuiManager::UpdateInput(SDL_Event& event)
@@ -55,6 +55,11 @@ namespace hk
 		ImGui_ImplSDLRenderer2_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
+	}
+
+	void ImGuiManager::EndFrame()
+	{
+		ImGui::EndFrame();
 	}
 
 	void ImGuiManager::CallUsers()
@@ -78,9 +83,7 @@ namespace hk
 		ImGuiIO& io = ImGui::GetIO();
 		SDL_RenderSetScale(m_window.GetRenderer(), io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
 
-		m_window.Clear();
 		ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
-		m_window.Display();
 	}
 
 	void ImGuiManager::RegisterUser(ImGuiUser& user)

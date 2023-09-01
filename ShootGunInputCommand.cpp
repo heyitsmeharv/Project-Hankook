@@ -2,7 +2,8 @@
 
 #include "ShootGunInputCommand.h"
 #include "Logger.h"
-
+#include "Engine.h"
+#include "EngineAccess.h"
 #include "ProjectileGameObject.h"
 #include "TextureManager.h"
 
@@ -35,18 +36,18 @@ namespace hk
 		const int x_dir = (rand() % 100) - 50;
 		const int y_dir = (rand() % 100) - 50;
 
-		ProjectileGameObjectInitInfo init_data;
-		init_data.id = id;
-		init_data.position = game_object.GetPosition();
-		init_data.dimensions = { 8, 8 };
-		init_data.texture = &hk::TextureManager::Instance().GetTexture("Data\\Images\\blank_circle_64.png");
-		init_data.colour_mod = SDL_Color{};
-		init_data.colour_mod->r = 255;
-		init_data.colour_mod->a = 255;
-		init_data.direction = { (float)x_dir, (float)y_dir };
-		init_data.velocity = 1.0;
-		init_data.lifetime = 3.0;
+		ProjectileGameObjectInitInfo init_info;
+		init_info.id = id;
+		init_info.position = game_object.GetPosition();
+		init_info.dimensions = { 8, 8 };
+		init_info.texture = &GetEngine().GetTextureManager().GetTexture("Data\\Images\\blank_circle_64.png");
+		init_info.colour_mod = SDL_Color{};
+		init_info.colour_mod->r = 255;
+		init_info.colour_mod->a = 255;
+		init_info.direction = { (float)x_dir, (float)y_dir };
+		init_info.velocity = 1.0;
+		init_info.lifetime = 3.0;
 
-		GameObject::RootObject()->AddChild(std::make_unique<ProjectileGameObject>(init_data));
+		GameObject::RootObject()->AddChild(std::make_unique<ProjectileGameObject>(init_info));
 	}
 }

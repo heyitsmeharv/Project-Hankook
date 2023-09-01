@@ -16,12 +16,12 @@ namespace hk
 	{
 		Vector2f					position;
 		Vector2i					dimensions;
-		std::optional<SDL_FRect>	contraints;
 	};
 
 	class Camera : public Transformable
 	{
 	public:
+				 Camera();
 				 Camera(const CameraInitInfo& init_info);
 		virtual ~Camera();
 
@@ -41,11 +41,8 @@ namespace hk
 		virtual void	MovePosition	(float x_delta, float y_delta) override;
 		virtual void	MovePosition	(const Vector2f& delta) override;
 
-		virtual void	ClampToConstraint();
-
 	protected:
 		Vector2i										m_dimensions;
-		std::optional<SDL_FRect>						m_constraints;
 		std::vector<std::unique_ptr<CameraAttachment>>	m_attachments;
 	};
 }

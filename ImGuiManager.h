@@ -3,16 +3,16 @@
 #include <vector>
 #include <SDL_events.h>
 
-#include "Window.h"
-
 namespace hk
 {
+	class Window;
+
 	class ImGuiUser;
 
 	class ImGuiManager
 	{
 	public:
-		 ImGuiManager(const hk::WindowInitData& init_data);
+		 ImGuiManager(hk::Window& window);
 		~ImGuiManager();
 
 		void Create			();
@@ -20,6 +20,7 @@ namespace hk
 
 		void UpdateInput	(SDL_Event& event);
 		void StartFrame		();
+		void EndFrame		();
 		void CallUsers		();
 		void Draw			();
 
@@ -27,7 +28,7 @@ namespace hk
 		static void DeregisterUser	(ImGuiUser& user);
 
 	private:
-		hk::Window m_window;
+		hk::Window& m_window;
 
 		static inline std::vector<ImGuiUser*> m_users;
 	};

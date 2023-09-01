@@ -36,49 +36,19 @@ namespace hk
 			m_texture->Draw(draw_info);
 		}
 	}
-
-	bool SpriteSheet::Load(const std::string& image_path)
-	{
-		size_t index = image_path.rfind(".");
-		if (index == std::string::npos)
-		{
-			return false;
-		}
-
-		const std::string json_path = image_path.substr(0, index) + ".json";
-		return Load(image_path, json_path);
-	}
 	
-	bool SpriteSheet::Load(const std::string& image_path, const std::string& metadata_path)
+	bool SpriteSheet::Load(const Texture& texture, const std::string& metadata_path)
 	{
-		size_t index = image_path.rfind(".");
+		size_t index = metadata_path.rfind(".");
 		if (index == std::string::npos)
 		{
 			return false;
 		}
 
-		m_id = image_path.substr(0, index);
-
-		if (LoadTexture(image_path) == false)
-		{
-			return false;
-		}
+		m_id = metadata_path.substr(0, index);
+		m_texture = &texture;
 
 		return LoadSpriteSheet(metadata_path);
-	}
-
-	bool SpriteSheet::LoadTexture(const std::string& image_path)
-	{
-		hk::TextureInitInfo init_info;
-		init_info.filepath = image_path;
-
-		if (hk::TextureManager::Instance().LoadTexture(init_info) == false)
-		{
-			return false;
-		}
-		
-		m_texture = &hk::TextureManager::Instance().GetTexture(image_path);
-		return true;
 	}
 
 	bool SpriteSheet::LoadSpriteSheet(const std::string& metadata_path)

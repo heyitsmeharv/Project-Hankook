@@ -14,7 +14,7 @@ namespace hk
 	class ProjectileGameObject : public GameObject
 	{
 	public:
-		ProjectileGameObject(ProjectileGameObjectInitInfo& init_data);
+		ProjectileGameObject(ProjectileGameObjectInitInfo& init_info);
 		virtual ~ProjectileGameObject();
 
 		void Update(const double delta_time) override;

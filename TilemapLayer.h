@@ -23,7 +23,10 @@ namespace hk
 		virtual bool LoadFromJson	(const rapidjson::Value& layer_data);
 		virtual void CreateVertList	(const Vector2i& map_grid_dimensions, const Tileset& tileset) = 0;
 
-		virtual void Draw			(const DrawInfo& draw_info, const Tileset& tileset) const;
+		virtual void Draw			(const Tileset& tileset) const;
+
+	protected:
+		Vector2f FindUVCoords(const int tile_index, const Tileset& tileset) const;
 
 	protected:
 		std::string			m_name;

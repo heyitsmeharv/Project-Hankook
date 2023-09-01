@@ -1,4 +1,5 @@
 #include "Drawable.h"
+#include "Engine.h"
 
 namespace hk
 {
@@ -47,6 +48,11 @@ namespace hk
 	void Drawable::SetScale(const Vector2f& new_scale)
 	{
 		m_scale = new_scale;
+	}
+
+	void Drawable::AddDrawToQueue(std::unique_ptr<DrawRequest>&& draw_request) const
+	{
+		GetEngine().AddDrawRequest(std::move(draw_request));
 	}
 
 	const Vector2i& Drawable::GetDimensions() const

@@ -4,8 +4,9 @@
 
 namespace hk
 {
-	class GameObject;
 	class Camera;
+	class Engine;
+	class GameObject;
 
 	struct DeviceInputInfo
 	{

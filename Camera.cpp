@@ -1,20 +1,18 @@
 #include "Camera.h"
 #include "CameraAttachment.h"
 
-#include <algorithm>
-
 namespace hk
 {
+	Camera::Camera()
+		: Transformable()
+		, m_dimensions()
+	{
+	}
+
 	Camera::Camera(const CameraInitInfo& init)
 		: Transformable(init.position)
 		, m_dimensions(init.dimensions)
-		, m_constraints(init.contraints)
 	{
-		if (m_constraints.has_value())
-		{
-			m_constraints->w -= m_dimensions.x;
-			m_constraints->h -= m_dimensions.y;
-		}
 	}
 
 	Camera::~Camera()
@@ -57,7 +55,6 @@ namespace hk
 	void Camera::SetPosition(const Vector2f& new_pos)
 	{
 		m_position = new_pos;
-		ClampToConstraint();
 	}
 
 	void Camera::MovePosition(float x_delta, float y_delta)
@@ -68,16 +65,6 @@ namespace hk
 	void Camera::MovePosition(const Vector2f& delta)
 	{
 		m_position += delta;
-		ClampToConstraint();
-	}
-
-	void Camera::ClampToConstraint()
-	{
-		if (m_constraints.has_value())
-		{
-			m_position.x = std::clamp(m_position.x, m_constraints->x, m_constraints->w);
-			m_position.y = std::clamp(m_position.y, m_constraints->y, m_constraints->h);
-		}
 	}
 
 	void Camera::AddAttachment(std::unique_ptr<CameraAttachment>&& attachment)

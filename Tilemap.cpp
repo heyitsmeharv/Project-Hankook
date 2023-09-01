@@ -15,11 +15,25 @@
 
 namespace hk
 {
-	Tilemap::Tilemap(const std::string& filepath) 
+	Tilemap::Tilemap() 
 		: Transformable()
 		, Drawable()
-		, m_filepath(filepath)
+		, m_filepath()
 	{
+	}
+
+	void Tilemap::Draw() const
+	{
+		for (const auto& layer : m_layers)
+		{
+			layer->Draw(m_tilesets[0]);
+		}
+	}
+
+	bool Tilemap::Load(const std::string& filepath)
+	{
+		m_filepath = filepath;
+		return LoadFileData();
 	}
 
 	bool Tilemap::LoadFileData()
@@ -74,7 +88,7 @@ namespace hk
 					{
 						new_layer = std::make_unique<TilemapTileLayer>();
 					}
-					else if (layer_type == "objectlayer")
+					else if (layer_type == "objectgroup")
 					{
 						new_layer = std::make_unique<TilemapObjectLayer>();
 					}
@@ -101,20 +115,5 @@ namespace hk
 		}
 
 		return true;
-	}
-
-	//-------------------------------------------------------------------------------------------------
-	bool Tilemap::Load()
-	{
-		return LoadFileData();
-	}
-
-	//-------------------------------------------------------------------------------------------------
-	void Tilemap::Draw(const DrawInfo& draw_info) const
-	{
-		for (const auto& layer : m_layers)
-		{
-			layer->Draw(draw_info, m_tilesets[0]);
-		}
 	}
 }

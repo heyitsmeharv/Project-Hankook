@@ -20,6 +20,16 @@ namespace hk
 	class Tilemap	: public Transformable
 					, public Drawable
 	{
+	public:
+		Tilemap();
+
+		bool Load(const std::string& filepath);
+
+		void Draw() const override;
+
+	private:
+		bool LoadFileData();
+
 	private:
 		std::string									m_filepath;
 		Vector2i									m_grid_dimensions;
@@ -27,16 +37,6 @@ namespace hk
 		std::vector<Tileset>						m_tilesets;
 		std::vector<std::unique_ptr<TilemapLayer>>	m_layers;
 
-		std::vector<int>			m_tiles;
-
-	private:
-		bool LoadFileData();
-
-	public:
-		Tilemap(const std::string& filepath);
-
-		bool Load();
-
-		void Draw(const DrawInfo& draw_info) const override;
+		std::vector<int>							m_tiles;
 	};
 }

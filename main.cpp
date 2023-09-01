@@ -1,10 +1,13 @@
 #include <SDL.h>
+#include <SDL_image.h>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
 
-#include "Camera.h"
+#include "CollisionSystem.h"
 #include "DebugShape.h"
+#include "Engine.h"
+#include "EngineAccess.h"
 #include "ErrorManager.h"
 #include "GameObject.h"
 #include "GamepadInstance.h"
@@ -47,13 +50,20 @@
 // - Will probably need a proper Event Pipeline
 
 
-// - Add a character that's controlled
-// - Add item in level
+// - Add a character that's controlled X
+// - Add item in level X
 // - Allow for interaction with item
 // - On interaction, load a 2D puzzle
 // - Have pet follow character
 // - Create button on UI
 // - On button press, show Pet info
+
+
+// - Make collision system class
+// - Create variant for each collision type (monostate, circle, AABB, OBB, poly)
+// - Add (De)Register functions to the system
+// - Add a collision check function that is called whenever a game object moves
+// - If function returns true, move the game object back
 
 int main(int argc, char* args[])
 {
@@ -61,253 +71,57 @@ int main(int argc, char* args[])
 
 	srand(time(NULL));
 
-	hk::TamagotchiModel model;
-	model.Initialise();
+	//hk::TamagotchiModel model;
+	//model.Initialise();
+
+	//hk::CollisionObject circle_a = hk::Circle{ { 0.0f, 0.0f }, 5.0f };
+	//hk::CollisionObject circle_b = hk::Circle{ { 2.5f, 2.5f }, 5.0f };
+	//hk::CollisionObject circle_c = hk::Circle{ { 2.5f, 25.5f }, 5.0f };
+	//
+	//hk::CollisionObject aabb_a = hk::AABB{ { 0.0f, 0.0f }, { 10.0f, 2.5f } };
+	//hk::CollisionObject aabb_b = hk::AABB{ { 10.0f, 0.0f }, { 10.0f, 2.5f } };
+	//
+	//hk::CollisionSystem collision_system;
+	//collision_system.RegisterCollisionObject(&circle_a);
+	//collision_system.RegisterCollisionObject(&circle_b);
+	//collision_system.RegisterCollisionObject(&aabb_a);
+	//collision_system.RegisterCollisionObject(&aabb_b);
+	//
+	//const bool result = collision_system.AreObjectsColliding(circle_a, circle_c);
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER) < 0)
 	{
 		hk::Fatal(hk::ErrorCategory::GFX, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		return -1;
 	}
-	else
+
+	int imgFlags = IMG_INIT_PNG;
+	if (!(IMG_Init(imgFlags) & imgFlags))
 	{
-		//----- WINDOW -----
-		hk::WindowInitData window_init_data;
-		window_init_data.window_title = "Project Hankook";
-		window_init_data.width = 800;
-		window_init_data.height = 800;
-		window_init_data.x_pos = 1000;
-		window_init_data.y_pos = 200;
-		window_init_data.flags = SDL_WINDOW_SHOWN;
-		window_init_data.clear_colour = { 100, 100, 100, 255 };
-
-		hk::Window window{ window_init_data };
-
-		//----- IMGUI -----
-		hk::WindowInitData imgui_init_data;
-		imgui_init_data.window_title = "Project Hankook - ImGui Debug";
-		imgui_init_data.width = 800;
-		imgui_init_data.height = 600;
-		imgui_init_data.x_pos = 100;
-		imgui_init_data.y_pos = 200;
-		imgui_init_data.flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_SHOWN;
-
-		hk::ImGuiManager imgui_manager{ imgui_init_data };
-
-		//----- SINGLETONS -----
-		hk::ErrorManager::Instance();
-		hk::Logger::Instance();
-
-		//----- TEXTURES -----
-		if (hk::TextureManager::Instance().Initialise(window.GetRenderer(), "Data\\Images\\default.jpg") == false)
-		{
-			hk::Fatal(hk::ErrorCategory::GFX, "TextureManager failed to load, we're in big trouble!");
-			return -1;
-		}
-
-		hk::TextureManager::Instance().LoadDirectory("Data\\Images");
-		hk::TextureManager::Instance().LoadDirectory("Data\\Tilemap");
-
-		//----- INPUT -----
-		hk::InputDeviceManager input_device_manager;
-		input_device_manager.LoadKeyboardMouse();
-		input_device_manager.LoadGamepads();
-		
-		hk::PlayerController player_controller;
-
-		if (input_device_manager.GetGamepadDevices().empty() == false)
-		{
-			std::unique_ptr<hk::GamepadInstance> gamepad_instance = std::make_unique<hk::GamepadInstance>();
-			gamepad_instance->AttachDevice(input_device_manager.GetGamepadDevices().front());
-
-			player_controller.AttachControllerInstance(std::move(gamepad_instance));
-		}
-		else
-		{
-			std::unique_ptr<hk::KeyboardMouseInstance> keyboard_instance = std::make_unique<hk::KeyboardMouseInstance>();
-			keyboard_instance->AttachDevice(input_device_manager.GetDefaultKeyboardMouse());
-
-			player_controller.AttachControllerInstance(std::move(keyboard_instance));
-		}
-
-		//----- TIMER -----
-		hk::Timer timer;
-
-		//----- TILE MAP -----
-		hk::Tilemap tilemap{ "Data\\Tilemap\\demo_project.json" };
-		tilemap.Load();
-
-		//----- CAMERA -----
-		hk::CameraInitInfo camera_info;
-		camera_info.position = { 0.0f, 0.0f };
-		camera_info.dimensions = { window_init_data.width, window_init_data.height };
-		camera_info.contraints = SDL_FRect{ tilemap.GetPosition().x, tilemap.GetPosition().y, static_cast<float>(tilemap.GetDimensions().x), static_cast<float>(tilemap.GetDimensions().y) };
-
-		hk::Camera camera{ camera_info };
-
-		//----- DEBUG SHAPES -----
-		hk::DebugRectInfo rect_info;
-		rect_info.x_pos = 300;
-		rect_info.y_pos = 300;
-		rect_info.width = 200;
-		rect_info.height = 200;
-		rect_info.renderer = window.GetRenderer();
-		rect_info.colour = { 255, 0, 0, 255 };
-
-		hk::DebugRect debug_rect{ rect_info };
-
-		hk::DebugLineInfo line_info;
-		line_info.start_x_pos = 0;
-		line_info.start_y_pos = 0;
-		line_info.end_x_pos = 800;
-		line_info.end_y_pos = 800;
-		line_info.renderer = window.GetRenderer();
-		line_info.colour = { 255, 0, 0, 255 };
-
-		hk::DebugLine debug_line{ line_info };
-
-		//----- SPRITE ANIMATION -----
-		hk::SpriteSheet sprite_sheet;
-		sprite_sheet.Load("Data\\Sprites\\test_sprite_sheet.png");
-
-		hk::SpriteAnimation sprite_anim;
-		sprite_anim.SetSpriteSheet(&sprite_sheet);
-
-		hk::SpriteSheet cat_walk_sheet;
-		cat_walk_sheet.Load("Data\\Sprites\\cat_walk.png");
-
-		hk::SpriteAnimation cat_walk_anim;
-		cat_walk_anim.SetSpriteSheet(&cat_walk_sheet);
-
-		//----- GAME OBJECTS -----
-		hk::GameObjectInitInfo parent_object_init_data{ "root", { 0, 0 }, { 1, 1 }, nullptr };
-		hk::GameObjectInitInfo child_object_init_data{ "child", { 100, 100 }, { 64, 64 }, &hk::TextureManager::Instance().GetTexture("Data\\Images\\blank_circle_64.png") };
-
-		hk::GameObject root_object{ parent_object_init_data };
-		root_object.AddChild(std::make_unique<hk::GameObject>(child_object_init_data));
-		
-		hk::GameObject::SetRootObject(root_object);
-
-		//----- CONTROLLER -----
-		player_controller.AttachGameObject(*root_object.GetChildren().front().get());
-		player_controller.AttachCamera(camera);
-
-		//----- CAMERA ATTACHMENTS -----
-		camera.AddAttachment(std::make_unique<hk::LockOnAttachment>(*root_object.GetChildren().front().get(), hk::Vector2f{ camera.GetDimensions().x * 0.5f, camera.GetDimensions().y * 0.5f }));
-
-		//----- MAIN LOOP -----
-		timer.Restart();
-
-		//Hack to get window to stay up
-		bool quit = false; 
-		while (quit == false) 
-		{
-			timer.Update();
-
-			SDL_Event e;
-			while (SDL_PollEvent(&e))
-			{
-				imgui_manager.UpdateInput(e);
-
-				switch (e.type) 
-				{
-					case SDL_KEYUP:
-					{
-						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Released: %s", SDL_GetScancodeName(e.key.keysym.scancode));
-						break;
-					}
-					case SDL_KEYDOWN:
-					{
-						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Pressed: %s", SDL_GetScancodeName(e.key.keysym.scancode));
-						break;
-					}
-					case SDL_JOYBUTTONDOWN:
-					{
-						hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Joystick %d Pressed: %d", static_cast<int>(e.jbutton.which), static_cast<int>(e.jbutton.button));
-						break;
-					}
-					case SDL_JOYAXISMOTION:
-                    {
-						//Purposely no log here otherwise the log would get spammed with millions of micro-movements
-						break;
-					}
-					case SDL_CONTROLLERDEVICEADDED:
-					case SDL_CONTROLLERDEVICEREMOVED:
-					{
-						//Add device addition/removal here when we get the chance
-						break;
-					}
-					//SDL_QUIT doesn't play nicely with more than one window...
-					case SDL_WINDOWEVENT:
-					{
-						//If the event was hitting the close button and it was from the main game window, then quit
-						if (e.window.event == SDL_WINDOWEVENT_CLOSE && e.window.windowID == SDL_GetWindowID(window.GetWindow()))
-						{
-							quit = true;
-						}
-						break;
-					}
-					default:
-					{
-						break;
-					}
-				}
-			}
-
-			player_controller.Update();
-			camera.Update();
-
-			model.Update(timer.DeltaTime());
-			hk::GameObject::RootObject()->Update(timer.DeltaTime());
-
-			sprite_anim.Update(timer.DeltaTime());
-			cat_walk_anim.Update(timer.DeltaTime());
-
-			window.Clear();
-
-			hk::DrawInfo draw_info;
-			draw_info.viewport_rect = camera.GetCameraRect();
-
-			tilemap.Draw(draw_info);
-
-			//debug_rect.Draw();
-			//debug_line.Draw();
-			//sprite_anim.Draw();
-			//cat_walk_anim.Draw();
-			hk::GameObject::RootObject()->Draw(draw_info);
-
-			window.Display();
-
-			//----- IMGUI -----
-			imgui_manager.StartFrame();
-			imgui_manager.CallUsers();
-
-			// We want sprites to be organised
-			if (ImGui::Begin("Sprite Animations"))
-			{
-				sprite_anim.AddToImGui();
-				cat_walk_anim.AddToImGui();
-			}
-			ImGui::End();
-
-			// GameObject is a special case atm as we don't want to call every GameObject
-			// We let the hierarchy handle that
-			if (ImGui::Begin("Game Objects"))
-			{
-				hk::GameObject::RootObject()->AddToImGui();
-			}
-			ImGui::End();
-
-			//static bool open = true;
-			//ImGui::ShowDemoWindow(&open);
-
-			imgui_manager.Draw();
-		}
-
-		//Technically not necessary as is called in dtor
-		imgui_manager.Destroy();
-		window.Destroy();
+		hk::Fatal(hk::ErrorCategory::GFX, "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+		return -1;
 	}
 
+	hk::Engine engine;
+	hk::RegisterEngine(engine);
+
+	engine.Start();
+
+	//----- TIMER -----
+	hk::Timer timer;
+
+	//----- MAIN LOOP -----
+	timer.Restart();
+
+	while (engine.IsShutdownRequested() == false)
+	{
+		timer.Update();
+
+		engine.Update(timer.DeltaTime());
+		engine.Draw();
+	}
+	
+	IMG_Quit();
 	SDL_Quit();
 	
 	return 0; 

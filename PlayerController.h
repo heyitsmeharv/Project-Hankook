@@ -4,9 +4,9 @@
 
 namespace hk
 {
+	class Camera;
 	class ControllerInstance;
 	class GameObject;
-	class Camera;
 
 	class PlayerController
 	{

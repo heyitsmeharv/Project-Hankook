@@ -1,7 +1,12 @@
+#include <cmath>
+
 #include "TilemapLayer.h"
+#include "Engine.h"
+#include "EngineAccess.h"
 #include "Drawable.h"
 #include "Texture.h"
 #include "Tileset.h"
+#include "TileDrawRequest.h"
 
 namespace hk
 {
@@ -17,13 +22,26 @@ namespace hk
 		return true;
 	}
 
-	void TilemapLayer::Draw(const DrawInfo& draw_info, const Tileset& tileset) const
+	void TilemapLayer::Draw(const Tileset& tileset) const
 	{
-		TileDrawInfo tile_info;
-		tile_info.vertices = &m_vertices;
-		tile_info.indices = &m_indices;
-		tile_info.offset = { draw_info.viewport_rect.x, draw_info.viewport_rect.y };
+		std::unique_ptr<TileDrawRequest> draw_request = std::make_unique<TileDrawRequest>();
 
-		tileset.image->DrawTiles(tile_info);
+		draw_request->texture = tileset.image;
+		draw_request->draw_info.vertices = &m_vertices;
+		draw_request->draw_info.indices = &m_indices;
+		draw_request->draw_info.offset = { (int)GetEngine().GetCameraManager().CurrentCamera()->GetPosition().x, (int)GetEngine().GetCameraManager().CurrentCamera()->GetPosition().y };
+
+		GetEngine().AddDrawRequest(std::move(draw_request));
+	}
+	
+	Vector2f TilemapLayer::FindUVCoords(const int tile_index, const Tileset& tileset) const
+	{
+		const int tile_x_index = tile_index % tileset.dimensions.x;
+		const float tile_y_index = std::floor((float)(tile_index / tileset.dimensions.x));
+
+		const float normalised_tile_size_x = static_cast<float>(tileset.tile_dimensions.x) / static_cast<float>(tileset.image->GetWidth());
+		const float normalised_tile_size_y = static_cast<float>(tileset.tile_dimensions.y) / static_cast<float>(tileset.image->GetHeight());
+
+		return { normalised_tile_size_x * tile_x_index, normalised_tile_size_y * tile_y_index };
 	}
 }
