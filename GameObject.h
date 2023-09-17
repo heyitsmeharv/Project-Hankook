@@ -5,7 +5,11 @@
 #include <string>
 #include <optional>
 
+#include "Collidable.h"
+#include "CollisionInterface.h"
 #include "Drawable.h"
+#include "ListenerReporter.h"
+#include "Resource.h"
 #include "Transformable.h"
 #include "ImGuiUser.h"
 
@@ -15,6 +19,7 @@ namespace hk
 	using GameObjectList = std::vector<std::unique_ptr<GameObject>>;
 
 	class Texture;
+	struct GameObjectCollisionVisitor;
 
 	struct GameObjectInitInfo
 	{
@@ -27,10 +32,11 @@ namespace hk
 
 	class GameObject	: public Drawable
 						, public Transformable
+						, public CollisionInterface
 						, public IImGuiUser
 	{
 	public:
-				 GameObject(GameObjectInitInfo& init_info);
+				 GameObject(const GameObjectInitInfo& init_info);
 		virtual ~GameObject();
 
 				void Destroy();
@@ -38,45 +44,63 @@ namespace hk
 		virtual void Update	(const double delta_time);
 				void Draw	() const override;
 
-
 		//----- HIERARCHY -----
 		void					AddChild(std::unique_ptr<GameObject>&& child);
 		GameObjectList&			GetChildren();
 		const GameObjectList&	GetChildren() const;
 
 		//----- VISIBILITY -----
-		bool IsVisible			() const;
-		void SetIsVisible		(const bool is_visible);
-		void ToggleVisibility	();
+		bool	IsVisible			() const;
+		void	SetIsVisible		(const bool is_visible);
+		void	ToggleVisibility	();
 
 		//----- TRANSFORM -----
-		void SetPosition		(float new_x_pos, float new_y_pos) override;
-		void SetPosition		(const Vector2f& new_pos) override;
+		void	SetPosition		(float new_x_pos, float new_y_pos) override;
+		void	SetPosition		(const Vector2f& new_pos) override;
 
-		void MovePosition		(float x_delta, float y_delta) override;
-		void MovePosition		(const Vector2f& delta) override;
+		void	MovePosition	(float x_delta, float y_delta) override;
+		void	MovePosition	(const Vector2f& delta) override;
 
-		//---- LIFETIME -----
-		bool IsAlive() const;
+		//----- COLLISION -----
+		void	AddCollidable(Collidable&& collidable);
+
+		void	Visit		(const GameObjectCollisionVisitor& visitor) override;
+
+		void	HandleCollision(GameObject& rhs) override;
+
+		void	OnCollide	(GameObject& rhs) override;
+		void	OnCollide	(PowerUpGameObject& power_up) override;
+		void	OnCollide	(ProjectileGameObject& projectile) override;
+
+		//----- HEALTH -----
+		double	CurrentHealth		() const;
+		void	ChangeHealth		(const double delta);
+		void	SetHealth			(const double new_amount);
+		void	AddHealthModifier	(ResourceModifier* new_modifier);
 
 		//----- UTILITY -----
 		static void			SetRootObject(GameObject& root_object);
 		static GameObject*	RootObject();
 
-		bool IsPointDirectlyWithinObject(const Vector2f& point) const;
-		bool IsPointWithinObjectOrChildren(const Vector2f& point) const;
+		const std::string&	GetId		() const;
+		bool				IsDisabled	() const;
+
+		bool IsPointDirectlyWithinObject	(const Vector2f& point) const;
+		bool IsPointWithinObjectOrChildren	(const Vector2f& point) const;
 
 		//----- DEBUG -----
 		void AddToImGui() override;
 
 	protected:
-		std::string					m_id;
-		GameObject*					m_parent;
-		GameObjectList				m_children;
-		const Texture*				m_texture;
-		bool						m_is_visible;
-		bool						m_is_alive;
-		std::optional<SDL_Color>	m_colour_mod;
+		std::string						m_id;
+		GameObject*						m_parent;
+		GameObjectList					m_children;
+		const Texture*					m_texture;
+		bool							m_is_visible;
+		bool							m_is_disabled;
+		std::optional<SDL_Color>		m_colour_mod;
+		Resource						m_health;
+		std::optional<Collidable>		m_collidable;
 
 		static inline GameObject* m_root_object = nullptr;
 	};

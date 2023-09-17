@@ -32,6 +32,11 @@ namespace hk
 
 	const Camera* CameraManager::CurrentCamera() const
 	{
-		return CurrentCamera();
+		if (m_cameras.empty())
+		{
+			return nullptr;
+		}
+
+		return &m_cameras.top();
 	}
 }

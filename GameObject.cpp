@@ -1,21 +1,24 @@
 #include "GameObject.h"
 
+#include "CollisionResolver.h"
 #include "Engine.h"
 #include "InputCommand.h"
+#include "ProjectileGameObject.h"
 #include "TextureDrawRequest.h"
 #include "Texture.h"
 
 namespace hk
 {
-	GameObject::GameObject(GameObjectInitInfo& info)
+	GameObject::GameObject(const GameObjectInitInfo& info)
 		: Drawable()
 		, Transformable()
 		, m_id(std::move(info.id))
 		, m_parent(nullptr)
 		, m_texture(info.texture)
 		, m_is_visible(true)
-		, m_is_alive(true)
+		, m_is_disabled(false)
 		, m_colour_mod(info.colour_mod)
+		, m_collidable(std::nullopt)
 	{
 		SetDimensions(info.dimensions);
 		SetPosition(info.position);
@@ -28,6 +31,11 @@ namespace hk
 
 	void GameObject::Destroy()
 	{
+		if (m_collidable)
+		{
+			GetEngine().GetCollisionSystem().DeregisterCollidable(*m_collidable);
+		}
+
 		m_children.clear();
 
 		//We have no ownership over these things so don't delete them, just null
@@ -37,8 +45,10 @@ namespace hk
 
 	void GameObject::Update(const double delta_time)
 	{
-		if (IsAlive() && m_children.empty() == false)
+		if (IsDisabled() == false && m_children.empty() == false)
 		{
+			m_health.Update(delta_time);
+
 			for(auto& child : m_children)
 			{
 				if (child)
@@ -46,14 +56,12 @@ namespace hk
 					child->Update(delta_time);
 				}
 			}
-
-			m_children.erase(std::remove_if(m_children.begin(), m_children.end(), [](auto& child) { return child == nullptr || child->IsAlive() == false; }), m_children.end());
 		}
 	}
 
 	void GameObject::Draw() const
 	{
-		if (IsVisible())
+		if (IsVisible() && IsDisabled() == false)
 		{
 			if (m_texture)
 			{
@@ -198,10 +206,63 @@ namespace hk
 		}
 	}
 
-	//----- LIFETIME -----
-	bool GameObject::IsAlive() const
+	//----- COLLISION -----
+	void GameObject::AddCollidable(Collidable&& collidable)
 	{
-		return m_is_alive;
+		m_collidable = std::move(collidable);
+		m_collidable->SetOwner(*this);
+
+		GetEngine().GetCollisionSystem().RegisterCollidable(*m_collidable);
+	}
+
+	void GameObject::HandleCollision(GameObject& rhs)
+	{
+		ResolveCollisionVisitor visitor(*this);
+		rhs.Visit(visitor);
+	}
+
+	void GameObject::Visit(const GameObjectCollisionVisitor& visitor)
+	{
+		visitor.Visit(*this);
+	}
+
+	void GameObject::OnCollide(GameObject& rhs)
+	{
+		//Do nothing
+	}
+
+	void GameObject::OnCollide(PowerUpGameObject& power_up)
+	{
+		//add a resource modifier?
+		//Do nothing? We'll work this shit out later
+	}
+
+	void GameObject::OnCollide(ProjectileGameObject& projectile)
+	{
+		//Damage health?
+		projectile.HitObject(*this);
+	}
+
+
+	//----- HEALTH -----
+	double GameObject::CurrentHealth() const
+	{
+		return m_health.CurrentAmount();
+	}
+
+	void GameObject::ChangeHealth(const double delta)
+	{
+		m_health.ChangeAmount(delta);
+	}
+
+	void GameObject::SetHealth(const double new_amount)
+	{
+		m_health.SetCurrentAmount(new_amount);
+	}
+
+	void GameObject::AddHealthModifier(ResourceModifier* new_modifier)
+	{
+		m_health.AddModifier(new_modifier);
 	}
 
 	//----- UTILITY -----
@@ -213,6 +274,16 @@ namespace hk
 	GameObject* GameObject::RootObject()
 	{
 		return m_root_object;
+	}
+
+	const std::string& GameObject::GetId() const
+	{
+		return m_id;
+	}
+
+	bool GameObject::IsDisabled() const
+	{
+		return m_is_disabled;
 	}
 
 	bool GameObject::IsPointDirectlyWithinObject(const Vector2f& point) const

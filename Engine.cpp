@@ -12,12 +12,19 @@ namespace hk
 		, m_texture_manager()
 		, m_input_device_manager()
 		, m_game_model(*this)
+		, m_collision_system()
 		, m_is_shutdown_requested(false)
+		, m_has_shutdown(false)
 
 		, m_error_manager()
 		, m_logger()
 		, m_imgui_manager(nullptr)
 	{
+	}
+
+	Engine::~Engine()
+	{
+		Shutdown();
 	}
 
 	bool Engine::Start()
@@ -36,16 +43,22 @@ namespace hk
 
 	void Engine::Shutdown()
 	{
-		m_texture_manager.Destroy();
-
-		if (m_imgui_manager)
+		if (m_has_shutdown == false)
 		{
-			m_imgui_manager->Destroy();
-		}
+			m_texture_manager.Destroy();
 
-		for (auto& window : m_windows)
-		{
-			window.Destroy();
+			if (m_imgui_manager)
+			{
+				m_imgui_manager->Destroy();
+				m_imgui_manager.reset();
+			}
+
+			for (auto& window : m_windows)
+			{
+				window.Destroy();
+			}
+
+			m_has_shutdown = true;
 		}
 	}
 
@@ -56,6 +69,7 @@ namespace hk
 			UpdateInput();
 
 			m_camera_manager.Update();
+			m_collision_system.Update();
 			m_game_model.Update(delta_time);
 		}
 	}
@@ -261,5 +275,15 @@ namespace hk
 	CameraManager& Engine::GetCameraManager()
 	{
 		return m_camera_manager;
+	}
+
+	GameModel& Engine::GetGameModel()
+	{
+		return m_game_model;
+	}
+
+	CollisionSystem& Engine::GetCollisionSystem()
+	{
+		return m_collision_system;
 	}
 }

@@ -1,110 +1,54 @@
 #include <algorithm>
 
+#include "Collidable.h"
+#include "CollisionResolver.h"
 #include "CollisionSystem.h"
+#include "CollisionVisitor.h"
+#include "GameObject.h"
 
 namespace hk
 {
-	bool CollisionSystem::AreObjectsColliding(const CollisionObject& object_a, const CollisionObject& object_b) const
+	void CollisionSystem::Update()
 	{
-		return std::visit(CollisionVisitor{}, object_a, object_b);
-	}
-
-	CollisionList CollisionSystem::CheckObjectCollisions(const CollisionObject& queried_object)
-	{
+		CollisionList colliding_objects;
 		CollisionVisitor visitor;
 
-		std::vector<std::pair<const CollisionObject*, const CollisionObject*>> colliding_objects;
-
-		for (const CollisionObject* object : m_collision_objects)
+		for (int i = 0; i < m_collidables.size(); i++)
 		{
-			if (object && object != &queried_object)
+			Collidable* lhs = m_collidables[i];
+
+			for (int j = i + 1; j < m_collidables.size(); ++j)
 			{
-				if (std::visit(visitor, *object, queried_object))
+				Collidable* rhs = m_collidables[j];
+				if (std::visit(visitor, lhs->GetBoundingVolume(), rhs->GetBoundingVolume()))
 				{
-					colliding_objects.push_back({ &queried_object, object });
+					colliding_objects.push_back({ lhs, rhs });
 				}
 			}
 		}
 
-		return colliding_objects;
-	}
-
-	void CollisionSystem::RegisterCollisionObject(CollisionObject* object)
-	{
-		m_collision_objects.push_back(object);
-	}
-
-	void CollisionSystem::DeregisterCollisionObject(CollisionObject* object)
-	{
-		const auto& itr = std::find(m_collision_objects.begin(), m_collision_objects.end(), object);
-		if (itr != m_collision_objects.end())
+		for (auto& collision : colliding_objects)
 		{
-			m_collision_objects.erase(itr);
+			collision.first->GetOwner()->HandleCollision(*collision.second->GetOwner());
 		}
 	}
 
-	//Circle
-	bool CollisionVisitor::operator() (const Circle& lhs, const Circle& rhs)
+	bool CollisionSystem::AreObjectsColliding(const Collidable& object_a, const Collidable& object_b) const
 	{
-		const Vector2f centre_delta = rhs.position - lhs.position;
-		const float radius_sum_sq = (lhs.radius * lhs.radius) + (rhs.radius * rhs.radius);
-
-		return centre_delta.MagnitudeSquared() <= radius_sum_sq;
+		return std::visit(CollisionVisitor{}, object_a.GetBoundingVolume(), object_b.GetBoundingVolume());
 	}
 
-	bool CollisionVisitor::operator() (const Circle& circle, const AABB& aabb)
+	void CollisionSystem::RegisterCollidable(Collidable& collidable)
 	{
-		const Vector2f centre_delta = circle.position - aabb.position;
-		const float radius_sum_sq = circle.radius * circle.radius;
-
-		return centre_delta.MagnitudeSquared() <= radius_sum_sq;
+		m_collidables.push_back(&collidable);
 	}
 
-	bool CollisionVisitor::operator() (const Circle&, const OBB&)
+	void CollisionSystem::DeregisterCollidable(Collidable& collidable)
 	{
-		//TODO: IMPLEMENT THIS
-		return false;
-	}
-
-	//AABB
-	bool CollisionVisitor::operator() (const AABB& lhs, const AABB& rhs)
-	{
-		if (lhs.position.x <= rhs.position.x + rhs.dimensions.x && (lhs.position.x + lhs.dimensions.x) >= rhs.position.x)
+		const auto& itr = std::find(m_collidables.begin(), m_collidables.end(), &collidable);
+		if (itr != m_collidables.end())
 		{
-			if (lhs.position.y <= rhs.position.y + rhs.dimensions.y && (lhs.position.y + lhs.dimensions.y) >= rhs.position.y)
-			{
-				return true;
-			}
+			m_collidables.erase(itr);
 		}
-
-		return false;
-	}
-
-	bool CollisionVisitor::operator() (const AABB& aabb, const Circle& circle)
-	{
-		return operator()(circle, aabb);
-	}
-
-	bool CollisionVisitor::operator() (const AABB&, const OBB&)
-	{
-		//TODO: IMPLEMENT THIS
-		return false;
-	}
-
-	//OBB
-	bool CollisionVisitor::operator() (const OBB&, const OBB&)
-	{
-		//TODO: IMPLEMENT THIS
-		return false;
-	}
-
-	bool CollisionVisitor::operator() (const OBB& obb, const Circle& circle)
-	{
-		return operator()(circle, obb);
-	}
-
-	bool CollisionVisitor::operator() (const OBB& obb, const AABB& aabb)
-	{
-		return operator()(aabb, obb);
 	}
 }

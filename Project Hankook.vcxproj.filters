@@ -133,6 +133,18 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{b1b8abc0-1c7d-4795-ac6b-0851abc17ca3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameLogic\Resources">
+      <UniqueIdentifier>{ef77bf3e-6a41-4a9b-8055-e9cf8111b33d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLogic\Resources">
+      <UniqueIdentifier>{91f158be-9a99-40c4-9056-442c60d04b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLogic\ModelCommands">
+      <UniqueIdentifier>{a735d5f6-bff1-4646-b8a1-6001c4c68636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameLogic\ModelCommands">
+      <UniqueIdentifier>{e2fe0b9f-7065-42b1-8fc1-ea875dd33925}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -222,9 +234,6 @@
     <ClCompile Include="AutomaticClock.cpp">
       <Filter>Source Files\GameLogic\Tamagotchi</Filter>
     </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Source Files\GameLogic\Tamagotchi</Filter>
-    </ClCompile>
     <ClCompile Include="Tilemap.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
@@ -302,6 +311,33 @@
     </ClCompile>
     <ClCompile Include="EngineAccess.cpp">
       <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Source Files\GameLogic\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="StepResourceModifier.cpp">
+      <Filter>Source Files\GameLogic\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionVisitor.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionResolver.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerUpGameObject.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveObjectModelCommand.cpp">
+      <Filter>Source Files\GameLogic\ModelCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="GameModelAccess.cpp">
+      <Filter>Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeHealthModelCommand.cpp">
+      <Filter>Source Files\GameLogic\ModelCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCameraModelCommand.cpp">
+      <Filter>Source Files\GameLogic\ModelCommands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -399,9 +435,6 @@
       <Filter>Header Files\GameLogic\Tamagotchi</Filter>
     </ClInclude>
     <ClInclude Include="AutomaticClock.h">
-      <Filter>Header Files\GameLogic\Tamagotchi</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
       <Filter>Header Files\GameLogic\Tamagotchi</Filter>
     </ClInclude>
     <ClInclude Include="ListenerReporter.h">
@@ -512,5 +545,52 @@
     <ClInclude Include="TileDrawRequest.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files\GameLogic\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceModifier.h">
+      <Filter>Header Files\GameLogic\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="StepResourceModifier.h">
+      <Filter>Header Files\GameLogic\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Collidable.h">
+      <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionVisitor.h">
+      <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionResolver.h">
+      <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUpGameObject.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionInterface.h">
+      <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCommand.h">
+      <Filter>Header Files\GameLogic\ModelCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveObjectModelCommand.h">
+      <Filter>Header Files\GameLogic\ModelCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandQueue.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModelAccess.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeHealthModelCommand.h">
+      <Filter>Header Files\GameLogic\ModelCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCameraModelCommand.h">
+      <Filter>Header Files\GameLogic\ModelCommands</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CommandQueue.inl">
+      <Filter>Source Files\Utility</Filter>
+    </None>
   </ItemGroup>
 </Project>

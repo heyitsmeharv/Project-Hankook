@@ -1,5 +1,6 @@
 #include "InputCommand.h"
 #include "KeyboardMouseMapping.h"
+#include "MoveCameraInputCommand.h"
 #include "MoveObjectInputCommand.h"
 #include "ShootGunInputCommand.h"
 
@@ -36,6 +37,7 @@ namespace hk
 
 	KeyboardMouseMapping::KeyboardMouseMapping()
 	{
+		//CHARACTER
 		KeyMouseCommandBinding& w_binding = m_bindings.emplace_back();
 		w_binding.name = "w";
 		w_binding.keys.push_back(SDL_SCANCODE_W);
@@ -56,8 +58,30 @@ namespace hk
 		d_binding.keys.push_back(SDL_SCANCODE_D);
 		d_binding.command = std::make_unique<MoveObjectInputCommand>(5.0f, 0.0f);
 
+		// CAMERA
+		KeyMouseCommandBinding& camera_move_up_binding = m_bindings.emplace_back();
+		camera_move_up_binding.name = "camera_move_up";
+		camera_move_up_binding.keys.push_back(SDL_SCANCODE_UP);
+		camera_move_up_binding.command = std::make_unique<MoveCameraInputCommand>(0.0f, -5.0f);
+
+		KeyMouseCommandBinding& camera_move_down_binding = m_bindings.emplace_back();
+		camera_move_down_binding.name = "camera_move_down";
+		camera_move_down_binding.keys.push_back(SDL_SCANCODE_DOWN);
+		camera_move_down_binding.command = std::make_unique<MoveCameraInputCommand>(0.0f, 5.0f);
+
+		KeyMouseCommandBinding& camera_move_left_binding = m_bindings.emplace_back();
+		camera_move_left_binding.name = "camera_move_left";
+		camera_move_left_binding.keys.push_back(SDL_SCANCODE_LEFT);
+		camera_move_left_binding.command = std::make_unique<MoveCameraInputCommand>(-5.0f, 0.0f);
+
+		KeyMouseCommandBinding& camera_move_right_binding = m_bindings.emplace_back();
+		camera_move_right_binding.name = "camera_move_right";
+		camera_move_right_binding.keys.push_back(SDL_SCANCODE_RIGHT);
+		camera_move_right_binding.command = std::make_unique<MoveCameraInputCommand>(5.0f, 0.0f);
+
+		// GUN
 		KeyMouseCommandBinding& shoot_binding = m_bindings.emplace_back();
-		shoot_binding.name = "d";
+		shoot_binding.name = "shoot";
 		shoot_binding.keys.push_back(SDL_SCANCODE_SPACE);
 		shoot_binding.command = std::make_unique<ShootGunInputCommand>();
 	}

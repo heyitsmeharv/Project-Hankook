@@ -43,6 +43,9 @@ namespace hk
 
 		Vector2<T>& Normalise()
 		{
+			//#TODO: Make this debug only!
+			NanCheck();
+
 			const T mag = Magnitude();
 
 			x /= mag;
@@ -53,6 +56,9 @@ namespace hk
 
 		Vector2<T> AsNormalised() const
 		{
+			//#TODO: Make this debug only!
+			NanCheck();
+
 			const T mag = Magnitude();
 			return { x / mag, y / mag };
 		}
@@ -73,6 +79,16 @@ namespace hk
 		bool IsZeroed() const
 		{
 			return x == T{ 0 } && y == T{ 0 };
+		}
+
+	private:
+		void NanCheck() const
+		{
+			if (IsZeroed())
+			{
+				//Trying to normalised a zeroed vector... fix this!
+				__debugbreak();
+			}
 		}
 	};
 

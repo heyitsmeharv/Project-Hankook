@@ -1,7 +1,10 @@
 #include "MoveObjectInputCommand.h"
-#include "Logger.h"
+#include "MoveObjectModelCommand.h"
 
+#include "Logger.h"
 #include "GameObject.h"
+#include "GameModelAccess.h"
+#include "GameModel.h"
 
 namespace hk
 {
@@ -29,6 +32,6 @@ namespace hk
 	void MoveObjectInputCommand::Execute(GameObject& game_object, Camera*) const
 	{
 		hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "MoveObjectInputCommand Executed with x: %f, y: %f", m_x_delta, m_y_delta);
-		game_object.MovePosition(m_x_delta, m_y_delta);
+		GetGameModel().QueueModelCommand(std::make_unique<MoveObjectModelCommand>(game_object, Vector2f{ m_x_delta, m_y_delta }));
 	}
 }

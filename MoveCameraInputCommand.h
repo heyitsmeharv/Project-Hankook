@@ -18,6 +18,5 @@ namespace hk
 	private:
 		float m_x_delta;
 		float m_y_delta;
-
 	};
 }

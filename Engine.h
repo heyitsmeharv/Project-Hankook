@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "CameraManager.h"
+#include "CollisionSystem.h"
 #include "DrawRequest.h"
 #include "ErrorManager.h"
 #include "GameModel.h"
@@ -19,7 +20,8 @@ namespace hk
 	class Engine
 	{
 	public:
-		Engine();
+		 Engine();
+		~Engine();
 
 		bool						Start					();
 		void						Shutdown				();
@@ -35,6 +37,8 @@ namespace hk
 		const InputDeviceManager&	GetInputDeviceManager	() const;
 		const TextureManager&		GetTextureManager		() const;
 		CameraManager&				GetCameraManager		();
+		GameModel&					GetGameModel			();
+		CollisionSystem&			GetCollisionSystem		();
 
 	private:
 		Window&						CreateWindow			(const WindowInitInfo& window_info);
@@ -56,7 +60,10 @@ namespace hk
 		InputDeviceManager							m_input_device_manager;
 		CameraManager								m_camera_manager;
 		GameModel									m_game_model;
+		CollisionSystem								m_collision_system;
+
 		bool										m_is_shutdown_requested;
+		bool										m_has_shutdown;
 
 		ErrorManager								m_error_manager;
 		Logger										m_logger;

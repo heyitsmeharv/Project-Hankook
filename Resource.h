@@ -1,65 +1,57 @@
 #pragma once
 
+#include <memory>
 #include <string>
+#include <vector>
 
 #include "ImGuiUser.h"
 #include "ListenerReporter.h"
-#include "Time.h"
+#include "ResourceModifier.h"
 
 namespace hk
 {
 	struct ResourceChangedEvent;
 
+	using ModifierList = std::vector<ResourceModifier*>;
+
 	struct ResourceInitInfo
 	{
-		std::string id;
-		float		starting_amount = 0.0f;
-		float		min_amount = 0.0f;
-		float		max_amount = 100.0f;
-
-		float		starting_decay_amount = 0.0f;
-		TimeData	starting_decay_rate;
+		std::string		id;
+		double			starting_amount = 0.0;
+		double			min_amount = 0.0;
+		double			max_amount = 100.0;
+		ModifierList	modifiers;
 	};
+
 
 	class Resource 
 		: public IImGuiUser
 		, public Utils::Reporter<ResourceChangedEvent>
 	{
 	public:
-		Resource() = default;
-		Resource(const ResourceInitInfo& init_info);
+		 Resource();
+		 Resource(const ResourceInitInfo& init_info);
+		~Resource();
 
-		void				Initialise(const TimePoint& current_time);
+		void				Initialise			(const ResourceInitInfo& init_info);
 
-		void				OnTimeChange(const TimePoint& current_time);
+		void				Update				(const double delta_time);
 
-		void				ApplyDecay(const TimePoint& current_time);
+		const std::string&	Id					() const;
 
-		const std::string&	Id() const;
+		double				CurrentAmount		() const;
+		void				ChangeAmount		(double amount_delta);
+		void				SetCurrentAmount	(double new_amount);
 
-		float				CurrentAmount() const;
-		void				ChangeAmount(float amount_delta);
-		void				SetCurrentAmount(float new_amount);
+		void				AddModifier			(ResourceModifier* new_modifier);
 
-		float				CurrentDecayAmount() const;
-		void				ChangeDecayAmount(float decay_delta);
-		void				SetDecayAmount(float decay_amount);
-
-		const TimeData&		CurrentDecayRate() const;
-		void				ChangeDecayRate(const TimeData& decay_delta);
-		void				SetDecayRate(const TimeData& decay_rate);
-
-		void				AddToImGui() override;
+		void				AddToImGui			() override;
 
 	private:
-		std::string m_id;
-		float		m_current_amount;
-		float		m_min_amount;
-		float		m_max_amount;
-
-		float		m_current_decay_amount;
-		TimeData	m_current_decay_rate;
-		TimePoint	m_last_decay_time;
-		TimePoint	m_next_decay_time;
+		std::string			m_id;
+		double				m_current_amount;
+		double				m_min_amount;
+		double				m_max_amount;
+		ModifierList		m_modifiers;
 	};
 }

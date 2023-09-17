@@ -5,40 +5,45 @@
 
 namespace hk
 {
+	Resource::Resource()
+		: m_id()
+		, m_current_amount(0.0)
+		, m_min_amount(0.0)
+		, m_max_amount(0.0)
+		, m_modifiers()
+	{
+	}
+
 	Resource::Resource(const ResourceInitInfo& init_info)
-		: m_id(init_info.id)
-		, m_current_amount(init_info.starting_amount)
-		, m_min_amount(init_info.min_amount)
-		, m_max_amount(init_info.max_amount)
-		, m_current_decay_amount(init_info.starting_decay_amount)
-		, m_current_decay_rate(init_info.starting_decay_rate)
-		, m_last_decay_time()
-		, m_next_decay_time()
 	{
+		Initialise(init_info);
 	}
 
-	void Resource::Initialise(const TimePoint& current_time)
+	Resource::~Resource()
 	{
-		m_last_decay_time = current_time;
-		m_next_decay_time = current_time + m_current_decay_rate;
-		m_next_decay_time.Wrap();
-	}
-
-	void Resource::OnTimeChange(const TimePoint& current_time)
-	{
-		if (current_time >= m_next_decay_time)
+		for (auto& modifier : m_modifiers)
 		{
-			ApplyDecay(current_time);
+			delete modifier;
+			modifier = nullptr;
 		}
+		m_modifiers.clear();
 	}
 
-	void Resource::ApplyDecay(const TimePoint& current_time)
+	void Resource::Initialise(const ResourceInitInfo& init_info)
 	{
-		ChangeAmount(-m_current_decay_amount);
+		m_id = init_info.id;
+		m_current_amount = init_info.starting_amount;
+		m_min_amount = init_info.min_amount;
+		m_max_amount = init_info.max_amount;
+		m_modifiers = init_info.modifiers;
+	}
 
-		m_last_decay_time = current_time;
-		m_next_decay_time = current_time + m_current_decay_rate;
-		m_next_decay_time.Wrap();
+	void Resource::Update(const double delta_time)
+	{
+		for (auto& modifier : m_modifiers)
+		{
+			modifier->Update(*this, delta_time);
+		}
 	}
 
 	const std::string& Resource::Id() const
@@ -46,12 +51,12 @@ namespace hk
 		return m_id;
 	}
 
-	float Resource::CurrentAmount() const
+	double Resource::CurrentAmount() const
 	{
 		return m_current_amount;
 	}
 
-	void Resource::ChangeAmount(float amount_delta)
+	void Resource::ChangeAmount(double amount_delta)
 	{
 		ResourceChangedEvent msg;
 		msg.id = m_id;
@@ -66,58 +71,38 @@ namespace hk
 		NotifyListeners(msg);
 	}
 
-	void Resource::SetCurrentAmount(float new_amount)
+	void Resource::SetCurrentAmount(double new_amount)
 	{
-		m_current_amount = new_amount;
-		m_current_amount = std::clamp(m_current_amount, m_min_amount, m_max_amount);
+		ResourceChangedEvent msg;
+		msg.id = m_id;
+		msg.previous_amount = m_current_amount;
+		msg.change_in_amount = new_amount - m_current_amount;
+		msg.new_amount = new_amount;
+
+		m_current_amount = std::clamp(new_amount, m_min_amount, m_max_amount);
+
+		NotifyListeners(msg);
 	}
 
-	float Resource::CurrentDecayAmount() const
+	void Resource::AddModifier(ResourceModifier* new_modifier)
 	{
-		return m_current_decay_amount;
-	}
-
-	void Resource::ChangeDecayAmount(float decay_delta)
-	{
-		m_current_decay_amount += decay_delta;
-	}
-
-	void Resource::SetDecayAmount(float decay_amount)
-	{
-		m_current_decay_amount = decay_amount;
-	}
-
-	const TimeData& Resource::CurrentDecayRate() const
-	{
-		return m_current_decay_rate;
-	}
-
-	void Resource::ChangeDecayRate(const TimeData& decay_rate_delta)
-	{
-		m_current_decay_rate += decay_rate_delta;
-	}
-
-	void Resource::SetDecayRate(const TimeData& decay_rate)
-	{
-		m_current_decay_rate = decay_rate;
+		m_modifiers.push_back(new_modifier);
 	}
 
 	void Resource::AddToImGui()
 	{
 		if (ImGui::TreeNode(m_id.data(), "%s - (%f/%f)", m_id.data(), m_current_amount, m_max_amount))
 		{
-			ImGui::ProgressBar(m_current_amount / m_max_amount);
+			ImGui::ProgressBar(static_cast<float>(m_current_amount / m_max_amount));
 
-			if (ImGui::InputFloat("Change Amount", &m_current_amount, 1.0f, 10.0f))
+			if (ImGui::InputDouble("Change Amount", &m_current_amount, 1.0f, 10.0f))
 			{
 				m_current_amount = std::clamp(m_current_amount, m_min_amount, m_max_amount);
 			}
 
 			if (ImGui::TreeNode("Details"))
 			{
-				ImGui::Text("Current Delay Amount: %f", m_current_decay_amount);
-				ImGui::Text("Last Decay Time: %d(h) %d(m) %f(s)", m_last_decay_time.hour, m_last_decay_time.minute, m_last_decay_time.second);
-				ImGui::Text("Next Decay Time: %d(h) %d(m) %f(s)", m_next_decay_time.hour, m_next_decay_time.minute, m_next_decay_time.second);
+				
 
 				ImGui::TreePop();
 			}

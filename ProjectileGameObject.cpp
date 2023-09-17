@@ -1,5 +1,10 @@
 #include "ProjectileGameObject.h"
 
+#include "ChangeHealthModelCommand.h"
+#include "CollisionResolver.h"
+#include "GameModelAccess.h"
+#include "GameModel.h"
+
 namespace hk
 {
 	ProjectileGameObject::ProjectileGameObject(ProjectileGameObjectInitInfo& init_info)
@@ -8,6 +13,7 @@ namespace hk
 		, m_velocity(init_info.velocity)
 		, m_original_lifetime(init_info.lifetime)
 		, m_current_lifetime(init_info.lifetime)
+		, m_damage(init_info.damage)
 	{
 	}
 
@@ -25,9 +31,19 @@ namespace hk
 		}
 		else
 		{
-			m_is_alive = false;
+			m_is_disabled = true;
 		}
 
 		GameObject::Update(delta_time);
+	}
+
+	void ProjectileGameObject::HitObject(GameObject& game_object)
+	{
+		GetGameModel().QueueModelCommand(std::make_unique<ChangeHealthModelCommand>(game_object, m_damage));
+	}
+
+	void ProjectileGameObject::Visit(const GameObjectCollisionVisitor& visitor)
+	{
+		visitor.Visit(*this);
 	}
 }

@@ -1,30 +1,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
-#include <iostream>
-#include <stdlib.h>
-#include <time.h>
 
-#include "CollisionSystem.h"
-#include "DebugShape.h"
 #include "Engine.h"
-#include "EngineAccess.h"
-#include "ErrorManager.h"
-#include "GameObject.h"
-#include "GamepadInstance.h"
-#include "ImGuiManager.h"
-#include "InputDeviceManager.h"
-#include "KeyboardMouseInstance.h"
-#include "LockOnAttachment.h"
-#include "Logger.h"
-#include "PlayerController.h"
-#include "SpriteAnimation.h"
-#include "SpriteSheet.h"
-#include "TamagotchiModel.h"
-#include "TextureManager.h"
-#include "Tilemap.h"
 #include "Timer.h"
-#include "Vector2.h"
-#include "Window.h"
 
 //*********************
 //***** TODO LIST *****
@@ -121,6 +99,8 @@ int main(int argc, char* args[])
 		engine.Draw();
 	}
 	
+	engine.Shutdown();
+
 	IMG_Quit();
 	SDL_Quit();
 	

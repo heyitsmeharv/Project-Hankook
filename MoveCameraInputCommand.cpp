@@ -1,7 +1,8 @@
 #include "MoveCameraInputCommand.h"
+#include "MoveCameraModelCommand.h"
 #include "Logger.h"
-
-#include "Camera.h"
+#include "GameModelAccess.h"
+#include "GameModel.h"
 
 namespace hk
 {
@@ -31,7 +32,7 @@ namespace hk
 		if (camera)
 		{
 			hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "MoveCameraInputCommand Executed with x: %f, y: %f", m_x_delta, m_y_delta);
-			camera->MovePosition(m_x_delta, m_y_delta);
+			GetGameModel().QueueModelCommand(std::make_unique<MoveCameraModelCommand>(*camera, Vector2f{ m_x_delta, m_y_delta }));
 		}
 	}
 }

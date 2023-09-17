@@ -29,6 +29,7 @@ namespace hk
 		PetModel(std::string&& name);
 
 		void Initialise		(const TimePoint& current_time);
+		void Update			(const double delta_time);
 
 		void AddToImGui		() override;
 

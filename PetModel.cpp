@@ -1,6 +1,7 @@
 #include "PetModel.h"
 #include "ResourceChangedEvent.h"
 #include "TimeChangedEvent.h"
+#include "StepResourceModifier.h"
 
 namespace hk
 {
@@ -13,20 +14,28 @@ namespace hk
 		happiness_info.min_amount = 0.0f;
 		happiness_info.max_amount = 100.0f;
 		happiness_info.starting_amount = 100.0f;
-		happiness_info.starting_decay_amount = 47.5f;
-		happiness_info.starting_decay_rate = TimeData{ 0, 15, 0.0 };
 
-		m_happiness = Resource{ happiness_info };
+		StepResourceModifierInitInfo boredom_init_info;
+		boredom_init_info.id = "boredom";
+		boredom_init_info.modifier_amount = -10.0;
+		boredom_init_info.modifier_rate = 2.0;
+		happiness_info.modifiers.push_back(new StepResourceModifier(boredom_init_info));
+
+		m_happiness.Initialise(happiness_info);
 
 		ResourceInitInfo fullness_info{};
 		fullness_info.id = "Fullness";
 		fullness_info.min_amount = 0.0f;
 		fullness_info.max_amount = 100.0f;
 		fullness_info.starting_amount = 100.0f;
-		fullness_info.starting_decay_amount = 47.5f;
-		fullness_info.starting_decay_rate = TimeData{ 0, 15, 0.0 };
 
-		m_fullness = Resource{ fullness_info };
+		StepResourceModifierInitInfo hunger_init_info;
+		hunger_init_info.id = "hunger";
+		hunger_init_info.modifier_amount = -5.0;
+		hunger_init_info.modifier_rate = 0.5;
+		fullness_info.modifiers.push_back(new StepResourceModifier(hunger_init_info));
+
+		m_fullness.Initialise(fullness_info);
 
 		static_cast<Utils::Reporter<ResourceChangedEvent>*>(&m_happiness)->AddListener(*this);
 		static_cast<Utils::Reporter<ResourceChangedEvent>*>(&m_fullness)->AddListener(*this);
@@ -40,7 +49,7 @@ namespace hk
 					{ 0.0f, m_name + " is angry and ran away!\n" }
 				}
 			},
-			{ "Fullness", 
+			{ "Fullness",
 				{
 					{ 75.0f, m_name + " could eat!\n" },
 					{ 50.0f, m_name + " is hungry!\n" },
@@ -53,10 +62,14 @@ namespace hk
 	}
 
 
-	void PetModel::Initialise(const TimePoint& current_time)
+	void PetModel::Initialise(const TimePoint& /*current_time*/)
 	{
-		m_happiness.Initialise(current_time);
-		m_fullness.Initialise(current_time);
+	}
+
+	void PetModel::Update(const double delta_time)
+	{
+		m_happiness.Update(delta_time);
+		m_fullness.Update(delta_time);
 	}
 
 	void PetModel::Notify(const ResourceChangedEvent& msg)
@@ -92,12 +105,8 @@ namespace hk
 		}
 	}
 
-	void PetModel::Notify(const TimeChangedEvent& msg)
+	void PetModel::Notify(const TimeChangedEvent&)
 	{
-		//This seems suspect tbh, should the resource just listen?
-		//Knee-jerk says yes but for some reason I'm reluctant as it causes more disconnected code
-		m_happiness.OnTimeChange(msg.new_time);
-		m_fullness.OnTimeChange(msg.new_time);
 	}
 
 	void PetModel::AddToImGui()
