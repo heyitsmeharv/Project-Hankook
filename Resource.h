@@ -16,7 +16,7 @@ namespace hk
 
 	struct ResourceInitInfo
 	{
-		std::string		id;
+		std::string		key;
 		double			starting_amount = 0.0;
 		double			min_amount = 0.0;
 		double			max_amount = 100.0;
@@ -37,7 +37,7 @@ namespace hk
 
 		void				Update				(const double delta_time);
 
-		const std::string&	Id					() const;
+		const std::string&	Key					() const;
 
 		double				CurrentAmount		() const;
 		void				ChangeAmount		(double amount_delta);
@@ -48,7 +48,7 @@ namespace hk
 		void				AddToImGui			() override;
 
 	private:
-		std::string			m_id;
+		std::string			m_key;
 		double				m_current_amount;
 		double				m_min_amount;
 		double				m_max_amount;

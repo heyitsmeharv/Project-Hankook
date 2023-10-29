@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL_rect.h>
+#include <SDL2/SDL_rect.h>
 #include <vector>
 #include <optional>
 #include <memory>
@@ -30,6 +30,7 @@ namespace hk
 
 		const Vector2i& GetDimensions	() const;
 		SDL_Rect		GetCameraRect	() const;
+		float			GetZoom			() const;
 
 		void			AddAttachment	(std::unique_ptr<CameraAttachment>&& attachment);
 		
@@ -41,8 +42,12 @@ namespace hk
 		virtual void	MovePosition	(float x_delta, float y_delta) override;
 		virtual void	MovePosition	(const Vector2f& delta) override;
 
+		virtual void	SetZoom			(const float zoom);
+		virtual void	ChangeZoom		(const float delta);
+
 	protected:
 		Vector2i										m_dimensions;
+		float											m_zoom;
 		std::vector<std::unique_ptr<CameraAttachment>>	m_attachments;
 	};
 }

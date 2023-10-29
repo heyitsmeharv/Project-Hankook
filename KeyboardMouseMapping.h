@@ -1,39 +1,60 @@
 #pragma once
 
 #include <memory>
-#include <SDL_scancode.h>
+#include <optional>
+#include <SDL2/SDL_keycode.h>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace hk
 {
 	class InputCommand;
 
-	struct KeyMouseCommandBinding
+	struct ModOverride
 	{
-		 KeyMouseCommandBinding();
-		~KeyMouseCommandBinding();
+		SDL_Keymod mod_key;
+		std::unique_ptr<InputCommand> command;
+	};
 
-		KeyMouseCommandBinding(KeyMouseCommandBinding&& rhs);
-		KeyMouseCommandBinding& operator=(KeyMouseCommandBinding&& rhs);
+	struct InputCommandBinding
+	{
+		InputCommandBinding();
+		~InputCommandBinding();
 
-		KeyMouseCommandBinding(const KeyMouseCommandBinding&) = delete;
-		KeyMouseCommandBinding& operator=(const KeyMouseCommandBinding&) = delete;
+		InputCommandBinding(InputCommandBinding&& rhs);
+		InputCommandBinding& operator=(InputCommandBinding&& rhs);
+
+		InputCommandBinding(const InputCommandBinding&) = delete;
+		InputCommandBinding& operator=(const InputCommandBinding&) = delete;
 
 		std::string						name;
-		std::vector<SDL_Scancode>		keys;
-		std::vector<Uint32>				mouse_buttons;
-		std::unique_ptr<InputCommand>	command;
+		std::unique_ptr<InputCommand>	default_command;
+		std::vector<ModOverride>		mod_overrides;
+	};
+
+	enum class MouseWheelID
+	{
+		WHEEL_UP,
+		WHEEL_DOWN,
+		WHEEL_LEFT,
+		WHEEL_RIGHT,
+
+		NUM_OF_IDS
 	};
 
 	class KeyboardMouseMapping final
 	{
 	public:	
-		KeyboardMouseMapping();
-
-		const std::vector<KeyMouseCommandBinding>& GetBindings() const;
+		KeyboardMouseMapping();	
 	
+		const InputCommandBinding* GetKeyBinding		(const SDL_KeyCode key_code) const;
+		const InputCommandBinding* GetMouseButtonBinding(const Uint8 mouse_button) const;
+		const InputCommandBinding* GetWheelBinding		(const MouseWheelID wheel_id) const;
+
 	private:
-		std::vector<KeyMouseCommandBinding> m_bindings;
+		std::unordered_map<SDL_KeyCode, InputCommandBinding>	m_key_bindings;
+		std::unordered_map<Uint8, InputCommandBinding>			m_mouse_bindings;
+		std::unordered_map<MouseWheelID, InputCommandBinding>	m_wheel_bindings;
 	};
 }

@@ -66,57 +66,36 @@ namespace hk
 	{
 		if (m_is_shutdown_requested == false)
 		{
-			UpdateInput();
+			m_input_device_manager.NewTick();
 
+			ProcessEvents();
+
+			m_input_device_manager.Update(delta_time);
 			m_camera_manager.Update();
 			m_collision_system.Update();
 			m_game_model.Update(delta_time);
 		}
 	}
 
-	void Engine::UpdateInput()
+	void Engine::ProcessEvents()
 	{
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
 		{
 			for (auto& window : m_windows)
 			{
-				window.HandleEvent(e);
+				window.ProcessEvent(e);
 			}
 
 			if (m_imgui_manager)
 			{
-				m_imgui_manager->UpdateInput(e);
+				m_imgui_manager->ProcessEvent(e);
 			}
+
+			m_input_device_manager.ProcessEvent(e);
 
 			switch (e.type)
 			{
-				case SDL_KEYUP:
-				{
-					hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Released: %s", SDL_GetScancodeName(e.key.keysym.scancode));
-					break;
-				}
-				case SDL_KEYDOWN:
-				{
-					hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Key Pressed: %s", SDL_GetScancodeName(e.key.keysym.scancode));
-					break;
-				}
-				case SDL_JOYBUTTONDOWN:
-				{
-					hk::Logger::Instance().AddEntry(hk::LogCategory::INPUT, "Joystick %d Pressed: %d", static_cast<int>(e.jbutton.which), static_cast<int>(e.jbutton.button));
-					break;
-				}
-				case SDL_JOYAXISMOTION:
-				{
-					//Purposely no log here otherwise the log would get spammed with millions of micro-movements
-					break;
-				}
-				case SDL_CONTROLLERDEVICEADDED:
-				case SDL_CONTROLLERDEVICEREMOVED:
-				{
-					//Add device addition/removal here when we get the chance
-					break;
-				}
 				//SDL_QUIT doesn't play nicely with more than one window...
 				case SDL_WINDOWEVENT:
 				{

@@ -13,8 +13,12 @@ namespace hk
 	class InputDeviceManager final
 	{
 	public:
-		void LoadKeyboardMouse();
-		void LoadGamepads();
+		void LoadKeyboardMouse	();
+		void LoadGamepads		();
+
+		void NewTick			();
+		void Update				(const double dt);
+		void ProcessEvent		(SDL_Event& event);
 
 		const KeyboardMouseDevice&			GetDefaultKeyboardMouse() const;
 		

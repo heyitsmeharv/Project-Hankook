@@ -18,6 +18,9 @@ namespace hk
 		void AttachDevice(const KeyboardMouseDevice& device);
 
 	private:
+		std::unique_ptr<InputCommand> GetCommandFromBinding(const InputCommandBinding& binding) const;
+
+	private:
 		const KeyboardMouseDevice*	m_device;
 		KeyboardMouseMapping		m_mapping;
 	};

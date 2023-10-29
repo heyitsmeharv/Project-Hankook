@@ -45,7 +45,7 @@ namespace hk
 		}
 	}
 
-	void ImGuiManager::UpdateInput(SDL_Event& event)
+	void ImGuiManager::ProcessEvent(SDL_Event& event)
 	{
 		ImGui_ImplSDL2_ProcessEvent(&event);
 	}

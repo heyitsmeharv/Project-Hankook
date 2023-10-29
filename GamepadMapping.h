@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <SDL_gamecontroller.h>
+#include <SDL2/SDL_gamecontroller.h>
 
 namespace hk
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <SDL_events.h>
-#include <SDL_render.h>
-#include <SDL_video.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_video.h>
 #include <string>
 
 #include "Vector2.h"
@@ -37,7 +37,7 @@ namespace hk
 		void Focus() const;
 		void Destroy();
 
-		void HandleEvent(const SDL_Event& e);
+		void ProcessEvent(const SDL_Event& e);
 
 		void Clear();
 		void Display();

@@ -6,12 +6,14 @@ namespace hk
 	Camera::Camera()
 		: Transformable()
 		, m_dimensions()
+		, m_zoom(1.0f)
 	{
 	}
 
 	Camera::Camera(const CameraInitInfo& init)
 		: Transformable(init.position)
 		, m_dimensions(init.dimensions)
+		, m_zoom(1.0f)
 	{
 	}
 
@@ -47,6 +49,11 @@ namespace hk
 		return { static_cast<int>(m_position.x), static_cast<int>(m_position.y), m_dimensions.x, m_dimensions.y };
 	}
 
+	float Camera::GetZoom() const
+	{
+		return m_zoom;
+	}
+
 	void Camera::SetPosition(float new_x_pos, float new_y_pos)
 	{
 		SetPosition({ new_x_pos, new_y_pos });
@@ -65,6 +72,16 @@ namespace hk
 	void Camera::MovePosition(const Vector2f& delta)
 	{
 		m_position += delta;
+	}
+
+	void Camera::SetZoom(const float zoom)
+	{
+		m_zoom = zoom;
+	}
+
+	void Camera::ChangeZoom(const float delta)
+	{
+		m_zoom += delta;
 	}
 
 	void Camera::AddAttachment(std::unique_ptr<CameraAttachment>&& attachment)

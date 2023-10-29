@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <SDL_events.h>
+#include <SDL2/SDL_events.h>
 
 namespace hk
 {
@@ -18,7 +18,7 @@ namespace hk
 		void Create			();
 		void Destroy		();
 
-		void UpdateInput	(SDL_Event& event);
+		void ProcessEvent	(SDL_Event& event);
 		void StartFrame		();
 		void EndFrame		();
 		void CallUsers		();

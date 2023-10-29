@@ -30,6 +30,7 @@ namespace hk
 		draw_request->draw_info.vertices = &m_vertices;
 		draw_request->draw_info.indices = &m_indices;
 		draw_request->draw_info.offset = { (int)GetEngine().GetCameraManager().CurrentCamera()->GetPosition().x, (int)GetEngine().GetCameraManager().CurrentCamera()->GetPosition().y };
+		draw_request->draw_info.scale = GetEngine().GetCameraManager().CurrentCamera()->GetZoom();
 
 		GetEngine().AddDrawRequest(std::move(draw_request));
 	}

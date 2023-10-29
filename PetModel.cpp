@@ -10,7 +10,7 @@ namespace hk
 		, m_age(0.0f)
 	{
 		ResourceInitInfo happiness_info{};
-		happiness_info.id = "Happiness";
+		happiness_info.key = "happiness";
 		happiness_info.min_amount = 0.0f;
 		happiness_info.max_amount = 100.0f;
 		happiness_info.starting_amount = 100.0f;
@@ -24,7 +24,7 @@ namespace hk
 		m_happiness.Initialise(happiness_info);
 
 		ResourceInitInfo fullness_info{};
-		fullness_info.id = "Fullness";
+		fullness_info.key = "fullness";
 		fullness_info.min_amount = 0.0f;
 		fullness_info.max_amount = 100.0f;
 		fullness_info.starting_amount = 100.0f;
@@ -42,14 +42,14 @@ namespace hk
 
 		m_thresholds =
 		{
-			{ "Happiness",
+			{ "happiness",
 				{
 					{ 50.0f, m_name + " is getting grumpy!\n" },
 					{ 25.0f, m_name + " is very frustrated!\n" },
 					{ 0.0f, m_name + " is angry and ran away!\n" }
 				}
 			},
-			{ "Fullness",
+			{ "fullness",
 				{
 					{ 75.0f, m_name + " could eat!\n" },
 					{ 50.0f, m_name + " is hungry!\n" },
@@ -76,7 +76,7 @@ namespace hk
 	{
 		auto CheckResourceThreshold = [&](const Resource& resource) 
 		{
-			const auto& resource_thresholds_itr = m_thresholds.find(resource.Id());
+			const auto& resource_thresholds_itr = m_thresholds.find(resource.Key());
 			if (resource_thresholds_itr != m_thresholds.end())
 			{
 				auto threshold_itr = resource_thresholds_itr->second.rbegin();
@@ -95,11 +95,11 @@ namespace hk
 			}
 		};
 
-		if (msg.id == m_happiness.Id())
+		if (msg.id == m_happiness.Key())
 		{
 			CheckResourceThreshold(m_happiness);
 		}
-		else if(msg.id == m_fullness.Id())
+		else if(msg.id == m_fullness.Key())
 		{
 			CheckResourceThreshold(m_fullness);
 		}

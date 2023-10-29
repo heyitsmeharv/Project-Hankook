@@ -51,7 +51,7 @@ namespace hk
 
 		bool						LoadImGui				();
 
-		void						UpdateInput				();
+		void						ProcessEvents			();
 
 	private:
 		std::vector<Window>							m_windows;

@@ -12,16 +12,31 @@ namespace hk
 	GameObject::GameObject(const GameObjectInitInfo& info)
 		: Drawable()
 		, Transformable()
-		, m_id(std::move(info.id))
+		, m_id(info.id)
 		, m_parent(nullptr)
 		, m_texture(info.texture)
 		, m_is_visible(true)
 		, m_is_disabled(false)
+		, m_is_interactable(info.is_interactable)
+		, m_interaction_range(info.interaction_range)
 		, m_colour_mod(info.colour_mod)
 		, m_collidable(std::nullopt)
 	{
-		SetDimensions(info.dimensions);
+		if (m_texture != nullptr && info.dimensions.IsZeroed())
+		{
+			SetDimensions({ m_texture->GetWidth(), m_texture->GetHeight() });
+		}
+		else
+		{
+			SetDimensions(info.dimensions);
+		}
+
 		SetPosition(info.position);
+
+		for (const auto& init_info : info.resources_info)
+		{
+			m_resources.emplace_back(init_info);
+		}
 	}
 
 	GameObject::~GameObject()
@@ -47,9 +62,12 @@ namespace hk
 	{
 		if (IsDisabled() == false && m_children.empty() == false)
 		{
-			m_health.Update(delta_time);
+			for (auto& resource : m_resources)
+			{
+				resource.Update(delta_time);
+			}
 
-			for(auto& child : m_children)
+			for (auto& child : m_children)
 			{
 				if (child)
 				{
@@ -226,12 +244,12 @@ namespace hk
 		visitor.Visit(*this);
 	}
 
-	void GameObject::OnCollide(GameObject& rhs)
+	void GameObject::OnCollide(GameObject&)
 	{
 		//Do nothing
 	}
 
-	void GameObject::OnCollide(PowerUpGameObject& power_up)
+	void GameObject::OnCollide(PowerUpGameObject&)
 	{
 		//add a resource modifier?
 		//Do nothing? We'll work this shit out later
@@ -243,26 +261,47 @@ namespace hk
 		projectile.HitObject(*this);
 	}
 
-
-	//----- HEALTH -----
-	double GameObject::CurrentHealth() const
+	//----- INTERACTIONS -----
+	bool GameObject::IsInteractable() const
 	{
-		return m_health.CurrentAmount();
+		return m_is_interactable;
 	}
 
-	void GameObject::ChangeHealth(const double delta)
+	void GameObject::SetInteractable(const bool is_interactable)
 	{
-		m_health.ChangeAmount(delta);
+		m_is_interactable = is_interactable;
 	}
 
-	void GameObject::SetHealth(const double new_amount)
+	void GameObject::OnInteraction(GameObject&)
 	{
-		m_health.SetCurrentAmount(new_amount);
 	}
 
-	void GameObject::AddHealthModifier(ResourceModifier* new_modifier)
+	float GameObject::InteractableRange() const
 	{
-		m_health.AddModifier(new_modifier);
+		return m_interaction_range;
+	}
+
+	//----- RESOURCES -----
+	Resource* GameObject::GetResource(const std::string& resource_key)
+	{
+		const auto& itr = std::find_if(m_resources.begin(), m_resources.end(), [&resource_key](const Resource& resource) { return resource.Key() == resource_key; });
+		if (itr != m_resources.end())
+		{
+			return &(*itr);
+		}
+
+		return nullptr;
+	}
+	
+	const Resource* GameObject::GetResource(const std::string& resource_key) const
+	{
+		const auto& itr = std::find_if(m_resources.begin(), m_resources.end(), [&resource_key](const Resource& resource) { return resource.Key() == resource_key; });
+		if (itr != m_resources.end())
+		{
+			return &(*itr);
+		}
+
+		return nullptr;
 	}
 
 	//----- UTILITY -----

@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <SDL_rect.h>
+#include <SDL2/SDL_rect.h>
 
 namespace hk
 {

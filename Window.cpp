@@ -85,7 +85,7 @@ namespace hk
 		}
 	}
 
-	void Window::HandleEvent(const SDL_Event& e)
+	void Window::ProcessEvent(const SDL_Event& e)
 	{
 		//If an event was detected for this window
 		if (e.type == SDL_WINDOWEVENT && e.window.windowID == m_window_id)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <SDL_render.h>
+#include <SDL2/SDL_render.h>
 
 #include "Vector2.h"
 #include "EngineAccess.h"

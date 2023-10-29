@@ -2,6 +2,40 @@
 
 namespace hk
 {
+	void InputDeviceManager::NewTick()
+	{
+		for (auto& keyboard_devices : m_keyboard_devices)
+		{
+			keyboard_devices.NewTick();
+		}
+	}
+
+	void InputDeviceManager::Update(const double dt)
+	{
+		for (auto& keyboard_devices : m_keyboard_devices)
+		{
+			keyboard_devices.Update(dt);
+		}
+
+		for (auto& gamepad : m_gamepad_devices)
+		{
+			gamepad.Update(dt);
+		}
+	}
+
+	void InputDeviceManager::ProcessEvent(SDL_Event& event)
+	{
+		for (auto& keyboard : m_keyboard_devices)
+		{
+			keyboard.ProcessEvent(event);
+		}
+
+		for (auto& gamepad : m_gamepad_devices)
+		{
+			gamepad.ProcessEvent(event);
+		}
+	}
+
 	void InputDeviceManager::LoadKeyboardMouse()
 	{
 		m_keyboard_devices.emplace_back();

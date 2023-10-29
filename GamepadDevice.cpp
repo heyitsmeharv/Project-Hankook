@@ -23,6 +23,16 @@ namespace hk
 		}
 	}
 
+	void GamepadDevice::Update(const double dt)
+	{
+
+	}
+
+	void GamepadDevice::ProcessEvent(SDL_Event& event)
+	{
+		
+	}
+
 	void GamepadDevice::Close()
 	{
 		if (m_game_controller)

@@ -1,5 +1,5 @@
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "Engine.h"
 #include "Timer.h"
@@ -48,24 +48,6 @@ int main(int argc, char* args[])
 	argc; args;
 
 	srand(time(NULL));
-
-	//hk::TamagotchiModel model;
-	//model.Initialise();
-
-	//hk::CollisionObject circle_a = hk::Circle{ { 0.0f, 0.0f }, 5.0f };
-	//hk::CollisionObject circle_b = hk::Circle{ { 2.5f, 2.5f }, 5.0f };
-	//hk::CollisionObject circle_c = hk::Circle{ { 2.5f, 25.5f }, 5.0f };
-	//
-	//hk::CollisionObject aabb_a = hk::AABB{ { 0.0f, 0.0f }, { 10.0f, 2.5f } };
-	//hk::CollisionObject aabb_b = hk::AABB{ { 10.0f, 0.0f }, { 10.0f, 2.5f } };
-	//
-	//hk::CollisionSystem collision_system;
-	//collision_system.RegisterCollisionObject(&circle_a);
-	//collision_system.RegisterCollisionObject(&circle_b);
-	//collision_system.RegisterCollisionObject(&aabb_a);
-	//collision_system.RegisterCollisionObject(&aabb_b);
-	//
-	//const bool result = collision_system.AreObjectsColliding(circle_a, circle_c);
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER) < 0)
 	{

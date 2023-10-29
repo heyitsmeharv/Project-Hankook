@@ -15,14 +15,14 @@ namespace hk
 
 	struct ObjectInfo
 	{
-		std::string					name;
-		std::string					type;
-		Vector2f					position;
-		Vector2f					dimensions;
-		float						rotation = 0.0f;
-		bool						is_visible = false;
-		std::optional<int>			tile_index = std::nullopt;
-		std::vector<CustomProperty> properties;
+		std::string										name;
+		std::string										type;
+		Vector2f										position;
+		Vector2f										dimensions;
+		float											rotation = 0.0f;
+		bool											is_visible = false;
+		std::optional<int>								tile_index = std::nullopt;
+		std::unordered_map<std::string, CustomProperty> properties;
 	};
 
 	class TilemapObjectLayer : public TilemapLayer

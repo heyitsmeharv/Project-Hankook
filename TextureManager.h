@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <SDL_render.h>
+#include <SDL2/SDL_render.h>
 #include <unordered_map>
 
 #include "Texture.h"

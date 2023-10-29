@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <SDL_render.h>
+#include <SDL2/SDL_render.h>
 
 //SOL
 #include "Drawable.h"

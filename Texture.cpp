@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include "ErrorManager.h"
 
 namespace hk
@@ -71,11 +71,11 @@ namespace hk
 
 	void Texture::Draw(const TextureDrawInfo& info) const
 	{
-		SDL_Rect render_quad{ info.position.x, info.position.y, info.dimensions.x, info.dimensions.y };
+		SDL_Rect render_quad{ info.position.x * info.scale, info.position.y * info.scale, info.dimensions.x * info.scale, info.dimensions.y * info.scale };
 		if (info.clip.has_value())
 		{
-			render_quad.w = info.clip->w;
-			render_quad.h = info.clip->h;
+			render_quad.w = info.clip->w * info.scale;
+			render_quad.h = info.clip->h * info.scale;
 		}
 
 		if (info.viewport_rect.has_value())
@@ -87,8 +87,8 @@ namespace hk
 			}
 			else
 			{
-				render_quad.x -= info.viewport_rect->x;
-				render_quad.y -= info.viewport_rect->y;
+				render_quad.x -= info.viewport_rect->x * info.scale;
+				render_quad.y -= info.viewport_rect->y * info.scale;
 			}
 		}
 
@@ -121,21 +121,18 @@ namespace hk
 			return;
 		}
 
-		if (info.offset.has_value() == false || info.offset->IsZeroed())
-		{
-			SDL_RenderGeometry(m_renderer, m_texture, info.vertices->data(), (int)info.vertices->size(), info.indices ? info.indices->data() : nullptr, info.indices ? (int)info.indices->size() : 0);
-		}
-		else
-		{
-			// Intentional copy so we can offset them... not a big fan of this approach but cannot think of anything better
-			std::vector<SDL_Vertex> offset_verts = *info.vertices;
-			for (auto& vert : offset_verts)
-			{
-				vert.position.x -= info.offset->x;
-				vert.position.y -= info.offset->y;
-			}
+		std::vector<SDL_Vertex> offset_verts = *info.vertices;
 
-			SDL_RenderGeometry(m_renderer, m_texture, offset_verts.data(), (int)offset_verts.size(), info.indices ? info.indices->data() : nullptr, info.indices ? (int)info.indices->size() : 0);
+		// Intentional copy so we can offset them... not a big fan of this approach but cannot think of anything better
+		for (auto& vert : offset_verts)
+		{
+			vert.position.x -= info.offset->x;
+			vert.position.y -= info.offset->y;
+
+			vert.position.x *= info.scale;
+			vert.position.y *= info.scale;
 		}
+
+		SDL_RenderGeometry(m_renderer, m_texture, offset_verts.data(), (int)offset_verts.size(), info.indices ? info.indices->data() : nullptr, info.indices ? (int)info.indices->size() : 0);
 	}
 }

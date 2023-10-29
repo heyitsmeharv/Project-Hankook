@@ -1,6 +1,6 @@
 #include "ProjectileGameObject.h"
 
-#include "ChangeHealthModelCommand.h"
+#include "ChangeResourceAmountModelCommand.h"
 #include "CollisionResolver.h"
 #include "GameModelAccess.h"
 #include "GameModel.h"
@@ -39,7 +39,7 @@ namespace hk
 
 	void ProjectileGameObject::HitObject(GameObject& game_object)
 	{
-		GetGameModel().QueueModelCommand(std::make_unique<ChangeHealthModelCommand>(game_object, m_damage));
+		GetGameModel().QueueModelCommand(std::make_unique<ChangeResourceAmountModelCommand>(game_object, "health", m_damage));
 	}
 
 	void ProjectileGameObject::Visit(const GameObjectCollisionVisitor& visitor)

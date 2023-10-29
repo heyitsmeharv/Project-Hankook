@@ -1,93 +1,117 @@
 #include "InputCommand.h"
 #include "KeyboardMouseMapping.h"
+#include "ChangeCameraZoomInputCommand.h"
 #include "MoveCameraInputCommand.h"
 #include "MoveObjectInputCommand.h"
 #include "ShootGunInputCommand.h"
+#include "InteractInputCommand.h"
 
 namespace hk
 {
-	KeyMouseCommandBinding::KeyMouseCommandBinding()
+	InputCommandBinding::InputCommandBinding()
 		: name()
-		, keys()
-		, mouse_buttons()
-		, command(nullptr)
+		, default_command(nullptr)
 	{
 	}
 	
-	KeyMouseCommandBinding::~KeyMouseCommandBinding()
+	InputCommandBinding::~InputCommandBinding()
 	{
 	}
 
-	KeyMouseCommandBinding::KeyMouseCommandBinding(KeyMouseCommandBinding&& rhs)
+	InputCommandBinding::InputCommandBinding(InputCommandBinding&& rhs)
 	{
 		name = rhs.name;
-		keys = rhs.keys;
-		mouse_buttons = rhs.mouse_buttons;
-		command = std::move(rhs.command);
+		default_command = std::move(rhs.default_command);
 	}
 
-	KeyMouseCommandBinding& KeyMouseCommandBinding::operator=(KeyMouseCommandBinding&& rhs)
+	InputCommandBinding& InputCommandBinding::operator=(InputCommandBinding&& rhs)
 	{
 		name = std::move(rhs.name);
-		keys = std::move(rhs.keys);
-		mouse_buttons = std::move(rhs.mouse_buttons);
-		command = std::move(rhs.command);
+		default_command = std::move(rhs.default_command);
 		return *this;
 	}
 
 	KeyboardMouseMapping::KeyboardMouseMapping()
 	{
 		//CHARACTER
-		KeyMouseCommandBinding& w_binding = m_bindings.emplace_back();
+		InputCommandBinding w_binding;
 		w_binding.name = "w";
-		w_binding.keys.push_back(SDL_SCANCODE_W);
-		w_binding.command = std::make_unique<MoveObjectInputCommand>(0.0f, -5.0f);
+		w_binding.default_command = std::make_unique<MoveObjectInputCommand>(0.0f, -5.0f);
+		m_key_bindings.insert({ SDLK_w, std::move(w_binding) });
 
-		KeyMouseCommandBinding& s_binding = m_bindings.emplace_back();
+		InputCommandBinding s_binding;
 		s_binding.name = "s";
-		s_binding.keys.push_back(SDL_SCANCODE_S);
-		s_binding.command = std::make_unique<MoveObjectInputCommand>(0.0f, 5.0f);
+		s_binding.default_command = std::make_unique<MoveObjectInputCommand>(0.0f, 5.0f);
+		m_key_bindings.insert({ SDLK_s, std::move(s_binding) });
 
-		KeyMouseCommandBinding& a_binding = m_bindings.emplace_back();
+		InputCommandBinding a_binding;
 		a_binding.name = "a";
-		a_binding.keys.push_back(SDL_SCANCODE_A);
-		a_binding.command = std::make_unique<MoveObjectInputCommand>(-5.0f, 0.0f);
+		a_binding.default_command = std::make_unique<MoveObjectInputCommand>(-5.0f, 0.0f);
+		m_key_bindings.insert({ SDLK_a, std::move(a_binding) });
 
-		KeyMouseCommandBinding& d_binding = m_bindings.emplace_back();
+		InputCommandBinding d_binding;
 		d_binding.name = "d";
-		d_binding.keys.push_back(SDL_SCANCODE_D);
-		d_binding.command = std::make_unique<MoveObjectInputCommand>(5.0f, 0.0f);
+		d_binding.default_command = std::make_unique<MoveObjectInputCommand>(5.0f, 0.0f);
+		m_key_bindings.insert({ SDLK_d, std::move(d_binding) });
+
+		InputCommandBinding e_binding;
+		e_binding.name = "e";
+		e_binding.default_command = std::make_unique<InteractInputCommand>();
+		m_key_bindings.insert({ SDLK_e, std::move(e_binding) });
 
 		// CAMERA
-		KeyMouseCommandBinding& camera_move_up_binding = m_bindings.emplace_back();
+		InputCommandBinding camera_move_up_binding;
 		camera_move_up_binding.name = "camera_move_up";
-		camera_move_up_binding.keys.push_back(SDL_SCANCODE_UP);
-		camera_move_up_binding.command = std::make_unique<MoveCameraInputCommand>(0.0f, -5.0f);
+		camera_move_up_binding.default_command = std::make_unique<MoveCameraInputCommand>(0.0f, -5.0f);
+		m_key_bindings.insert({ SDLK_UP, std::move(camera_move_up_binding) });
 
-		KeyMouseCommandBinding& camera_move_down_binding = m_bindings.emplace_back();
+		InputCommandBinding camera_move_down_binding;
 		camera_move_down_binding.name = "camera_move_down";
-		camera_move_down_binding.keys.push_back(SDL_SCANCODE_DOWN);
-		camera_move_down_binding.command = std::make_unique<MoveCameraInputCommand>(0.0f, 5.0f);
+		camera_move_down_binding.default_command = std::make_unique<MoveCameraInputCommand>(0.0f, 5.0f);
+		m_key_bindings.insert({ SDLK_DOWN, std::move(camera_move_down_binding) });
 
-		KeyMouseCommandBinding& camera_move_left_binding = m_bindings.emplace_back();
+		InputCommandBinding camera_move_left_binding;
 		camera_move_left_binding.name = "camera_move_left";
-		camera_move_left_binding.keys.push_back(SDL_SCANCODE_LEFT);
-		camera_move_left_binding.command = std::make_unique<MoveCameraInputCommand>(-5.0f, 0.0f);
+		camera_move_left_binding.default_command = std::make_unique<MoveCameraInputCommand>(-5.0f, 0.0f);
+		m_key_bindings.insert({ SDLK_LEFT, std::move(camera_move_left_binding) });
 
-		KeyMouseCommandBinding& camera_move_right_binding = m_bindings.emplace_back();
+		InputCommandBinding camera_move_right_binding;
 		camera_move_right_binding.name = "camera_move_right";
-		camera_move_right_binding.keys.push_back(SDL_SCANCODE_RIGHT);
-		camera_move_right_binding.command = std::make_unique<MoveCameraInputCommand>(5.0f, 0.0f);
+		camera_move_right_binding.default_command = std::make_unique<MoveCameraInputCommand>(5.0f, 0.0f);
+		m_key_bindings.insert({ SDLK_RIGHT, std::move(camera_move_right_binding) });
+
+		InputCommandBinding camera_zoom_in_binding;
+		camera_zoom_in_binding.name = "camera_zoom_in";
+		camera_zoom_in_binding.default_command = std::make_unique<ChangeCameraZoomInputCommand>(0.25f);
+		m_wheel_bindings.insert({ MouseWheelID::WHEEL_UP, std::move(camera_zoom_in_binding) });
+
+		InputCommandBinding camera_zoom_out_binding;
+		camera_zoom_out_binding.name = "camera_zoom_out";
+		camera_zoom_out_binding.default_command = std::make_unique<ChangeCameraZoomInputCommand>(-0.25f);
+		m_wheel_bindings.insert({ MouseWheelID::WHEEL_DOWN, std::move(camera_zoom_out_binding) });
 
 		// GUN
-		KeyMouseCommandBinding& shoot_binding = m_bindings.emplace_back();
+		InputCommandBinding shoot_binding;
 		shoot_binding.name = "shoot";
-		shoot_binding.keys.push_back(SDL_SCANCODE_SPACE);
-		shoot_binding.command = std::make_unique<ShootGunInputCommand>();
+		shoot_binding.default_command = std::make_unique<ShootGunInputCommand>();
+		m_key_bindings.insert({ SDLK_SPACE, std::move(shoot_binding) });
 	}
 
-	const std::vector<KeyMouseCommandBinding>& KeyboardMouseMapping::GetBindings() const
+	const InputCommandBinding* KeyboardMouseMapping::GetKeyBinding(const SDL_KeyCode key_code) const
 	{
-		return m_bindings;
+		const auto& itr = m_key_bindings.find(key_code);
+		return itr != m_key_bindings.end() ? &itr->second : nullptr;
+	}
+
+	const InputCommandBinding* KeyboardMouseMapping::GetMouseButtonBinding(const Uint8 mouse_button) const
+	{
+		const auto& itr = m_mouse_bindings.find(mouse_button);
+		return itr != m_mouse_bindings.end() ? &itr->second : nullptr;
+	}
+
+	const InputCommandBinding* KeyboardMouseMapping::GetWheelBinding(const MouseWheelID wheel_id) const
+	{
+		const auto& itr = m_wheel_bindings.find(wheel_id);
+		return itr != m_wheel_bindings.end() ? &itr->second : nullptr;
 	}
 }

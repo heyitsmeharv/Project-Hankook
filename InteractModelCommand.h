@@ -1,20 +1,21 @@
 #pragma once
 
+#include <string>
+
 #include "ModelCommand.h"
 
 namespace hk
 {
 	class GameObject;
 
-	class ChangeHealthModelCommand : public ModelCommand
+	class InteractModelCommand : public ModelCommand
 	{
 	public:
-		ChangeHealthModelCommand(GameObject& game_object, const double delta);
+		InteractModelCommand(GameObject& game_object);
 
 		void Execute() override;
 
 	private:
 		GameObject* m_game_object = nullptr;
-		double		m_delta;
 	};
 }

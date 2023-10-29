@@ -1,7 +1,7 @@
 #pragma once
 
 #include <rapidjson/document.h>
-#include <SDL_render.h>
+#include <SDL2/SDL_render.h>
 #include <string>
 #include <vector>
 

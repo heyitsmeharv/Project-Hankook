@@ -6,7 +6,7 @@
 namespace hk
 {
 	Resource::Resource()
-		: m_id()
+		: m_key()
 		, m_current_amount(0.0)
 		, m_min_amount(0.0)
 		, m_max_amount(0.0)
@@ -31,7 +31,7 @@ namespace hk
 
 	void Resource::Initialise(const ResourceInitInfo& init_info)
 	{
-		m_id = init_info.id;
+		m_key = init_info.key;
 		m_current_amount = init_info.starting_amount;
 		m_min_amount = init_info.min_amount;
 		m_max_amount = init_info.max_amount;
@@ -46,9 +46,9 @@ namespace hk
 		}
 	}
 
-	const std::string& Resource::Id() const
+	const std::string& Resource::Key() const
 	{
-		return m_id;
+		return m_key;
 	}
 
 	double Resource::CurrentAmount() const
@@ -59,7 +59,7 @@ namespace hk
 	void Resource::ChangeAmount(double amount_delta)
 	{
 		ResourceChangedEvent msg;
-		msg.id = m_id;
+		msg.id = m_key;
 		msg.previous_amount = m_current_amount;
 		msg.change_in_amount = amount_delta;
 
@@ -74,7 +74,7 @@ namespace hk
 	void Resource::SetCurrentAmount(double new_amount)
 	{
 		ResourceChangedEvent msg;
-		msg.id = m_id;
+		msg.id = m_key;
 		msg.previous_amount = m_current_amount;
 		msg.change_in_amount = new_amount - m_current_amount;
 		msg.new_amount = new_amount;
@@ -91,7 +91,7 @@ namespace hk
 
 	void Resource::AddToImGui()
 	{
-		if (ImGui::TreeNode(m_id.data(), "%s - (%f/%f)", m_id.data(), m_current_amount, m_max_amount))
+		if (ImGui::TreeNode(m_key.data(), "%s - (%f/%f)", m_key.data(), m_current_amount, m_max_amount))
 		{
 			ImGui::ProgressBar(static_cast<float>(m_current_amount / m_max_amount));
 

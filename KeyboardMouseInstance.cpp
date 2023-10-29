@@ -2,9 +2,9 @@
 #include "KeyboardMouseInstance.h"
 #include "KeyboardMouseDevice.h"
 
-#include <SDL_keycode.h>
-#include <SDL_keyboard.h>
-#include <SDL_events.h>
+#include <SDL2/SDL_keycode.h>
+#include <SDL2/SDL_keyboard.h>
+#include <SDL2/SDL_events.h>
 
 namespace hk
 {
@@ -24,19 +24,81 @@ namespace hk
 
 		if (m_device)
 		{
-			for (const auto& binding : m_mapping.GetBindings())
+			//Pressed keys
+			for (const auto& [key_code, _] : m_device->GetKeysDown())
 			{
-				const bool are_all_keys_pressed = binding.keys.empty() || m_device->AreKeysPressed(binding.keys);
-				const bool are_all_mouse_buttons_pressed = binding.mouse_buttons.empty() || m_device->AreMouseButtonsPressed(binding.mouse_buttons);
-			
-				if (are_all_keys_pressed && are_all_mouse_buttons_pressed)
+				const InputCommandBinding* binding = m_mapping.GetKeyBinding(key_code);
+				if (binding)
 				{
-					commands.push_back(binding.command->Clone());
+					commands.push_back(GetCommandFromBinding(*binding));
+				}
+			}
+
+			//Pressed Mouse Buttons
+			for (const auto& [mouse_button, _] : m_device->GetMouseButtonsDown())
+			{
+				const InputCommandBinding* binding = m_mapping.GetMouseButtonBinding(mouse_button);
+				if (binding)
+				{
+					commands.push_back(GetCommandFromBinding(*binding));
+				}
+			}
+
+			if (m_device->GetWheelEvent())
+			{
+				const WheelEvent& wheel_event = *m_device->GetWheelEvent();
+
+				const InputCommandBinding* x_binding = nullptr;
+				const InputCommandBinding* y_binding = nullptr;
+
+				if (wheel_event.x_delta > 0)
+				{
+					x_binding = m_mapping.GetWheelBinding(MouseWheelID::WHEEL_RIGHT);
+				}
+				else if (wheel_event.x_delta < 0)
+				{
+					x_binding = m_mapping.GetWheelBinding(MouseWheelID::WHEEL_LEFT);
+				}
+
+				if (x_binding)
+				{
+					commands.push_back(GetCommandFromBinding(*x_binding));
+				}
+
+				if (wheel_event.y_delta > 0)
+				{
+					y_binding = m_mapping.GetWheelBinding(MouseWheelID::WHEEL_UP);
+				}
+				else if (wheel_event.y_delta < 0)
+				{
+					y_binding = m_mapping.GetWheelBinding(MouseWheelID::WHEEL_DOWN);
+				}
+
+				if (y_binding)
+				{
+					commands.push_back(GetCommandFromBinding(*y_binding));
 				}
 			}
 		}
 
 		return commands;
+	}
+
+	std::unique_ptr<InputCommand> KeyboardMouseInstance::GetCommandFromBinding(const InputCommandBinding& binding) const
+	{
+		//Check if modifier is down
+		if (binding.mod_overrides.empty() == false)
+		{
+			for (const auto& mod_override : binding.mod_overrides)
+			{
+				if (m_device->IsModPressed(mod_override.mod_key))
+				{
+					return mod_override.command->Clone();
+				}
+			}
+		}
+
+		return binding.default_command->Clone();
 	}
 
 	void KeyboardMouseInstance::AttachDevice(const KeyboardMouseDevice& device)

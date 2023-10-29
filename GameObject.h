@@ -23,11 +23,14 @@ namespace hk
 
 	struct GameObjectInitInfo
 	{
-		std::string id;
-		Vector2f position = { 0, 0 };
-		Vector2i dimensions = { -1, -1 };
-		const Texture* texture = nullptr;
-		std::optional<SDL_Color> colour_mod = std::nullopt;
+		std::string						id;
+		Vector2f						position = { 0, 0 };
+		Vector2i						dimensions = { 0, 0 };
+		const Texture*					texture = nullptr;
+		bool							is_interactable = false;
+		float							interaction_range = 0.0f;
+		std::optional<SDL_Color>		colour_mod = std::nullopt;
+		std::vector<ResourceInitInfo>	resources_info;
 	};
 
 	class GameObject	: public Drawable
@@ -72,11 +75,15 @@ namespace hk
 		void	OnCollide	(PowerUpGameObject& power_up) override;
 		void	OnCollide	(ProjectileGameObject& projectile) override;
 
-		//----- HEALTH -----
-		double	CurrentHealth		() const;
-		void	ChangeHealth		(const double delta);
-		void	SetHealth			(const double new_amount);
-		void	AddHealthModifier	(ResourceModifier* new_modifier);
+		//----- INTERACTIONS -----
+		bool			IsInteractable		() const;
+		void			SetInteractable		(const bool is_interactable);
+		virtual void	OnInteraction		(GameObject&);
+		virtual float	InteractableRange	() const;
+
+		//----- RESOURCES -----
+		Resource*		GetResource(const std::string& resource_key);
+		const Resource* GetResource(const std::string& resource_key) const;
 
 		//----- UTILITY -----
 		static void			SetRootObject(GameObject& root_object);
@@ -88,6 +95,42 @@ namespace hk
 		bool IsPointDirectlyWithinObject	(const Vector2f& point) const;
 		bool IsPointWithinObjectOrChildren	(const Vector2f& point) const;
 
+		template<typename F>
+		GameObject* FindClosestGameObject(F filter_func) const
+		{
+			GameObject* closest_object = nullptr;
+
+			if (hk::GameObject::RootObject())
+			{
+				float shortest_dist = std::numeric_limits<float>::max();
+
+				std::vector<GameObject*> to_check;
+				to_check.reserve(1024);
+				to_check.push_back(hk::GameObject::RootObject());
+
+				while (to_check.empty() == false)
+				{
+					GameObject* current = to_check.front();
+					if (filter_func(current))
+					{
+						if ((current->GetPosition() - m_position).MagnitudeSquared() < shortest_dist)
+						{
+							closest_object = current;
+						}
+					}
+
+					for (auto& child : current->GetChildren())
+					{
+						to_check.push_back(child.get());
+					}
+
+					to_check.erase(to_check.begin());
+				}
+			}
+
+			return closest_object;
+		}
+
 		//----- DEBUG -----
 		void AddToImGui() override;
 
@@ -98,9 +141,11 @@ namespace hk
 		const Texture*					m_texture;
 		bool							m_is_visible;
 		bool							m_is_disabled;
+		bool							m_is_interactable;
+		float							m_interaction_range;
 		std::optional<SDL_Color>		m_colour_mod;
-		Resource						m_health;
 		std::optional<Collidable>		m_collidable;
+		std::vector<Resource>			m_resources;
 
 		static inline GameObject* m_root_object = nullptr;
 	};

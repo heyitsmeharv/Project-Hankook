@@ -2,7 +2,7 @@
 
 #include <string>
 #include <optional>
-#include <SDL_render.h>
+#include <SDL2/SDL_render.h>
 #include <vector>
 
 #include "Vector2.h"
@@ -21,6 +21,7 @@ namespace hk
 		Vector2i					position = { 0, 0 };
 		Vector2i					dimensions = { -1, -1, };
 		double						angle_in_deg = 0.0;
+		float						scale = 1.0f;
 		std::optional<SDL_Rect>		clip = std::nullopt;
 		std::optional<SDL_Rect>		viewport_rect = std::nullopt;
 		std::optional<SDL_Point>	centre = std::nullopt;
@@ -33,5 +34,6 @@ namespace hk
 		const std::vector<SDL_Vertex>*	vertices = nullptr;
 		const std::vector<int>*			indices = nullptr;
 		std::optional<Vector2i>			offset = std::nullopt;
+		float							scale = 1.0f;
 	};
 }
