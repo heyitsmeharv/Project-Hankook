@@ -34,7 +34,6 @@ namespace hk
 		LoadTextureManager();
 		LoadTextures();
 		LoadInputDeviceManager();
-		LoadCameraManager();
 
 		m_game_model.Initialise();
 
@@ -71,7 +70,6 @@ namespace hk
 			ProcessEvents();
 
 			m_input_device_manager.Update(delta_time);
-			m_camera_manager.Update();
 			m_collision_system.Update();
 			m_game_model.Update(delta_time);
 		}
@@ -128,8 +126,6 @@ namespace hk
 			m_imgui_manager->EndFrame();
 			m_imgui_manager->Draw();
 		}
-
-		m_game_model.Draw();
 
 		for (const auto& request : m_draw_requests)
 		{
@@ -198,17 +194,6 @@ namespace hk
 		return true;
 	}
 
-	bool Engine::LoadCameraManager()
-	{
-		hk::CameraInitInfo camera_init_info;
-		camera_init_info.position = { 0.0f, 0.0f };
-		camera_init_info.dimensions = { GameWindow().GetWindowDimensions().x, GameWindow().GetWindowDimensions().y };
-
-		m_camera_manager.PushNewCamera(camera_init_info);
-
-		return true;
-	}
-
 	bool Engine::LoadImGui()
 	{
 		hk::WindowInitInfo imgui_window_info;
@@ -249,11 +234,6 @@ namespace hk
 	const InputDeviceManager& Engine::GetInputDeviceManager() const
 	{
 		return m_input_device_manager;
-	}
-
-	CameraManager& Engine::GetCameraManager()
-	{
-		return m_camera_manager;
 	}
 
 	GameModel& Engine::GetGameModel()

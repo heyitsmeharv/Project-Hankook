@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector2.h"
+#include <entt/fwd.hpp>
 
 namespace hk
 {
@@ -8,6 +8,6 @@ namespace hk
 	{
 	public:
 		virtual ~ModelCommand() {}
-		virtual void Execute() = 0;
+		virtual void Execute(entt::registry& registry) = 0;
 	};
 }

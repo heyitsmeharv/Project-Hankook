@@ -1,18 +1,20 @@
 #pragma once
 
 #include <memory>
+#include <entt/entt.hpp>
 
 #include "CommandQueue.h"
 #include "IModel.h"
 #include "ModelCommand.h"
-#include "PlayerController.h"
-#include "Tilemap.h"
+
+#include "CameraSystem.h"
+#include "ControllerSystem.h"
+#include "RenderingSystem.h"
 
 namespace hk
 {
 	class CameraManager;
 	class Engine;
-	class GameObject;
 
 	class GameModel final : public IModel
 	{
@@ -23,21 +25,23 @@ namespace hk
 		void Initialise	() override;
 		void Destroy	() override;
 		void Update		(const double delta_time) override;
-		void Draw		() const override;
-
-		bool LoadPlayerController();
 
 		void QueueModelCommand(std::unique_ptr<ModelCommand>&& model_command);
 
+		const entt::registry& GetRegistry() const;
+
 	private:
+		bool LoadPlayerController();
 		void ProcessModelCommands();
 
 	private:
 		Engine&							m_engine;
 
-		PlayerController				m_player_controller;
-		Tilemap							m_tilemap;
-		std::unique_ptr<hk::GameObject> m_root_object;
 		CommandQueue<ModelCommand>		m_model_command_queue;
+		entt::registry					m_registry;
+
+		CameraSystem					m_camera_system;
+		ControllerSystem				m_controller_system;
+		RenderingSystem					m_rendering_system;
 	};
 }

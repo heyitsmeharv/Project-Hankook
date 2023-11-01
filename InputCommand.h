@@ -1,5 +1,6 @@
 #pragma once
 
+#include <entt/fwd.hpp>
 #include <memory>
 
 namespace hk
@@ -21,6 +22,6 @@ namespace hk
 
 		virtual std::unique_ptr<InputCommand>	Clone					() const = 0;
 		virtual void							ConfigureFromDeviceInput(const DeviceInputInfo&) = 0;
-		virtual void							Execute					(GameObject&, Camera*) const = 0;
+		virtual void							Execute					(entt::entity) const = 0;
 	};
 }

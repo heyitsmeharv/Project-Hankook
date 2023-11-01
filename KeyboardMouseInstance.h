@@ -10,7 +10,7 @@ namespace hk
 	class KeyboardMouseInstance final : public ControllerInstance
 	{
 	public:
-		 KeyboardMouseInstance();
+		 KeyboardMouseInstance(const KeyboardMouseDevice* device);
 		~KeyboardMouseInstance();
 
 		std::vector<std::unique_ptr<InputCommand>> Update() const override;

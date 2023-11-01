@@ -5,24 +5,22 @@
 
 namespace hk
 {
-	class Transformable;
-
 	class LockOnAttachment final : public CameraAttachment
 	{
 	public:
 		LockOnAttachment();
-		LockOnAttachment(const Transformable& target, const Vector2f& offset);
+		LockOnAttachment(entt::entity target_entity, const Vector2f& offset);
 
-		void Update(Camera& camera) override;
+		void Update(entt::entity camera_entity, entt::registry& registry) override;
 
-		void AttachToTarget(const Transformable& target, const Vector2f& offset);
+		void AttachToTarget(entt::entity target_entity, const Vector2f& offset);
 
 		void			SetOffset	(const Vector2f& new_offset);
 		void			MoveOffset	(const Vector2f& delta);
 		const Vector2f& GetOffset	() const;
 
 	private:
-		const Transformable*	m_target;
-		Vector2f				m_offset;
+		entt::entity	m_target;
+		Vector2f		m_offset;
 	};
 }

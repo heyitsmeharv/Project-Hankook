@@ -3,7 +3,6 @@
 #include "TilemapLayer.h"
 #include "Engine.h"
 #include "EngineAccess.h"
-#include "Drawable.h"
 #include "Texture.h"
 #include "Tileset.h"
 #include "TileDrawRequest.h"
@@ -22,15 +21,15 @@ namespace hk
 		return true;
 	}
 
-	void TilemapLayer::Draw(const Tileset& tileset) const
+	void TilemapLayer::Draw(const Tileset& tileset, const Vector2i& offset, const float scale) const
 	{
 		std::unique_ptr<TileDrawRequest> draw_request = std::make_unique<TileDrawRequest>();
 
 		draw_request->texture = tileset.image;
 		draw_request->draw_info.vertices = &m_vertices;
 		draw_request->draw_info.indices = &m_indices;
-		draw_request->draw_info.offset = { (int)GetEngine().GetCameraManager().CurrentCamera()->GetPosition().x, (int)GetEngine().GetCameraManager().CurrentCamera()->GetPosition().y };
-		draw_request->draw_info.scale = GetEngine().GetCameraManager().CurrentCamera()->GetZoom();
+		draw_request->draw_info.offset = offset;
+		draw_request->draw_info.scale = scale;
 
 		GetEngine().AddDrawRequest(std::move(draw_request));
 	}

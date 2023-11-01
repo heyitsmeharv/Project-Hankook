@@ -1,30 +1,26 @@
 #include "GameModel.h"
 
-#include "CameraManager.h"
-#include "Collidable.h"
 #include "ConstraintAttachment.h"
 #include "Engine.h"
-#include "GameObject.h"
 #include "GamepadInstance.h"
 #include "KeyboardMouseInstance.h"
 #include "LockOnAttachment.h"
-#include "MoveObjectModelCommand.h"
-#include "NodeResourceGameObject.h"
-#include "ProjectileGameObject.h"
-#include "PowerUpGameObject.h"
 #include "TextureManager.h"
-#include "StepResourceModifier.h"
 
-#include <entt/entt.hpp>
+#include "CameraComponent.h"
+#include "PlayerControllerComponent.h"
+#include "TilemapComponent.h"
+#include "TransformComponent.h"
 
 namespace hk
 {
 	GameModel::GameModel(Engine& engine)
 		: m_engine(engine)
-		, m_player_controller()
-		, m_tilemap()
-		, m_root_object(nullptr)
 		, m_model_command_queue()
+		, m_registry()
+		, m_camera_system()
+		, m_controller_system()
+		, m_rendering_system()
 	{
 	}
 
@@ -34,79 +30,62 @@ namespace hk
 
 	void GameModel::Initialise()
 	{
-		//----- GAME OBJECTS -----
-		hk::GameObjectInitInfo parent_object_init_info{ "root", { 0, 0 }, { 1, 1 }, nullptr };
-		m_root_object = std::make_unique<GameObject>( parent_object_init_info );
-
-		hk::GameObject::SetRootObject(*m_root_object);
-
 		//----- TILE MAP -----
-		m_tilemap.Load("Data\\Tilemap\\world_tilemap.tmj");
+		entt::entity tilemap_entity = m_registry.create();
+		TilemapComponent& tilemap = m_registry.emplace<TilemapComponent>(tilemap_entity);
+		LoadTilemapFromFile(tilemap, "Data\\Tilemap\\world_tilemap.tmj");
+
+		//---- CAMERA -----
+		CameraInitInfo camera_init_info;
+		camera_init_info.id = "main";
+		camera_init_info.position = { 0.0f, 0.0f };
+		camera_init_info.dimensions = m_engine.GameWindow().GetWindowDimensions();
+		camera_init_info.zoom = 0.2f;
+
+		m_camera_system.PushNewCamera(m_registry, camera_init_info);
 
 		//----- CONTROLLER -----
 		LoadPlayerController();
-		m_player_controller.AttachGameObject(*m_root_object);
-		m_player_controller.AttachCamera(*m_engine.GetCameraManager().CurrentCamera());
-
-		Camera* camera = m_engine.GetCameraManager().CurrentCamera();
-		//if (camera)
-		//{
-		//	m_player_controller.AttachCamera(*camera);
-		//
-		//	//----- CAMERA ATTACHMENTS -----
-		//	camera->AddAttachment(std::make_unique<hk::LockOnAttachment>(*m_root_object->GetChildren().front().get(), hk::Vector2f{ camera->GetDimensions().x * 0.5f, camera->GetDimensions().y * 0.5f }));
-		//	camera->AddAttachment(std::make_unique<hk::ConstraintAttachment>(SDL_FRect{ m_tilemap.GetPosition().x, m_tilemap.GetPosition().y, static_cast<float>(m_tilemap.GetDimensions().x), static_cast<float>(m_tilemap.GetDimensions().y) }));
-		//}
 	}
 
 	void GameModel::Destroy()
 	{
 	}
 
-	void GameModel::Update(const double delta_time)
+	void GameModel::Update(const double /*delta_time*/)
 	{
-		m_player_controller.Update();
+		m_controller_system.Update(m_registry);
+
 		ProcessModelCommands();
-
-		if (m_root_object)
-		{
-			m_root_object->Update(delta_time);
-		}
-
+		
+		m_rendering_system.Update(m_registry, m_camera_system.CurrentCamera());
 	}
 
 	void GameModel::ProcessModelCommands()
 	{
-		m_model_command_queue.ProcessQueue();
+		m_model_command_queue.ProcessQueue(m_registry);
 		m_model_command_queue.ClearQueue();
-	}
-
-	void GameModel::Draw() const
-	{
-		m_tilemap.Draw();
-
-		if (m_root_object)
-		{
-			m_root_object->Draw();
-		}
 	}
 
 	bool GameModel::LoadPlayerController()
 	{
+		std::unique_ptr<ControllerInstance> controller_instance;
+
 		if (m_engine.GetInputDeviceManager().GetGamepadDevices().empty() == false)
 		{
-			std::unique_ptr<hk::GamepadInstance> gamepad_instance = std::make_unique<hk::GamepadInstance>();
-			gamepad_instance->AttachDevice(m_engine.GetInputDeviceManager().GetGamepadDevices().front());
-
-			m_player_controller.AttachControllerInstance(std::move(gamepad_instance));
+			controller_instance = std::make_unique<hk::GamepadInstance>(&m_engine.GetInputDeviceManager().GetGamepadDevices().front());
 		}
 		else
 		{
-			std::unique_ptr<hk::KeyboardMouseInstance> keyboard_instance = std::make_unique<hk::KeyboardMouseInstance>();
-			keyboard_instance->AttachDevice(m_engine.GetInputDeviceManager().GetDefaultKeyboardMouse());
-
-			m_player_controller.AttachControllerInstance(std::move(keyboard_instance));
+			controller_instance = std::make_unique<hk::KeyboardMouseInstance>(&m_engine.GetInputDeviceManager().GetDefaultKeyboardMouse());
 		}
+
+		entt::entity player_controller_entity = m_registry.create();
+		PlayerControllerComponent& player_controller = m_registry.emplace<PlayerControllerComponent>(player_controller_entity);
+		player_controller.id = "player_1";
+		player_controller.controller = std::move(controller_instance);
+		player_controller.is_enabled = true;
+		player_controller.controlled_entity = m_camera_system.CurrentCamera();
 
 		return true;
 	}
@@ -114,5 +93,10 @@ namespace hk
 	void GameModel::QueueModelCommand(std::unique_ptr<ModelCommand>&& model_command)
 	{
 		m_model_command_queue.AddToQueue(std::move(model_command));
+	}
+
+	const entt::registry& GameModel::GetRegistry() const
+	{
+		return m_registry;
 	}
 }

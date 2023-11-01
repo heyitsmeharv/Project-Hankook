@@ -8,6 +8,5 @@ namespace hk
 		virtual void Initialise	() = 0;
 		virtual void Destroy	() = 0;
 		virtual void Update		(const double delta_time) = 0;
-		virtual void Draw		() const = 0;
 	};
 }

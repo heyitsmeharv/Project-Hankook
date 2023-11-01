@@ -1,5 +1,6 @@
 #pragma once
 
+#include <entt/fwd.hpp>
 #include <memory>
 #include <vector>
 
@@ -10,7 +11,7 @@ namespace hk
 	{
 	public:
 		void AddToQueue(std::unique_ptr<T>&& command);
-		void ProcessQueue();
+		void ProcessQueue(entt::registry& registry);
 		void ClearQueue();
 
 	private:

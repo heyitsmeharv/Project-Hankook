@@ -10,7 +10,7 @@ namespace hk
 	class GamepadInstance final : public ControllerInstance
 	{
 	public:
-		 GamepadInstance();
+		 GamepadInstance(const GamepadDevice* device);
 		~GamepadInstance();
 
 		std::vector<std::unique_ptr<InputCommand>> Update() const override;

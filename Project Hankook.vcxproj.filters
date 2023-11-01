@@ -46,20 +46,8 @@
     <Filter Include="Header Files\Collision">
       <UniqueIdentifier>{c5f411ed-d836-4f89-a6b8-85e7498a6ec3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Movement">
-      <UniqueIdentifier>{60f72c3d-3774-4192-891c-ca7f8fdb5c67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Movement">
-      <UniqueIdentifier>{56fc3188-eb90-48e3-9bfb-a53d81600f31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Collision">
       <UniqueIdentifier>{4d89859f-1b3a-4803-9f4f-a4eeb04ccd4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameObjects">
-      <UniqueIdentifier>{38a374db-5d30-44e6-9239-be594ace1ddc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObjects">
-      <UniqueIdentifier>{93c52514-b556-4ce8-b505-725be61fcd5f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\GameLogic">
       <UniqueIdentifier>{293bafbe-b3f5-4c23-b323-73ac068e8888}</UniqueIdentifier>
@@ -145,35 +133,17 @@
     <Filter Include="Header Files\GameLogic\ModelCommands">
       <UniqueIdentifier>{e2fe0b9f-7065-42b1-8fc1-ea875dd33925}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameLogic\ModelCommands\Camera">
-      <UniqueIdentifier>{7c53fa9c-6e8a-4ea1-bdc3-dd2e7e74a22e}</UniqueIdentifier>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{c7cbb89d-5d4c-4da5-8b0c-11df5e4628ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameLogic\ModelCommands\Objects">
-      <UniqueIdentifier>{46030f64-3cb5-4a5b-b4d2-e3dad180f6db}</UniqueIdentifier>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{9e4a7621-8422-4202-94a4-a1b3d39e1511}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameLogic\ModelCommands\Resources">
-      <UniqueIdentifier>{86f37304-7d2f-493b-a1d9-3b4af5d2954b}</UniqueIdentifier>
+    <Filter Include="Header Files\Systems">
+      <UniqueIdentifier>{adf87568-919d-452c-86f6-19def669ce32}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameLogic\ModelCommands\Camera">
-      <UniqueIdentifier>{156ac983-5c24-4de0-bbd2-7087563d1b07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameLogic\ModelCommands\Objects">
-      <UniqueIdentifier>{28c19e6e-f85b-4329-aa70-f25b618f44db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameLogic\ModelCommands\Resources">
-      <UniqueIdentifier>{eb636cbf-a859-47cf-babd-cbac35fcf008}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Input\Commands\Camera">
-      <UniqueIdentifier>{7c65b864-eb2a-4f49-af68-ea104afa9f06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Input\Commands\Objects">
-      <UniqueIdentifier>{6602f749-f1c9-4ac4-95cc-3543443e7d24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Input\Commands\Camera">
-      <UniqueIdentifier>{d4740930-ff76-4386-850a-0db5c1db38d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Input\Commands\Objects">
-      <UniqueIdentifier>{fcf3b407-c698-4191-ba9d-a1cd3815f46c}</UniqueIdentifier>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{daa3b07b-db6b-4291-885c-229d36bb891e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +167,6 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Drawable.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -231,23 +198,11 @@
     <ClCompile Include="ImGuiUser.cpp">
       <Filter>Source Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Transformable.cpp">
-      <Filter>Source Files\Movement</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerController.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
     <ClCompile Include="InputDeviceManager.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="ProjectileGameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="PetModel.cpp">
       <Filter>Source Files\GameLogic\Tamagotchi</Filter>
@@ -263,12 +218,6 @@
     </ClCompile>
     <ClCompile Include="AutomaticClock.cpp">
       <Filter>Source Files\GameLogic\Tamagotchi</Filter>
-    </ClCompile>
-    <ClCompile Include="Tilemap.cpp">
-      <Filter>Source Files\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Cameras</Filter>
     </ClCompile>
     <ClCompile Include="GamepadMapping.cpp">
       <Filter>Source Files\Input\Mappings</Filter>
@@ -318,9 +267,6 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CameraManager.cpp">
-      <Filter>Source Files\Cameras</Filter>
-    </ClCompile>
     <ClCompile Include="ConstraintAttachment.cpp">
       <Filter>Source Files\Cameras\Attachments</Filter>
     </ClCompile>
@@ -345,47 +291,26 @@
     <ClCompile Include="CollisionResolver.cpp">
       <Filter>Source Files\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="PowerUpGameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="GameModelAccess.cpp">
       <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="NodeResourceGameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="TilemapComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeCameraZoomModelCommand.cpp">
-      <Filter>Source Files\GameLogic\ModelCommands\Camera</Filter>
+    <ClCompile Include="RenderingSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="DepleteResourceNodeModelCommand.cpp">
-      <Filter>Source Files\GameLogic\ModelCommands\Resources</Filter>
+    <ClCompile Include="MoveEntityModelCommandcpp.cpp">
+      <Filter>Source Files\GameLogic\ModelCommands</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeResourceAmountModelCommand.cpp">
-      <Filter>Source Files\GameLogic\ModelCommands\Resources</Filter>
+    <ClCompile Include="MoveEntityInputCommand.cpp">
+      <Filter>Source Files\Input\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="MoveObjectModelCommand.cpp">
-      <Filter>Source Files\GameLogic\ModelCommands\Objects</Filter>
+    <ClCompile Include="CameraSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="MoveCameraModelCommand.cpp">
-      <Filter>Source Files\GameLogic\ModelCommands\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="InteractModelCommand.cpp">
-      <Filter>Source Files\GameLogic\ModelCommands\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="ChangeCameraZoomInputCommand.cpp">
-      <Filter>Source Files\Input\Commands\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveCameraInputCommand.cpp">
-      <Filter>Source Files\Input\Commands\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="InteractInputCommand.cpp">
-      <Filter>Source Files\Input\Commands\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveObjectInputCommand.cpp">
-      <Filter>Source Files\Input\Commands\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="ShootGunInputCommand.cpp">
-      <Filter>Source Files\Input\Commands\Objects</Filter>
+    <ClCompile Include="ControllerSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,9 +331,6 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Drawable.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedSprite.h">
       <Filter>Header Files\Graphics</Filter>
@@ -446,26 +368,14 @@
     <ClInclude Include="ImGuiUser.h">
       <Filter>Header Files\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Transformable.h">
-      <Filter>Header Files\Movement</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerController.h">
-      <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="InputDeviceManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Header Files\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="ProjectileGameObject.h">
-      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="IModel.h">
       <Filter>Header Files\GameLogic</Filter>
@@ -493,12 +403,6 @@
     </ClInclude>
     <ClInclude Include="ResourceChangedEvent.h">
       <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Tilemap.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Cameras</Filter>
     </ClInclude>
     <ClInclude Include="InputCommand.h">
       <Filter>Header Files\Input\Commands</Filter>
@@ -563,9 +467,6 @@
     <ClInclude Include="Engine.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="CameraManager.h">
-      <Filter>Header Files\Cameras</Filter>
-    </ClInclude>
     <ClInclude Include="ConstraintAttachment.h">
       <Filter>Header Files\Cameras\Attachments</Filter>
     </ClInclude>
@@ -602,9 +503,6 @@
     <ClInclude Include="CollisionResolver.h">
       <Filter>Header Files\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUpGameObject.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionInterface.h">
       <Filter>Header Files\Collision</Filter>
     </ClInclude>
@@ -617,41 +515,35 @@
     <ClInclude Include="GameModelAccess.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="NodeResourceGameObject.h">
-      <Filter>Header Files\GameLogic</Filter>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ChangeCameraZoomModelCommand.h">
-      <Filter>Header Files\GameLogic\ModelCommands\Camera</Filter>
+    <ClInclude Include="TilemapComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ChangeResourceAmountModelCommand.h">
-      <Filter>Header Files\GameLogic\ModelCommands\Resources</Filter>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="DepleteResourceNodeModelCommand.h">
-      <Filter>Header Files\GameLogic\ModelCommands\Resources</Filter>
+    <ClInclude Include="RenderingSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="InteractModelCommand.h">
-      <Filter>Header Files\GameLogic\ModelCommands\Objects</Filter>
+    <ClInclude Include="MoveEntityModelCommand.h">
+      <Filter>Header Files\GameLogic\ModelCommands</Filter>
     </ClInclude>
-    <ClInclude Include="MoveCameraModelCommand.h">
-      <Filter>Header Files\GameLogic\ModelCommands\Objects</Filter>
+    <ClInclude Include="MoveEntityInputCommand.h">
+      <Filter>Header Files\Input\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="MoveObjectModelCommand.h">
-      <Filter>Header Files\GameLogic\ModelCommands\Objects</Filter>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ChangeCameraZoomInputCommand.h">
-      <Filter>Header Files\Input\Commands\Camera</Filter>
+    <ClInclude Include="CameraSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="MoveCameraInputCommand.h">
-      <Filter>Header Files\Input\Commands\Camera</Filter>
+    <ClInclude Include="PlayerControllerComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="MoveObjectInputCommand.h">
-      <Filter>Header Files\Input\Commands\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="ShootGunInputCommand.h">
-      <Filter>Header Files\Input\Commands\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="InteractInputCommand.h">
-      <Filter>Header Files\Input\Commands\Objects</Filter>
+    <ClInclude Include="ControllerSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

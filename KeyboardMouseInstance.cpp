@@ -8,8 +8,8 @@
 
 namespace hk
 {
-	KeyboardMouseInstance::KeyboardMouseInstance()
-		: m_device(nullptr)
+	KeyboardMouseInstance::KeyboardMouseInstance(const KeyboardMouseDevice* device)
+		: m_device(device)
 	{
 	}
 

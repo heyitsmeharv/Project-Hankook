@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "Engine.h"
+#include "EngineAccess.h"
 #include "Timer.h"
 
 //*********************
@@ -16,32 +17,11 @@
 // - Sprite move with controllers (i.e. keyboard-mouse + ps5) X
 // - Spawn more GameObjects on button press (i.e. a gun shooting bullets) X
 // - Create a model class for game logic execution
-// - Create a basic tamagotchi or something like that
-// - Create a basic puzzle game? 
-// - Have proper command pipeline execution (not sporadic around codebase)
-// - Collisions
-// - Database loading
-// - Level loading
-// - Animated Sprite 
-// - Movement
-// - Clean includes
-// - Will probably need a proper Event Pipeline
-
-
-// - Add a character that's controlled X
-// - Add item in level X
-// - Allow for interaction with item
-// - On interaction, load a 2D puzzle
-// - Have pet follow character
-// - Create button on UI
-// - On button press, show Pet info
-
-
-// - Make collision system class
-// - Create variant for each collision type (monostate, circle, AABB, OBB, poly)
-// - Add (De)Register functions to the system
-// - Add a collision check function that is called whenever a game object moves
-// - If function returns true, move the game object back
+// - EnTT rewrite X
+// - Load object layer from Tiled
+// - Spawn a controller player
+// - Allow for player to interact with object
+// - Think about collision system
 
 int main(int argc, char* args[])
 {

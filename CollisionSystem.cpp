@@ -4,7 +4,6 @@
 #include "CollisionResolver.h"
 #include "CollisionSystem.h"
 #include "CollisionVisitor.h"
-#include "GameObject.h"
 
 namespace hk
 {
@@ -27,10 +26,10 @@ namespace hk
 			}
 		}
 
-		for (auto& collision : colliding_objects)
-		{
-			collision.first->GetOwner()->HandleCollision(*collision.second->GetOwner());
-		}
+		//for (auto& collision : colliding_objects)
+		//{
+		//	collision.first->GetOwner()->HandleCollision(*collision.second->GetOwner());
+		//}
 	}
 
 	bool CollisionSystem::AreObjectsColliding(const Collidable& object_a, const Collidable& object_b) const

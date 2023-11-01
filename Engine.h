@@ -2,14 +2,12 @@
 
 #include <vector>
 
-#include "CameraManager.h"
 #include "CollisionSystem.h"
 #include "DrawRequest.h"
 #include "ErrorManager.h"
 #include "GameModel.h"
 #include "InputDeviceManager.h"
 #include "Logger.h"
-#include "PlayerController.h"
 #include "TextureManager.h"
 #include "Window.h"
 
@@ -36,7 +34,6 @@ namespace hk
 
 		const InputDeviceManager&	GetInputDeviceManager	() const;
 		const TextureManager&		GetTextureManager		() const;
-		CameraManager&				GetCameraManager		();
 		GameModel&					GetGameModel			();
 		CollisionSystem&			GetCollisionSystem		();
 
@@ -47,7 +44,6 @@ namespace hk
 		bool						LoadTextureManager		();
 		bool						LoadTextures			();
 		bool						LoadInputDeviceManager	();
-		bool						LoadCameraManager		();
 
 		bool						LoadImGui				();
 
@@ -58,7 +54,6 @@ namespace hk
 		std::vector<std::unique_ptr<DrawRequest>>	m_draw_requests;
 		TextureManager								m_texture_manager;
 		InputDeviceManager							m_input_device_manager;
-		CameraManager								m_camera_manager;
 		GameModel									m_game_model;
 		CollisionSystem								m_collision_system;
 

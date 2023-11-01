@@ -4,8 +4,8 @@
 
 namespace hk
 {
-	GamepadInstance::GamepadInstance()
-		: m_device(nullptr)
+	GamepadInstance::GamepadInstance(const GamepadDevice* device)
+		: m_device(device)
 	{
 	}
 

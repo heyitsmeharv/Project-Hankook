@@ -1,15 +1,15 @@
 #pragma once
 
+#include <entt/fwd.hpp>
+
 namespace hk
 {
-	class Camera;
-
 	class CameraAttachment
 	{
 	public:
 		virtual ~CameraAttachment() {}
 
-		virtual void Update(Camera&) = 0;
+		virtual void Update(entt::entity camera_entity, entt::registry& registry) = 0;
 
 		bool IsEnabled		() const				{ return m_is_enabled; }
 		void ToggleEnabled	()						{ m_is_enabled = !m_is_enabled; }

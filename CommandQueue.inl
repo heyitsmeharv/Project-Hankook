@@ -9,13 +9,13 @@ namespace hk
 	}
 
 	template<typename T>
-	void CommandQueue<T>::ProcessQueue()
+	void CommandQueue<T>::ProcessQueue(entt::registry& registry)
 	{
 		for (auto& command : m_command_queue)
 		{
 			if (command)
 			{
-				command->Execute();
+				command->Execute(registry);
 			}
 		}
 	}

@@ -14,7 +14,7 @@ namespace hk
 		ConstraintAttachment();
 		ConstraintAttachment(const SDL_FRect& constraint);
 
-		void Update(Camera& camera) override;
+		void Update(entt::entity camera_entity, entt::registry& registry) override;
 
 		void SetConstraint(const SDL_FRect& constraint);
 

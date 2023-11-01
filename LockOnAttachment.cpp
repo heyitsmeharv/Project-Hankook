@@ -1,25 +1,30 @@
 #include "LockOnAttachment.h"
-#include "Camera.h"
+#include "TransformComponent.h"
+
+#include <entt/entt.hpp>
 
 namespace hk
 {
 	LockOnAttachment::LockOnAttachment()
-		: m_target(nullptr)
+		: m_target(entt::null)
 		, m_offset()
 	{
 	}
 
-	LockOnAttachment::LockOnAttachment(const Transformable& target, const Vector2f& offset)
-		: m_target(&target)
+	LockOnAttachment::LockOnAttachment(entt::entity target_entity, const Vector2f& offset)
+		: m_target(target_entity)
 		, m_offset(offset)
 	{
 	}
 
-	void LockOnAttachment::Update(Camera& camera)
+	void LockOnAttachment::Update(entt::entity camera_entity, entt::registry& registry)
 	{
-		if (m_is_enabled && m_target)
+		if (m_is_enabled && m_target != entt::null)
 		{
-			camera.SetPosition(m_target->GetPosition() - m_offset);
+			TransformComponent& camera_transform = registry.get<TransformComponent>(camera_entity);
+			TransformComponent& target_transform = registry.get<TransformComponent>(m_target);
+			
+			camera_transform.position = target_transform.position - m_offset;
 		}
 	}
 
@@ -31,6 +36,12 @@ namespace hk
 	void LockOnAttachment::MoveOffset(const Vector2f& delta)
 	{
 		m_offset += delta;
+	}
+
+	void LockOnAttachment::AttachToTarget(entt::entity target_entity, const Vector2f& offset)
+	{
+		m_target = target_entity;
+		m_offset = offset;
 	}
 
 	const Vector2f& LockOnAttachment::GetOffset() const

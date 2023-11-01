@@ -1,7 +1,10 @@
 #include "ConstraintAttachment.h"
-#include "Camera.h"
+
+#include "CameraComponent.h"
+#include "TransformComponent.h"
 
 #include <algorithm>
+#include <entt/entt.hpp>
 
 namespace hk
 {
@@ -16,18 +19,20 @@ namespace hk
 		SetConstraint(constraint);
 	}
 
-	void ConstraintAttachment::Update(Camera& camera)
+	void ConstraintAttachment::Update(entt::entity camera_entity, entt::registry& registry)
 	{
 		if (m_is_enabled)
 		{
-			Vector2f position = camera.GetPosition();
+			CameraComponent& camera_component = registry.get<CameraComponent>(camera_entity);
+			TransformComponent& camera_transform = registry.get<TransformComponent>(camera_entity);
 
-			position.x = std::clamp(position.x, m_constraint.x, m_constraint.w - camera.GetCameraRect().w);
-			position.y = std::clamp(position.y, m_constraint.y, m_constraint.h - camera.GetCameraRect().h);
+			Vector2f position;
+			position.x = std::clamp(camera_transform.position.x, m_constraint.x, m_constraint.w - camera_component.dimensions.x);
+			position.y = std::clamp(camera_transform.position.y, m_constraint.y, m_constraint.h - camera_component.dimensions.y);
 
-			if (position != camera.GetPosition())
+			if (position != camera_transform.position)
 			{
-				camera.SetPosition(position);
+				camera_transform.position = position;
 			}
 		}
 	}
