@@ -2,6 +2,7 @@
 
 #include "ConstraintAttachment.h"
 #include "Engine.h"
+#include "EngineAccess.h"
 #include "GamepadInstance.h"
 #include "KeyboardMouseInstance.h"
 #include "LockOnAttachment.h"
@@ -11,6 +12,7 @@
 #include "PlayerControllerComponent.h"
 #include "TilemapComponent.h"
 #include "TransformComponent.h"
+#include "SpriteComponent.h"
 
 namespace hk
 {
@@ -80,12 +82,23 @@ namespace hk
 			controller_instance = std::make_unique<hk::KeyboardMouseInstance>(&m_engine.GetInputDeviceManager().GetDefaultKeyboardMouse());
 		}
 
+		entt::entity player_entity = m_registry.create();
+		TransformComponent& player_transform = m_registry.emplace<TransformComponent>(player_entity);
+		player_transform.position = Vector2f{ 100.0f, 100.0f };
+
+		const hk::Texture* texture = &GetEngine().GetTextureManager().GetTexture("Data\\Images\\blank_circle_64.png");
+		if (texture)
+		{
+			SpriteComponent& player_sprite = m_registry.emplace<SpriteComponent>(player_entity);
+			player_sprite.texture = texture;
+		}
+
 		entt::entity player_controller_entity = m_registry.create();
 		PlayerControllerComponent& player_controller = m_registry.emplace<PlayerControllerComponent>(player_controller_entity);
 		player_controller.id = "player_1";
 		player_controller.controller = std::move(controller_instance);
 		player_controller.is_enabled = true;
-		player_controller.controlled_entity = m_camera_system.CurrentCamera();
+		player_controller.controlled_entity = player_entity;
 
 		return true;
 	}

@@ -9,9 +9,9 @@ namespace hk
 
 	struct PlayerControllerComponent
 	{
-		entt::entity						controlled_entity = entt::null;
-		bool								is_enabled;
 		std::string							id;
-		std::unique_ptr<ControllerInstance> controller;
+		entt::entity						controlled_entity = entt::null;
+		bool								is_enabled = false;
+		std::unique_ptr<ControllerInstance> controller = nullptr;
 	};
 }
