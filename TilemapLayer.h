@@ -20,7 +20,7 @@ namespace hk
 	public:
 		virtual ~TilemapLayer() {}
 
-		virtual bool LoadFromJson	(const rapidjson::Value& layer_data);
+		virtual bool LoadFromJson	(const rapidjson::Value& layer_data, const int layer_index);
 		virtual void CreateVertList	(const Vector2i& map_grid_dimensions, const Tileset& tileset) = 0;
 
 		virtual void Draw			(const Tileset& tileset, const Vector2i& offset, const float scale) const;
@@ -30,7 +30,7 @@ namespace hk
 
 	protected:
 		std::string			m_name;
-		int					m_index;
+		int					m_z_index;
 		Vector2i			m_position;
 		Vector2i			m_dimensions;
 		std::vector<int>	m_tile_data;

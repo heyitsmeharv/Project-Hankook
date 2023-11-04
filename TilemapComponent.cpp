@@ -98,7 +98,7 @@ namespace hk
 
 					if (new_layer)
 					{
-						new_layer->LoadFromJson(layer);
+						new_layer->LoadFromJson(layer, l);
 						new_layer->CreateVertList(tilemap.grid_dimensions, tilemap.tilesets[0]);
 
 						tilemap.layers.push_back(std::move(new_layer));

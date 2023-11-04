@@ -34,6 +34,7 @@ namespace hk
 			{
 				std::unique_ptr<hk::TextureDrawRequest> draw_request = std::make_unique<TextureDrawRequest>();
 
+				draw_request->z_index = sprite.z_index;
 				draw_request->texture = sprite.texture;
 				draw_request->draw_info.position = { (int)transform.position.x, (int)transform.position.y };
 				draw_request->draw_info.angle_in_deg = sprite.angle_in_deg;

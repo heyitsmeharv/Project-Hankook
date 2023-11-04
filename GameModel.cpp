@@ -48,6 +48,7 @@ namespace hk
 		{
 			SpriteComponent& player_sprite = m_registry.emplace<SpriteComponent>(m_player_entity);
 			player_sprite.texture = texture;
+			player_sprite.z_index = 3;
 		}
 
 		//---- CAMERA -----

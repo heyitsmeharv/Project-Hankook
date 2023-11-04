@@ -6,15 +6,29 @@
 
 namespace hk
 {
-	bool TilemapTileLayer::LoadFromJson(const rapidjson::Value& layer_data)
+	bool TilemapTileLayer::LoadFromJson(const rapidjson::Value& layer_data, const int layer_index)
 	{
-		if (TilemapLayer::LoadFromJson(layer_data) == false)
+		if (TilemapLayer::LoadFromJson(layer_data, layer_index) == false)
 		{
 			return false;
 		}
 
 		m_dimensions.x = layer_data["width"].GetInt();
 		m_dimensions.y = layer_data["height"].GetInt();
+
+		if (layer_data.HasMember("properties"))
+		{
+			for (rapidjson::SizeType p = 0; p < layer_data["properties"].Size(); ++p)
+			{
+				const rapidjson::Value& prop = layer_data["properties"][p];
+
+				if (strcmp(prop["name"].GetString(), "z_index") == 0)
+				{
+					m_z_index = prop["value"].GetInt();
+					break;
+				}
+			}
+		}
 
 		const rapidjson::Value& data = layer_data["data"];
 		if (data.IsArray() == false)

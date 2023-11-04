@@ -28,7 +28,7 @@ namespace hk
 	class TilemapObjectLayer : public TilemapLayer
 	{
 	public:
-		bool LoadFromJson(const rapidjson::Value& layer_data) override;
+		bool LoadFromJson(const rapidjson::Value& layer_data, const int layer_index) override;
 		void CreateVertList(const Vector2i& map_grid_dimensions, const Tileset& tileset) override;
 
 	protected:

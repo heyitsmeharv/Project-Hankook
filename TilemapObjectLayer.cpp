@@ -54,9 +54,9 @@ namespace
 
 namespace hk
 {
-	bool TilemapObjectLayer::LoadFromJson(const rapidjson::Value& layer_data)
+	bool TilemapObjectLayer::LoadFromJson(const rapidjson::Value& layer_data, const int layer_index)
 	{
-		if (TilemapLayer::LoadFromJson(layer_data) == false)
+		if (TilemapLayer::LoadFromJson(layer_data, layer_index) == false)
 		{
 			return false;
 		}

@@ -12,6 +12,7 @@ namespace hk
 	struct SpriteComponent
 	{
 		const hk::Texture*			texture = nullptr;
+		int							z_index = 0;
 		Vector2i					dimensions = { 0, 0 };
 		double						angle_in_deg = 0.0;
 		float						scale = 1.0f;

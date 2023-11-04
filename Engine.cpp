@@ -127,6 +127,8 @@ namespace hk
 			m_imgui_manager->Draw();
 		}
 
+		std::sort(m_draw_requests.begin(), m_draw_requests.end(), [](const auto& lhs, const auto& rhs) { return lhs->z_index < rhs->z_index; });
+
 		for (const auto& request : m_draw_requests)
 		{
 			request->HandleRequest();
