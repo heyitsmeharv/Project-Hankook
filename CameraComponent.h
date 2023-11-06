@@ -15,6 +15,13 @@ namespace hk
 		std::string										id;
 		Vector2i										dimensions;
 		float											zoom = 1.0f;
-		//std::vector<std::unique_ptr<CameraAttachment>>	attachments;
+		std::vector<std::unique_ptr<CameraAttachment>>	attachments;
+
+		//unique_ptrs wreaking fucking havoc as per usual
+		  CameraComponent();
+		 ~CameraComponent();
+		
+		CameraComponent(CameraComponent&& rhs);
+		CameraComponent& operator=(CameraComponent&& rhs);
 	};
 }

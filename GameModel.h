@@ -39,6 +39,7 @@ namespace hk
 
 		CommandQueue<ModelCommand>		m_model_command_queue;
 		entt::registry					m_registry;
+		entt::entity					m_player_entity;
 
 		CameraSystem					m_camera_system;
 		ControllerSystem				m_controller_system;

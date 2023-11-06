@@ -1,6 +1,7 @@
 #pragma once
 
 #include <entt/fwd.hpp>
+#include <memory>
 #include <stack>
 #include <string>
 
@@ -8,12 +9,14 @@
 
 namespace hk
 {
+	class CameraAttachment;
+
 	struct CameraInitInfo
 	{
-		std::string	id;
-		Vector2f	position;
-		Vector2i	dimensions;
-		float		zoom;
+		std::string		id;
+		Vector2f		position;
+		Vector2i		dimensions;
+		float			zoom;
 	};
 
 	class CameraSystem
@@ -25,6 +28,8 @@ namespace hk
 		void			PopCurrentCamera(entt::registry& registry);
 
 		entt::entity	CurrentCamera	() const;
+
+		bool			AddAttachment	(entt::registry& registry, entt::entity camera_entity, std::unique_ptr<CameraAttachment>&& attachment);
 
 	private:
 		std::stack<entt::entity> m_cameras;

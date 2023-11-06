@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AutomaticClock.cpp" />
+    <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="CollisionResolver.cpp" />

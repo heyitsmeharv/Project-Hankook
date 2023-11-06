@@ -20,7 +20,6 @@
 // - EnTT rewrite X
 // - Load object layer from Tiled
 // - Spawn a controller player
-// - Allow for player to interact with object
 // - Think about collision system
 
 int main(int argc, char* args[])

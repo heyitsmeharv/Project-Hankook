@@ -9,10 +9,10 @@
 
 namespace hk
 {
-	bool TilemapLayer::LoadFromJson(const rapidjson::Value& layer_data)
+	bool TilemapLayer::LoadFromJson(const rapidjson::Value& layer_data, const int layer_index)
 	{
 		m_name = layer_data["name"].GetString();
-		m_index = layer_data["id"].GetInt();
+		m_z_index = layer_index;
 		m_position.x = layer_data["x"].GetInt();
 		m_position.y = layer_data["y"].GetInt();
 		m_is_visible = layer_data["visible"].GetBool();
@@ -30,6 +30,7 @@ namespace hk
 		draw_request->draw_info.indices = &m_indices;
 		draw_request->draw_info.offset = offset;
 		draw_request->draw_info.scale = scale;
+		draw_request->z_index = m_z_index;
 
 		GetEngine().AddDrawRequest(std::move(draw_request));
 	}

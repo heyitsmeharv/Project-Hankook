@@ -72,6 +72,12 @@ namespace hk
 	void Texture::Draw(const TextureDrawInfo& info) const
 	{
 		SDL_Rect render_quad{ info.position.x * info.scale, info.position.y * info.scale, info.dimensions.x * info.scale, info.dimensions.y * info.scale };
+		if (info.dimensions.IsZeroed())
+		{
+			render_quad.w = GetWidth() * info.scale;
+			render_quad.h = GetHeight() * info.scale;
+		}
+
 		if (info.clip.has_value())
 		{
 			render_quad.w = info.clip->w * info.scale;

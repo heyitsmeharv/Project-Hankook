@@ -2,15 +2,29 @@
 #include <entt/entt.hpp>
 
 #include "CameraComponent.h"
+#include "CameraAttachment.h"
 #include "TransformComponent.h"
 
 namespace hk
 {
-	void CameraSystem::Update(entt::registry&)
+	void CameraSystem::Update(entt::registry& registry)
 	{
 		if (m_cameras.empty())
 		{
 			return;
+		}
+
+		entt::entity current_camera_entity = CurrentCamera();
+		CameraComponent* current_camera = registry.try_get<CameraComponent>(current_camera_entity);
+		if (current_camera)
+		{
+			for (auto& attachment : current_camera->attachments)
+			{
+				if (attachment && attachment->IsEnabled())
+				{
+					attachment->Update(current_camera_entity, registry);
+				}
+			}
 		}
 	}
 
@@ -31,6 +45,18 @@ namespace hk
 	{
 		registry.destroy(CurrentCamera());
 		m_cameras.pop();
+	}
+
+	bool CameraSystem::AddAttachment(entt::registry& registry, entt::entity camera_entity, std::unique_ptr<CameraAttachment>&& attachment)
+	{
+		CameraComponent* camera_component = registry.try_get<CameraComponent>(camera_entity);
+		if (camera_component)
+		{
+			camera_component->attachments.push_back(std::move(attachment));
+			return true;
+		}
+
+		return false;
 	}
 
 	entt::entity CameraSystem::CurrentCamera() const

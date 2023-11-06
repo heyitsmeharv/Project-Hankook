@@ -7,5 +7,7 @@ namespace hk
 		virtual ~DrawRequest() {}
 
 		virtual void HandleRequest() const = 0;
+
+		int z_index = 0;
 	};
 }
