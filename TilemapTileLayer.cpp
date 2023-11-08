@@ -70,7 +70,8 @@ namespace hk
 	{
 		const Vector2i tileset_image_size = { tileset.image->GetWidth(), tileset.image->GetHeight() };
 
-		m_vertices.resize(map_grid_dimensions.x * map_grid_dimensions.y * 4);	//4 for each vert of the quad
+		//m_vertices.resize(map_grid_dimensions.x * map_grid_dimensions.y * 4);	//4 for each vert of the quad
+		m_vertices.reserve(map_grid_dimensions.x * map_grid_dimensions.y * 4);
 
 		for (int x = 0; x < map_grid_dimensions.x; x++)
 		{
@@ -83,13 +84,15 @@ namespace hk
 					continue;
 				}
 
+				const int starting_index = m_vertices.size();
+				m_vertices.insert(m_vertices.end(), { SDL_Vertex{}, SDL_Vertex{}, SDL_Vertex{}, SDL_Vertex{} });
+
 				// find its position in the tileset texture
 				const Vector2f uv = FindUVCoords(tile_number, tileset);
 				const float tu = uv.x;
 				const float tv = uv.y;
 
 				// get a pointer to the current tile's quad
-				const int starting_index = (x + y * map_grid_dimensions.x) * 4;
 				SDL_Vertex* quad = &m_vertices[starting_index];
 
 				// define its 4 corners - TL = 0, TR = 1, BR = 2, BL = 3
