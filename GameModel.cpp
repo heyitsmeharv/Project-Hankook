@@ -36,7 +36,7 @@ namespace hk
 		//----- TILE MAP -----
 		entt::entity tilemap_entity = m_registry.create();
 		TilemapComponent& tilemap = m_registry.emplace<TilemapComponent>(tilemap_entity);
-		LoadTilemapFromFile(tilemap, "Data\\Tilemap\\demo_project.json");
+		LoadTilemapFromFile(tilemap, "Data\\Tilemap\\demo_project_2.json");
 
 		//----- PLAYER -----
 		m_player_entity = m_registry.create();
