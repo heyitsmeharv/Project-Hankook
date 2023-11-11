@@ -145,6 +145,12 @@
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{daa3b07b-db6b-4291-885c-229d36bb891e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\DrawRequests">
+      <UniqueIdentifier>{bb41e55c-5bae-4000-8107-ac4a9590937f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\DrawRequests">
+      <UniqueIdentifier>{c19b7205-3c2b-475b-a3ca-d1e1ebe63b73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -270,12 +276,6 @@
     <ClCompile Include="ConstraintAttachment.cpp">
       <Filter>Source Files\Cameras\Attachments</Filter>
     </ClCompile>
-    <ClCompile Include="TextureDrawRequest.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="TileDrawRequest.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="EngineAccess.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -314,6 +314,21 @@
     </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ZoomCameraModelCommand.cpp">
+      <Filter>Source Files\GameLogic\ModelCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ZoomCameraInputCommand.cpp">
+      <Filter>Source Files\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="TileDrawRequest.cpp">
+      <Filter>Source Files\Graphics\DrawRequests</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureDrawRequest.cpp">
+      <Filter>Source Files\Graphics\DrawRequests</Filter>
+    </ClCompile>
+    <ClCompile Include="SetRenderScaleDrawRequest.cpp">
+      <Filter>Source Files\Graphics\DrawRequests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,17 +491,8 @@
     <ClInclude Include="EngineAccess.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="DrawRequest.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="TextureInfos.h">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureDrawRequest.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="TileDrawRequest.h">
-      <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files\GameLogic\Resources</Filter>
@@ -547,6 +553,24 @@
     </ClInclude>
     <ClInclude Include="ControllerSystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoomCameraModelCommand.h">
+      <Filter>Header Files\GameLogic\ModelCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoomCameraInputCommand.h">
+      <Filter>Header Files\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDrawRequest.h">
+      <Filter>Header Files\Graphics\DrawRequests</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureDrawRequest.h">
+      <Filter>Header Files\Graphics\DrawRequests</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawRequest.h">
+      <Filter>Header Files\Graphics\DrawRequests</Filter>
+    </ClInclude>
+    <ClInclude Include="SetRenderScaleDrawRequest.h">
+      <Filter>Header Files\Graphics\DrawRequests</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

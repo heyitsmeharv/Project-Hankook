@@ -18,7 +18,7 @@ namespace hk
 				std::vector<std::unique_ptr<InputCommand>> command_list = controller.controller->Update();
 				for (auto& command : command_list)
 				{
-					command->Execute(controller.controlled_entity);
+					command->Execute(controller.controlled_entity, controller.controlled_camera);
 				}
 			}
 		});

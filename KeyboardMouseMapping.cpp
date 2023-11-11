@@ -1,6 +1,7 @@
 #include "InputCommand.h"
 #include "KeyboardMouseMapping.h"
 #include "MoveEntityInputCommand.h"
+#include "ZoomCameraInputCommand.h"
 
 namespace hk
 {
@@ -74,15 +75,15 @@ namespace hk
 		camera_move_right_binding.default_command = std::make_unique<MoveEntityInputCommand>(5.0f, 0.0f);
 		m_key_bindings.insert({ SDLK_RIGHT, std::move(camera_move_right_binding) });
 
-		//InputCommandBinding camera_zoom_in_binding;
-		//camera_zoom_in_binding.name = "camera_zoom_in";
-		//camera_zoom_in_binding.default_command = std::make_unique<ChangeCameraZoomInputCommand>(0.25f);
-		//m_wheel_bindings.insert({ MouseWheelID::WHEEL_UP, std::move(camera_zoom_in_binding) });
-		//
-		//InputCommandBinding camera_zoom_out_binding;
-		//camera_zoom_out_binding.name = "camera_zoom_out";
-		//camera_zoom_out_binding.default_command = std::make_unique<ChangeCameraZoomInputCommand>(-0.25f);
-		//m_wheel_bindings.insert({ MouseWheelID::WHEEL_DOWN, std::move(camera_zoom_out_binding) });
+		InputCommandBinding camera_zoom_in_binding;
+		camera_zoom_in_binding.name = "camera_zoom_in";
+		camera_zoom_in_binding.default_command = std::make_unique<ZoomCameraInputCommand>(0.25f);
+		m_wheel_bindings.insert({ MouseWheelID::WHEEL_UP, std::move(camera_zoom_in_binding) });
+		
+		InputCommandBinding camera_zoom_out_binding;
+		camera_zoom_out_binding.name = "camera_zoom_out";
+		camera_zoom_out_binding.default_command = std::make_unique<ZoomCameraInputCommand>(-0.25f);
+		m_wheel_bindings.insert({ MouseWheelID::WHEEL_DOWN, std::move(camera_zoom_out_binding) });
 
 		// GUN
 		//InputCommandBinding shoot_binding;

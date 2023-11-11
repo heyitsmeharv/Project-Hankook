@@ -22,6 +22,6 @@ namespace hk
 
 		virtual std::unique_ptr<InputCommand>	Clone					() const = 0;
 		virtual void							ConfigureFromDeviceInput(const DeviceInputInfo&) = 0;
-		virtual void							Execute					(entt::entity) const = 0;
+		virtual void							Execute					(entt::entity controlled_entity, entt::entity camera_entity) const = 0;
 	};
 }

@@ -4,11 +4,11 @@
 
 namespace hk
 {
-	class MoveEntityInputCommand : public InputCommand
+	class ZoomCameraInputCommand : public InputCommand
 	{
 	public:
-		 MoveEntityInputCommand(const float x_delta, const float y_delta);
-		~MoveEntityInputCommand();
+		 ZoomCameraInputCommand(const float delta);
+		~ZoomCameraInputCommand();
 
 		std::unique_ptr<InputCommand> Clone() const override;
 
@@ -16,8 +16,6 @@ namespace hk
 		void Execute					(entt::entity controlled_entity, entt::entity camera_entity) const override;
 
 	private:
-		float m_x_delta;
-		float m_y_delta;
-
+		float m_delta;
 	};
 }

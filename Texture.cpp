@@ -71,17 +71,17 @@ namespace hk
 
 	void Texture::Draw(const TextureDrawInfo& info) const
 	{
-		SDL_Rect render_quad{ info.position.x * info.scale, info.position.y * info.scale, info.dimensions.x * info.scale, info.dimensions.y * info.scale };
+		SDL_Rect render_quad{ info.position.x, info.position.y, info.dimensions.x, info.dimensions.y };
 		if (info.dimensions.IsZeroed())
 		{
-			render_quad.w = GetWidth() * info.scale;
-			render_quad.h = GetHeight() * info.scale;
+			render_quad.w = GetWidth();
+			render_quad.h = GetHeight();
 		}
 
 		if (info.clip.has_value())
 		{
-			render_quad.w = info.clip->w * info.scale;
-			render_quad.h = info.clip->h * info.scale;
+			render_quad.w = info.clip->w;
+			render_quad.h = info.clip->h;
 		}
 
 		if (info.viewport_rect.has_value())
@@ -93,8 +93,8 @@ namespace hk
 			}
 			else
 			{
-				render_quad.x -= info.viewport_rect->x * info.scale;
-				render_quad.y -= info.viewport_rect->y * info.scale;
+				render_quad.x -= info.viewport_rect->x;
+				render_quad.y -= info.viewport_rect->y;
 			}
 		}
 
@@ -134,9 +134,6 @@ namespace hk
 		{
 			vert.position.x -= info.offset->x;
 			vert.position.y -= info.offset->y;
-
-			vert.position.x *= info.scale;
-			vert.position.y *= info.scale;
 		}
 
 		SDL_RenderGeometry(m_renderer, m_texture, offset_verts.data(), (int)offset_verts.size(), info.indices ? info.indices->data() : nullptr, info.indices ? (int)info.indices->size() : 0);

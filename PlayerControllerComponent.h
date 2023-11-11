@@ -11,6 +11,7 @@ namespace hk
 	{
 		std::string							id;
 		entt::entity						controlled_entity = entt::null;
+		entt::entity						controlled_camera = entt::null;
 		bool								is_enabled = false;
 		std::unique_ptr<ControllerInstance> controller = nullptr;
 	};

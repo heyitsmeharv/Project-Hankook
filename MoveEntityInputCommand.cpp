@@ -28,9 +28,9 @@ namespace hk
 		m_y_delta *= info.press_modifier;
 	}
 
-	void MoveEntityInputCommand::Execute(entt::entity entity) const
+	void MoveEntityInputCommand::Execute(entt::entity controlled_entity, entt::entity) const
 	{
-		hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "MoveEntityInputCommand executed on entity %d with x: %f, y: %f", entity, m_x_delta, m_y_delta);
-		GetGameModel().QueueModelCommand(std::make_unique<MoveEntityModelCommand>(entity, Vector2f{ m_x_delta, m_y_delta }));
+		hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "MoveEntityInputCommand executed on entity %d with x: %f, y: %f", controlled_entity, m_x_delta, m_y_delta);
+		GetGameModel().QueueModelCommand(std::make_unique<MoveEntityModelCommand>(controlled_entity, Vector2f{ m_x_delta, m_y_delta }));
 	}
 }

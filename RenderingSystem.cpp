@@ -6,6 +6,7 @@
 #include "EngineAccess.h"
 #include "CameraComponent.h"
 #include "SpriteComponent.h"
+#include "SetRenderScaleDrawRequest.h"
 #include "TilemapComponent.h"
 #include "TransformComponent.h"
 #include "Texture.h"
@@ -17,6 +18,16 @@ namespace hk
 	{
 		const TransformComponent& camera_transform = registry.get<TransformComponent>(current_camera);
 		const CameraComponent& camera_info = registry.get<CameraComponent>(current_camera);
+
+		// Set render scale from camera
+		{
+			std::unique_ptr<hk::SetRenderScaleDrawRequest> scale_request = std::make_unique<SetRenderScaleDrawRequest>();
+			scale_request->renderer = GetEngine().GameWindow().GetRenderer();
+			scale_request->scale = { camera_info.zoom, camera_info.zoom };
+			scale_request->z_index = -INT_MAX;	//Hacky af but makes sure this is done first
+
+			GetEngine().AddDrawRequest(std::move(scale_request));
+		}
 
 		auto tilemap_view = registry.view<const TilemapComponent>();
 		tilemap_view.each([&](const TilemapComponent& tilemap)

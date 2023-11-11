@@ -36,7 +36,7 @@ namespace hk
 		//----- TILE MAP -----
 		entt::entity tilemap_entity = m_registry.create();
 		TilemapComponent& tilemap = m_registry.emplace<TilemapComponent>(tilemap_entity);
-		LoadTilemapFromFile(tilemap, "Data\\Tilemap\\demo_project_2.json");
+		LoadTilemapFromFile(tilemap, "Data\\Tilemap\\demo_project_2.tmj");
 
 		//----- PLAYER -----
 		m_player_entity = m_registry.create();
@@ -105,6 +105,7 @@ namespace hk
 		player_controller.controller = std::move(controller_instance);
 		player_controller.is_enabled = true;
 		player_controller.controlled_entity = m_player_entity;
+		player_controller.controlled_camera = m_camera_system.CurrentCamera();
 
 		return true;
 	}
