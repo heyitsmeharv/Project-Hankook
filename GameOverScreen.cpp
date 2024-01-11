@@ -69,7 +69,7 @@ namespace hk::ui
 		restart_button.position = { 800.0f, 100.0f };
 		restart_button.dimensions = { 300, 64 };
 		restart_button.current_state = "active";
-		restart_button.behaviours.emplace_back(std::make_unique<CommandButtonBehaviour>([&]() 
+		restart_button.behaviours.emplace_back(std::make_unique<CommandButtonBehaviour>([]() 
 		{
 			
 		}));
