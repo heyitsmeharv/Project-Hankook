@@ -2,8 +2,8 @@
 #include <SDL2/SDL_image.h>
 
 #include "Engine.h"
-#include "EngineAccess.h"
 #include "Timer.h"
+#include "Rng.h"
 
 //*********************
 //***** TODO LIST *****
@@ -26,7 +26,8 @@ int main(int argc, char* args[])
 {
 	argc; args;
 
-	srand(time(NULL));
+	hk::Rng::SetSeed(time(nullptr));
+	//hk::Rng::SetSeed(1924);
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER) < 0)
 	{
@@ -41,9 +42,13 @@ int main(int argc, char* args[])
 		return -1;
 	}
 
-	hk::Engine engine;
-	hk::RegisterEngine(engine);
+	if (TTF_Init() == -1)
+	{
+		hk::Fatal(hk::ErrorCategory::GFX, "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+		return -1;
+	}
 
+	hk::Engine engine;
 	engine.Start();
 
 	//----- TIMER -----
@@ -62,6 +67,7 @@ int main(int argc, char* args[])
 	
 	engine.Shutdown();
 
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 	

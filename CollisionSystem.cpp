@@ -12,11 +12,11 @@ namespace hk
 		CollisionList colliding_objects;
 		CollisionVisitor visitor;
 
-		for (int i = 0; i < m_collidables.size(); i++)
+		for (size_t i = 0; i < m_collidables.size(); i++)
 		{
 			Collidable* lhs = m_collidables[i];
 
-			for (int j = i + 1; j < m_collidables.size(); ++j)
+			for (size_t j = i + 1; j < m_collidables.size(); ++j)
 			{
 				Collidable* rhs = m_collidables[j];
 				if (std::visit(visitor, lhs->GetBoundingVolume(), rhs->GetBoundingVolume()))

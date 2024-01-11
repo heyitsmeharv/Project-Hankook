@@ -12,6 +12,8 @@
 
 namespace hk
 {
+	class TextureManager;
+
 	struct TilemapComponent
 	{
 		TilemapComponent() = default;
@@ -30,6 +32,6 @@ namespace hk
 		std::vector<int>							tiles;
 	};
 
-	bool LoadTilemapFromFile(TilemapComponent& tilemap, const std::string& filepath);
+	bool LoadTilemapFromFile(TilemapComponent& tilemap, const std::string& filepath, const TextureManager& texture_manager);
 
 }

@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -111,9 +111,9 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -134,24 +134,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AutomaticClock.cpp" />
+    <ClCompile Include="CellButtonBehaviour.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="CollisionResolver.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="CollisionVisitor.cpp" />
+    <ClCompile Include="CommandButtonBehaviour.cpp" />
     <ClCompile Include="ConstraintAttachment.cpp" />
     <ClCompile Include="ControllerInstance.cpp" />
     <ClCompile Include="ControllerSystem.cpp" />
     <ClCompile Include="DebugShape.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="EngineAccess.cpp" />
     <ClCompile Include="ErrorManager.cpp" />
+    <ClCompile Include="GameOverScreen.cpp" />
+    <ClCompile Include="GameModeSystem.cpp" />
+    <ClCompile Include="ProcessLocationQueryModelCommand.cpp" />
     <ClCompile Include="GameModel.cpp" />
-    <ClCompile Include="GameModelAccess.cpp" />
     <ClCompile Include="GamepadDevice.cpp" />
     <ClCompile Include="GamepadInstance.cpp" />
     <ClCompile Include="GamepadMapping.cpp" />
+    <ClCompile Include="GridGenerator.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="ImGuiUser.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -162,21 +166,26 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="InputDeviceManager.cpp" />
+    <ClCompile Include="InteractEntityInputCommand.cpp" />
+    <ClCompile Include="InteractionSystem.cpp" />
     <ClCompile Include="KeyboardMouseDevice.cpp" />
     <ClCompile Include="KeyboardMouseInstance.cpp" />
     <ClCompile Include="KeyboardMouseMapping.cpp" />
     <ClCompile Include="LockOnAttachment.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MoveEntityInputCommand.cpp" />
-    <ClCompile Include="MoveEntityModelCommandcpp.cpp" />
+    <ClCompile Include="MoveEntityModelCommand.cpp" />
     <ClCompile Include="PetModel.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Rng.cpp" />
     <ClCompile Include="SetRenderScaleDrawRequest.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
+    <ClCompile Include="StartInteractionModelCommand.cpp" />
     <ClCompile Include="StepResourceModifier.cpp" />
     <ClCompile Include="TamagotchiModel.cpp" />
+    <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureDrawRequest.cpp" />
@@ -189,7 +198,11 @@
     <ClCompile Include="Tileset.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UIComponent.cpp" />
+    <ClCompile Include="UISystem.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WordSearchModel.cpp" />
+    <ClCompile Include="WordSearchScreen.cpp" />
     <ClCompile Include="ZoomCameraInputCommand.cpp" />
     <ClCompile Include="ZoomCameraModelCommand.cpp" />
   </ItemGroup>
@@ -197,10 +210,21 @@
     <ClInclude Include="AABB.h" />
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="AutomaticClock.h" />
+    <ClInclude Include="CellButtonBehaviour.h" />
+    <ClInclude Include="CommandButtonBehaviour.h" />
+    <ClInclude Include="CountdownModeComponent.h" />
+    <ClInclude Include="GameModes.h" />
+    <ClInclude Include="GameOverScreen.h" />
+    <ClInclude Include="GameModeSystem.h" />
+    <ClInclude Include="NormalModeComponent.h" />
+    <ClInclude Include="TimedModeComponent.h" />
+    <ClInclude Include="UIBehaviour.h" />
+    <ClInclude Include="UIComponent.h" />
     <ClInclude Include="CameraAttachment.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CameraSystem.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="ClickableComponent.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Collidable.h" />
     <ClInclude Include="CollisionInterface.h" />
@@ -210,14 +234,17 @@
     <ClInclude Include="ConstraintAttachment.h" />
     <ClInclude Include="ControllerSystem.h" />
     <ClInclude Include="DrawRequest.h" />
+    <ClInclude Include="UIComponentState.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="EngineAccess.h" />
+    <ClInclude Include="GridComponent.h" />
+    <ClInclude Include="ProcessLocationQueryModelCommand.h" />
     <ClInclude Include="GameModel.h" />
+    <ClInclude Include="GridGenerator.h" />
     <ClInclude Include="InputCommand.h" />
     <ClInclude Include="ControllerInstance.h" />
     <ClInclude Include="DebugShape.h" />
     <ClInclude Include="ErrorManager.h" />
-    <ClInclude Include="IModel.h" />
+    <ClInclude Include="BaseModel.h" />
     <ClInclude Include="GamepadDevice.h" />
     <ClInclude Include="GamepadInstance.h" />
     <ClInclude Include="GamepadMapping.h" />
@@ -232,12 +259,15 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="InputDeviceManager.h" />
+    <ClInclude Include="InteractEntityInputCommand.h" />
+    <ClInclude Include="InteractionComponent.h" />
+    <ClInclude Include="InteractionSystem.h" />
+    <ClInclude Include="InteractionTypes.h" />
     <ClInclude Include="KeyboardMouseDevice.h" />
     <ClInclude Include="KeyboardMouseInstance.h" />
     <ClInclude Include="KeyboardMouseMapping.h" />
     <ClInclude Include="LockOnAttachment.h" />
     <ClInclude Include="Logger.h" />
-    <ClInclude Include="GameModelAccess.h" />
     <ClInclude Include="ModelCommand.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="MoveEntityInputCommand.h" />
@@ -250,12 +280,15 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceChangedEvent.h" />
     <ClInclude Include="ResourceModifier.h" />
+    <ClInclude Include="Rng.h" />
     <ClInclude Include="SetRenderScaleDrawRequest.h" />
     <ClInclude Include="SpriteAnimation.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="SpriteSheet.h" />
+    <ClInclude Include="StartInteractionModelCommand.h" />
     <ClInclude Include="StepResourceModifier.h" />
     <ClInclude Include="TamagotchiModel.h" />
+    <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureDrawRequest.h" />
     <ClInclude Include="TextureInfos.h" />
@@ -270,8 +303,14 @@
     <ClInclude Include="TimeChangedEvent.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="UIScreen.h" />
+    <ClInclude Include="UISystem.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WordFoundEvent.h" />
+    <ClInclude Include="WordSearchModel.h" />
+    <ClInclude Include="WordSearchModelAccess.h" />
+    <ClInclude Include="WordSearchScreen.h" />
     <ClInclude Include="ZoomCameraInputCommand.h" />
     <ClInclude Include="ZoomCameraModelCommand.h" />
   </ItemGroup>

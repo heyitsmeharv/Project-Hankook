@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IModel.h"
+#include "BaseModel.h"
 #include "AutomaticClock.h"
 #include "PetModel.h"
 
@@ -12,11 +12,11 @@ namespace hk
 	};
 
 	class TamagotchiModel final 
-		: public IModel
+		: public BaseModel
 		, public ImGuiUser
 	{
 	public:
-		TamagotchiModel();
+		TamagotchiModel(Engine& engine);
 
 		void Initialise	() override;
 		void Destroy	() override;

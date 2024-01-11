@@ -1,56 +1,10 @@
 #include <cmath>
 
-#include "Engine.h"
-#include "EngineAccess.h"
 #include "ErrorManager.h"
 #include "TilemapObjectLayer.h"
 #include "Tileset.h"
 #include "Texture.h"
 #include "TextureManager.h"
-
-namespace
-{
-	//std::unique_ptr<hk::GameObject> CreateGameObjectFromType(const hk::ObjectInfo& /*object_info*/)
-	//{
-	//	if (object_info.type == "player_spawn_point")
-	//	{
-	//	
-	//	}
-	//	else if (object_info.type == "enemy_spawn_point")
-	//	{
-	//	
-	//	}
-	//	else if (object_info.type == "treasure")
-	//	{
-	//		hk::GameObjectInitInfo init_info;
-	//		init_info.id = object_info.name;
-	//		init_info.position = object_info.position;
-	//		init_info.dimensions = { static_cast<int>(object_info.dimensions.x), static_cast<int>(object_info.dimensions.y) };
-	//		init_info.texture = &hk::GetEngine().GetTextureManager().GetTexture("Data\\Images\\chest_closed.png");
-	//	
-	//		return std::make_unique<hk::GameObject>(init_info);
-	//	}
-	//	else if (object_info.type == "resource_node")
-	//	{
-	//		hk::NodeResourceGameObjectInitInfo init_info;
-	//		init_info.id = object_info.name;
-	//		init_info.position = object_info.position;
-	//		init_info.texture = &hk::GetEngine().GetTextureManager().GetTexture("Data\\Images\\chest_closed.png");
-	//	
-	//		//Stages
-	//		hk::NodeStage& stage = init_info.stages.emplace_back();
-	//		stage.texture = &hk::GetEngine().GetTextureManager().GetTexture("Data\\Images\\chest_closed.png");
-	//		stage.resource_key = std::get<std::string>(object_info.properties.find("resource")->second.value);
-	//		stage.amount_on_change = static_cast<double>(std::get<float>(object_info.properties.find("amount")->second.value));
-	//	
-	//		init_info.starting_stage = init_info.stages.size() - 1;
-	//	
-	//		return std::make_unique<hk::GameObject>(init_info);
-	//	}
-
-	//	return nullptr;
-	//}
-}
 
 namespace hk
 {
@@ -122,15 +76,6 @@ namespace hk
 				m_object_data.push_back(std::move(object_info));
 			}
 		}
-
-		//Load Game Objects
-		//for (const auto& object_data : m_object_data)
-		//{
-		//	if (object_data.tile_index.has_value() == false)
-		//	{
-		//		hk::GameObject::RootObject()->AddChild(CreateGameObjectFromType(object_data));
-		//	}
-		//}
 
 		return true;
 	}

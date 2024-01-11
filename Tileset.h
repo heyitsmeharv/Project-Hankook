@@ -8,6 +8,7 @@
 namespace hk
 {
 	class Texture;
+	class TextureManager;
 
 	struct Tileset
 	{
@@ -24,6 +25,6 @@ namespace hk
 		int					margin;
 		//CollisionData	tile_collision_data;
 
-		void LoadFromJson(const rapidjson::Value& tileset_data);
+		void LoadFromJson(const rapidjson::Value& tileset_data, const TextureManager& texture_manager);
 	};
 }

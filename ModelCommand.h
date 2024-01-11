@@ -9,5 +9,7 @@ namespace hk
 	public:
 		virtual ~ModelCommand() {}
 		virtual void Execute(entt::registry& registry) = 0;
+
+		virtual int Priority() const { return 0; };
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <cmath>
 
 namespace hk
 {
@@ -25,15 +26,9 @@ namespace hk
 			static_assert(std::is_arithmetic<T>::value, "Not an arithmetic type");
 		}
 
-		Vector2(const Vector2& rhs)
+		float Magnitude() const
 		{
-			x = rhs.x;
-			y = rhs.y;
-		}
-
-		T Magnitude() const
-		{
-			return (T)sqrt((x * x) + (y * y));
+			return sqrtf((float)((x * x) + (y * y)));
 		}
 
 		T MagnitudeSquared() const
@@ -46,7 +41,7 @@ namespace hk
 			//#TODO: Make this debug only!
 			NanCheck();
 
-			const T mag = Magnitude();
+			const float mag = Magnitude();
 
 			x /= mag;
 			y /= mag;
@@ -54,12 +49,12 @@ namespace hk
 			return *this;
 		}
 
-		Vector2<T> AsNormalised() const
+		Vector2<float> AsNormalised() const
 		{
 			//#TODO: Make this debug only!
 			NanCheck();
 
-			const T mag = Magnitude();
+			const float mag = Magnitude();
 			return { x / mag, y / mag };
 		}
 

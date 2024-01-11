@@ -151,6 +151,48 @@
     <Filter Include="Source Files\Graphics\DrawRequests">
       <UniqueIdentifier>{c19b7205-3c2b-475b-a3ca-d1e1ebe63b73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameLogic\WordSearch">
+      <UniqueIdentifier>{7c8be88f-4afb-401d-a8a8-40aa82ff53d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLogic\WordSearch">
+      <UniqueIdentifier>{b85f9848-e10e-4279-aa1b-369ce2bc3d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameLogic\ModelCommands\WordSearch">
+      <UniqueIdentifier>{be1e8342-1e6e-4ca4-88db-22e758eb75aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLogic\ModelCommands\WordSearch">
+      <UniqueIdentifier>{bc43bc10-b3bd-462b-a14c-a37033865f19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\WordSearch">
+      <UniqueIdentifier>{3cd51568-b585-4545-b279-2f258dc7a224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{2c24173d-15f3-463d-8b2b-99ef45b158fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\WordSearch">
+      <UniqueIdentifier>{efff7bf1-e568-44d5-b774-744166b4a8bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{cbdf2661-d895-46d5-a528-281df81c7e3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\WordSearch">
+      <UniqueIdentifier>{32ffc920-e556-4e60-9e11-1ce6235d66ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\Behaviours">
+      <UniqueIdentifier>{ad22e3fa-3a7c-4147-9071-24efa69e42ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Behaviours">
+      <UniqueIdentifier>{8149e3de-c487-43cc-bebd-aadeb7c0c4a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Systems\WordSearch">
+      <UniqueIdentifier>{f7484332-b0a7-4c11-b52b-0d5a95a4772d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\WordSearch">
+      <UniqueIdentifier>{35f33a75-2a2e-4947-97a1-cdd0100bd064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events\WordSearch">
+      <UniqueIdentifier>{9d625212-f04a-46db-8dc2-374374725663}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -276,9 +318,6 @@
     <ClCompile Include="ConstraintAttachment.cpp">
       <Filter>Source Files\Cameras\Attachments</Filter>
     </ClCompile>
-    <ClCompile Include="EngineAccess.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Source Files\GameLogic\Resources</Filter>
     </ClCompile>
@@ -291,16 +330,13 @@
     <ClCompile Include="CollisionResolver.cpp">
       <Filter>Source Files\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="GameModelAccess.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
     <ClCompile Include="TilemapComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="RenderingSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="MoveEntityModelCommandcpp.cpp">
+    <ClCompile Include="MoveEntityModelCommand.cpp">
       <Filter>Source Files\GameLogic\ModelCommands</Filter>
     </ClCompile>
     <ClCompile Include="MoveEntityInputCommand.cpp">
@@ -329,6 +365,51 @@
     </ClCompile>
     <ClCompile Include="SetRenderScaleDrawRequest.cpp">
       <Filter>Source Files\Graphics\DrawRequests</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="StartInteractionModelCommand.cpp">
+      <Filter>Source Files\GameLogic\ModelCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractEntityInputCommand.cpp">
+      <Filter>Source Files\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GridGenerator.cpp">
+      <Filter>Source Files\GameLogic\WordSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Rng.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="WordSearchModel.cpp">
+      <Filter>Source Files\GameLogic\WordSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessLocationQueryModelCommand.cpp">
+      <Filter>Source Files\GameLogic\ModelCommands\WordSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="WordSearchScreen.cpp">
+      <Filter>Source Files\UI\WordSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="UISystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="CellButtonBehaviour.cpp">
+      <Filter>Source Files\UI\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="UIComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameModeSystem.cpp">
+      <Filter>Source Files\Systems\WordSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScreen.cpp">
+      <Filter>Source Files\UI\WordSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandButtonBehaviour.cpp">
+      <Filter>Source Files\UI\Behaviours</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -395,7 +476,7 @@
     <ClInclude Include="Logger.h">
       <Filter>Header Files\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="IModel.h">
+    <ClInclude Include="BaseModel.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="Clock.h">
@@ -488,9 +569,6 @@
     <ClInclude Include="ConstraintAttachment.h">
       <Filter>Header Files\Cameras\Attachments</Filter>
     </ClInclude>
-    <ClInclude Include="EngineAccess.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="TextureInfos.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -520,9 +598,6 @@
     </ClInclude>
     <ClInclude Include="CommandQueue.h">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="GameModelAccess.h">
-      <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="TransformComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -571,6 +646,90 @@
     </ClInclude>
     <ClInclude Include="SetRenderScaleDrawRequest.h">
       <Filter>Header Files\Graphics\DrawRequests</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="StartInteractionModelCommand.h">
+      <Filter>Header Files\GameLogic\ModelCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionTypes.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractEntityInputCommand.h">
+      <Filter>Header Files\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ClickableComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GridGenerator.h">
+      <Filter>Header Files\GameLogic\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="Rng.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSearchModel.h">
+      <Filter>Header Files\GameLogic\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessLocationQueryModelCommand.h">
+      <Filter>Header Files\GameLogic\ModelCommands\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="GridComponent.h">
+      <Filter>Header Files\Components\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="UIScreen.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSearchScreen.h">
+      <Filter>Header Files\UI\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="UISystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBehaviour.h">
+      <Filter>Header Files\UI\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="CellButtonBehaviour.h">
+      <Filter>Header Files\UI\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="UIComponent.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIComponentState.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSearchModelAccess.h">
+      <Filter>Header Files\GameLogic\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModeSystem.h">
+      <Filter>Header Files\Systems\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalModeComponent.h">
+      <Filter>Header Files\Components\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="TimedModeComponent.h">
+      <Filter>Header Files\Components\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="CountdownModeComponent.h">
+      <Filter>Header Files\Components\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModes.h">
+      <Filter>Header Files\GameLogic\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="WordFoundEvent.h">
+      <Filter>Header Files\Events\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScreen.h">
+      <Filter>Header Files\UI\WordSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandButtonBehaviour.h">
+      <Filter>Header Files\UI\Behaviours</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include "GamepadInstance.h"
 #include "ImGuiManager.h"
 #include "KeyboardMouseInstance.h"
+#include "WordSearchModel.h"
 
 namespace hk
 {
@@ -11,8 +12,7 @@ namespace hk
 		: m_windows()
 		, m_texture_manager()
 		, m_input_device_manager()
-		, m_game_model(*this)
-		, m_collision_system()
+		, m_game_model(std::make_unique<WordSearchModel>(*this))
 		, m_is_shutdown_requested(false)
 		, m_has_shutdown(false)
 
@@ -35,7 +35,7 @@ namespace hk
 		LoadTextures();
 		LoadInputDeviceManager();
 
-		m_game_model.Initialise();
+		m_game_model->Initialise();
 
 		return true;
 	}
@@ -70,8 +70,7 @@ namespace hk
 			ProcessEvents();
 
 			m_input_device_manager.Update(delta_time);
-			m_collision_system.Update();
-			m_game_model.Update(delta_time);
+			m_game_model->Update(delta_time);
 		}
 	}
 
@@ -157,7 +156,7 @@ namespace hk
 	{
 		hk::WindowInitInfo window_init_info;
 		window_init_info.window_title = "Project Hankook";
-		window_init_info.width = 800;
+		window_init_info.width = 1200;
 		window_init_info.height = 800;
 		window_init_info.x_pos = 1000;
 		window_init_info.y_pos = 200;
@@ -236,15 +235,5 @@ namespace hk
 	const InputDeviceManager& Engine::GetInputDeviceManager() const
 	{
 		return m_input_device_manager;
-	}
-
-	GameModel& Engine::GetGameModel()
-	{
-		return m_game_model;
-	}
-
-	CollisionSystem& Engine::GetCollisionSystem()
-	{
-		return m_collision_system;
 	}
 }

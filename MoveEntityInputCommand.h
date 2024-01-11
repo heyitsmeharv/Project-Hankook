@@ -13,7 +13,7 @@ namespace hk
 		std::unique_ptr<InputCommand> Clone() const override;
 
 		void ConfigureFromDeviceInput	(const DeviceInputInfo& info) override;
-		void Execute					(entt::entity controlled_entity, entt::entity camera_entity) const override;
+		void Execute					(entt::entity controlled_entity, entt::entity camera_entity, GameModel& model) const override;
 
 	private:
 		float m_x_delta;

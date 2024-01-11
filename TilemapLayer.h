@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <rapidjson/document.h>
 #include <SDL2/SDL_render.h>
 #include <string>
@@ -11,6 +12,7 @@ namespace hk
 {
 	struct Tileset;
 	struct DrawInfo;
+	struct TileDrawRequest;
 
 	using VertexArray = std::vector<SDL_Vertex>;
 	using IndicesArray = std::vector<int>;
@@ -23,7 +25,7 @@ namespace hk
 		virtual bool LoadFromJson	(const rapidjson::Value& layer_data, const int layer_index);
 		virtual void CreateVertList	(const Vector2i& map_grid_dimensions, const Tileset& tileset) = 0;
 
-		virtual void Draw			(const Tileset& tileset, const Vector2i& offset, const float scale) const;
+		virtual std::unique_ptr<TileDrawRequest> CreateDrawRequest	(const Tileset& tileset, const Vector2i& offset, const float scale) const;
 
 	protected:
 		Vector2f FindUVCoords(const int tile_index, const Tileset& tileset) const;

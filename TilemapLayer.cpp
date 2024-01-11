@@ -1,8 +1,6 @@
 #include <cmath>
 
 #include "TilemapLayer.h"
-#include "Engine.h"
-#include "EngineAccess.h"
 #include "Texture.h"
 #include "Tileset.h"
 #include "TileDrawRequest.h"
@@ -21,7 +19,7 @@ namespace hk
 		return true;
 	}
 
-	void TilemapLayer::Draw(const Tileset& tileset, const Vector2i& offset, const float scale) const
+	std::unique_ptr<TileDrawRequest> TilemapLayer::CreateDrawRequest(const Tileset& tileset, const Vector2i& offset, const float scale) const
 	{
 		std::unique_ptr<TileDrawRequest> draw_request = std::make_unique<TileDrawRequest>();
 
@@ -32,7 +30,7 @@ namespace hk
 		draw_request->draw_info.scale = scale;
 		draw_request->z_index = m_z_index;
 
-		GetEngine().AddDrawRequest(std::move(draw_request));
+		return draw_request;
 	}
 	
 	Vector2f TilemapLayer::FindUVCoords(const int tile_index, const Tileset& tileset) const

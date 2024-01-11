@@ -2,7 +2,6 @@
 #include "ZoomCameraModelCommand.h"
 
 #include "Logger.h"
-#include "GameModelAccess.h"
 #include "GameModel.h"
 
 namespace hk
@@ -25,9 +24,9 @@ namespace hk
 	{
 	}
 
-	void ZoomCameraInputCommand::Execute(entt::entity, entt::entity camera_entity) const
+	void ZoomCameraInputCommand::Execute(entt::entity, entt::entity camera_entity, GameModel& model) const
 	{
 		hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "ZoomCameraModelCommand executed on entity %d with %f", camera_entity, m_delta);
-		GetGameModel().QueueModelCommand(std::make_unique<ZoomCameraModelCommand>(camera_entity, m_delta));
+		model.QueueModelCommand(std::make_unique<ZoomCameraModelCommand>(camera_entity, m_delta));
 	}
 }

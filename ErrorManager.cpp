@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include "Windows.h"
 
 namespace
 {
@@ -129,11 +130,13 @@ namespace hk
 
 	void ErrorManager::AddError(ErrorSeverity severity, ErrorCategory category, std::string&& message)
 	{
-		auto [itr, did_insert] = m_errors.insert({ std::move(message), hk::ErrorInfo{ severity, category, 1 }});
-		if (did_insert == false)
+		auto [itr, is_new_error] = m_errors.insert({ std::move(message), hk::ErrorInfo{ severity, category, 1 }});
+		if (is_new_error == false)
 		{
 			itr->second.count++;
 		}
+
+		OutputDebugStringA(itr->first.data());
 	}
 
 	void ErrorManager::AddToImGui()

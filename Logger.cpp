@@ -32,6 +32,7 @@ namespace hk
 		static const std::string unknown_category = "UNKNOWN CATEGORY";
 		static const std::unordered_map<LogCategory, std::string> lookup = 
 		{
+			{ LogCategory::GENERAL_INFO, "GENERAL"},
 			{ LogCategory::INPUT, "INPUT"},
 			{ LogCategory::COMMANDS, "COMMANDS" },
 			{ LogCategory::GFX, "GFX" },
@@ -46,9 +47,9 @@ namespace hk
 		ImGui::Begin("Log");
 
 		static unsigned int enabled_categories = std::numeric_limits<int>::max();
-		for (int i = 1; i < static_cast<int>(LogCategory::NUM_OF_CATEGORIES); i = i << 1)
+		for (int i = 1; i < static_cast<int>(LogCategory::END_OF_CATEGORIES); i = i << 1)
 		{
-			ImGui::SameLine();
+			//ImGui::SameLine();
 			ImGui::CheckboxFlags(GetCategoryAsString(static_cast<LogCategory>(i)).data(), &enabled_categories, i);
 		}
 

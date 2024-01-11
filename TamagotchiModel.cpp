@@ -2,8 +2,9 @@
 
 namespace hk
 {
-	TamagotchiModel::TamagotchiModel()
-		: m_clock({ 24, 60, 60.0 }, { 5.0, { 0, 15, 0.0 } })
+	TamagotchiModel::TamagotchiModel(Engine& engine)
+		: BaseModel(engine)
+		, m_clock({ 24, 60, 60.0 }, { 5.0, { 0, 15, 0.0 } })
 		, m_pet_model("test")
 	{
 	}
@@ -17,7 +18,7 @@ namespace hk
 		//m_clock.MoveBackward({ 1, 10,  1.6 });	//22h  56m  0.5s
 		//m_clock.MoveBackward({ 36, 0, 0.0 });	//10h  56m  0.5s
 
-		static_cast<Utils::Reporter<TimeChangedEvent>&>(m_clock).AddListener(m_pet_model);
+		static_cast<utils::Reporter<TimeChangedEvent>&>(m_clock).AddListener(m_pet_model);
 
 		m_pet_model.Initialise(m_clock.GetTime());
 	}

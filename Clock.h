@@ -8,7 +8,7 @@ namespace hk
 {
 	struct TimeChangedEvent;
 
-	class Clock : public Utils::Reporter<TimeChangedEvent>
+	class Clock : public utils::Reporter<TimeChangedEvent>
 	{
 	public:
 		Clock(const TimeData& time_lengths);

@@ -4,17 +4,17 @@ namespace hk
 {
 	void InputDeviceManager::NewTick()
 	{
-		for (auto& keyboard_devices : m_keyboard_devices)
+		for (auto& km_device : m_keyboard_mouse_devices)
 		{
-			keyboard_devices.NewTick();
+			km_device.NewTick();
 		}
 	}
 
 	void InputDeviceManager::Update(const double dt)
 	{
-		for (auto& keyboard_devices : m_keyboard_devices)
+		for (auto& km_device : m_keyboard_mouse_devices)
 		{
-			keyboard_devices.Update(dt);
+			km_device.Update(dt);
 		}
 
 		for (auto& gamepad : m_gamepad_devices)
@@ -25,9 +25,9 @@ namespace hk
 
 	void InputDeviceManager::ProcessEvent(SDL_Event& event)
 	{
-		for (auto& keyboard : m_keyboard_devices)
+		for (auto& km_device : m_keyboard_mouse_devices)
 		{
-			keyboard.ProcessEvent(event);
+			km_device.ProcessEvent(event);
 		}
 
 		for (auto& gamepad : m_gamepad_devices)
@@ -38,7 +38,7 @@ namespace hk
 
 	void InputDeviceManager::LoadKeyboardMouse()
 	{
-		m_keyboard_devices.emplace_back();
+		m_keyboard_mouse_devices.emplace_back();
 	}
 
 	void InputDeviceManager::LoadGamepads()
@@ -54,7 +54,7 @@ namespace hk
 
 	const KeyboardMouseDevice& InputDeviceManager::GetDefaultKeyboardMouse() const
 	{
-		return m_keyboard_devices.front();
+		return m_keyboard_mouse_devices.front();
 	}
 
 	const std::vector<GamepadDevice>& InputDeviceManager::GetGamepadDevices() const

@@ -8,7 +8,7 @@
 
 namespace hk
 {
-	void ControllerSystem::Update(entt::registry& registry) const
+	void ControllerSystem::Update(entt::registry& registry, GameModel& model) const
 	{
 		auto controller_view = registry.view<PlayerControllerComponent>();
 		controller_view.each([&](PlayerControllerComponent& controller)
@@ -18,7 +18,7 @@ namespace hk
 				std::vector<std::unique_ptr<InputCommand>> command_list = controller.controller->Update();
 				for (auto& command : command_list)
 				{
-					command->Execute(controller.controlled_entity, controller.controlled_camera);
+					command->Execute(controller.controlled_entity, controller.controlled_camera, model);
 				}
 			}
 		});

@@ -7,6 +7,7 @@ namespace hk
 	void KeyboardMouseDevice::NewTick()
 	{
 		m_wheel_event = std::nullopt;
+		m_drag_event = std::nullopt;
 	}
 
 	void KeyboardMouseDevice::Update(const double dt)
@@ -27,7 +28,7 @@ namespace hk
 	{
 		if (event.type == SDL_KEYDOWN)
 		{
-			m_keys_down.emplace((SDL_KeyCode)event.key.keysym.sym, InputData {});
+			m_keys_down.emplace((SDL_KeyCode)event.key.keysym.sym, KeyInputData{});
 		}
 		else if (event.type == SDL_KEYUP)
 		{
@@ -35,11 +36,29 @@ namespace hk
 		}
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			m_mouse_buttons_down.emplace(event.button.button, InputData {});
+			m_mouse_buttons_down.emplace(event.button.button, MouseInputData { 0.0, Vector2i{ event.button.x, event.button.y }});
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP)
 		{
-			m_mouse_buttons_down.erase(event.button.button);
+			//Look for the already existing button down event
+			const auto& itr = m_mouse_buttons_down.find(event.button.button);
+			if (itr != m_mouse_buttons_down.end())
+			{
+				//If the mouse pos is different, it means we've had a drag
+				const Vector2i end_pos{ event.button.x, event.button.y };
+				if (itr->second.click_pos != end_pos)
+				{
+					//So, lets create the drag event
+					m_drag_event = DragEvent{};
+					m_drag_event->start_pos = itr->second.click_pos;
+					m_drag_event->end_pos = end_pos;
+					m_drag_event->pos_delta = m_drag_event->end_pos - m_drag_event->start_pos;
+					m_drag_event->time_dragging = itr->second.time_held;
+				}
+
+				//Erase the down event as the button is no longer down
+				m_mouse_buttons_down.erase(event.button.button);
+			}
 		}
 		else if (event.type == SDL_MOUSEWHEEL)
 		{
@@ -79,12 +98,12 @@ namespace hk
 		return (SDL_GetModState() & mod_key) > 0;
 	}
 
-	const std::unordered_map<SDL_KeyCode, InputData>& KeyboardMouseDevice::GetKeysDown() const
+	const std::unordered_map<SDL_KeyCode, KeyInputData>& KeyboardMouseDevice::GetKeysDown() const
 	{
 		return m_keys_down;
 	}
 
-	const std::unordered_map<Uint8, InputData>& KeyboardMouseDevice::GetMouseButtonsDown() const
+	const std::unordered_map<Uint8, MouseInputData>& KeyboardMouseDevice::GetMouseButtonsDown() const
 	{
 		return m_mouse_buttons_down;
 	}
@@ -92,5 +111,10 @@ namespace hk
 	const std::optional<WheelEvent>& KeyboardMouseDevice::GetWheelEvent() const
 	{
 		return m_wheel_event;
+	}
+
+	const std::optional<DragEvent>& KeyboardMouseDevice::GetDragEvent() const
+	{
+		return m_drag_event;
 	}
 }

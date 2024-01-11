@@ -8,9 +8,9 @@ namespace hk
 	SpriteAnimation::SpriteAnimation()
 		: m_current_frame_index(0)
 		, m_is_paused(false)
-		, m_sprite_sheet(nullptr)
 		, m_current_anim_time(0.0)
 		, m_playback_speed(1.0)
+		, m_sprite_sheet(nullptr)
 	{
 	}
 
@@ -28,14 +28,6 @@ namespace hk
 
 			const double frame_length = m_sprite_sheet->FrameLength();
 			const int new_frame = static_cast<int>(std::floor(m_current_anim_time / frame_length));
-
-			if (m_current_anim_time == 0.0)
-			{
-				int i = 10;
-				i++;
-				i++;
-				i++;
-			}
 
 			if (new_frame != m_current_frame_index)
 			{

@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace hk::Utils
+namespace hk::utils
 {
 	template<typename T>
 	class Listener
@@ -23,7 +23,7 @@ namespace hk::Utils
 
 		void RemoveListener(const Listener<T>& to_remove)
 		{
-			const auto& itr = std::find_if(m_listeners.begin(), m_listeners.end(), [&to_remove](const auto& listener) { return to_remove == listener; });
+			const auto& itr = std::find_if(m_listeners.begin(), m_listeners.end(), [&to_remove](const auto& listener) { return &to_remove == listener; });
 			if (itr != m_listeners.end())
 			{
 				m_listeners.erase(itr);

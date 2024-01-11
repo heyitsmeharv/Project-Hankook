@@ -4,11 +4,12 @@
 #include <entt/entt.hpp>
 
 #include "CommandQueue.h"
-#include "IModel.h"
+#include "BaseModel.h"
 #include "ModelCommand.h"
 
 #include "CameraSystem.h"
 #include "ControllerSystem.h"
+#include "InteractionSystem.h"
 #include "RenderingSystem.h"
 
 namespace hk
@@ -16,7 +17,7 @@ namespace hk
 	class CameraManager;
 	class Engine;
 
-	class GameModel final : public IModel
+	class GameModel final : public BaseModel
 	{
 	public:
 		 GameModel(Engine& engine);
@@ -28,6 +29,8 @@ namespace hk
 
 		void QueueModelCommand(std::unique_ptr<ModelCommand>&& model_command);
 
+		void PushNewInteraction(const PendingInteraction& new_interaction);
+
 		const entt::registry& GetRegistry() const;
 
 	private:
@@ -35,14 +38,15 @@ namespace hk
 		void ProcessModelCommands();
 
 	private:
-		Engine&							m_engine;
-
 		CommandQueue<ModelCommand>		m_model_command_queue;
+
 		entt::registry					m_registry;
 		entt::entity					m_player_entity;
+		std::vector<entt::entity>		m_npc_entities;
 
 		CameraSystem					m_camera_system;
 		ControllerSystem				m_controller_system;
+		InteractionSystem				m_interaction_system;
 		RenderingSystem					m_rendering_system;
 	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL_ttf.h>
 #include "TextureInfos.h"
 
 namespace hk
@@ -15,11 +16,16 @@ namespace hk
 
 		[[nodiscard]]
 		bool LoadTexture();
+		[[nodiscard]]
+		bool CreateTextureFromText(TTF_Font* font, const std::string& text, SDL_Color colour);
+
 		void Draw		(const TextureDrawInfo& info) const;
 		void DrawTiles	(const TileDrawInfo& info) const;
 
 		int GetWidth	() const { return m_width; }
 		int GetHeight	() const { return m_height; }
+
+		bool IsValid	() const { return m_texture != nullptr; }
 
 	private:
 		std::string					m_filepath;

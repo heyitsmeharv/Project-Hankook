@@ -4,7 +4,6 @@
 #include <unordered_map>
 
 #include "ImGuiUser.h"
-#include "IModel.h"
 #include "ListenerReporter.h"
 #include "Resource.h"
 #include "Time.h"
@@ -22,8 +21,8 @@ namespace hk
 
 	class PetModel 
 		: public IImGuiUser
-		, public Utils::Listener<TimeChangedEvent>
-		, public Utils::Listener<ResourceChangedEvent>
+		, public utils::Listener<TimeChangedEvent>
+		, public utils::Listener<ResourceChangedEvent>
 	{
 	public:
 		PetModel(std::string&& name);

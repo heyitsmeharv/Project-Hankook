@@ -84,7 +84,7 @@ namespace hk
 					continue;
 				}
 
-				const int starting_index = m_vertices.size();
+				const int starting_index = static_cast<int>(m_vertices.size());
 				m_vertices.insert(m_vertices.end(), { SDL_Vertex{}, SDL_Vertex{}, SDL_Vertex{}, SDL_Vertex{} });
 
 				// find its position in the tileset texture

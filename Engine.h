@@ -2,10 +2,9 @@
 
 #include <vector>
 
-#include "CollisionSystem.h"
+#include "BaseModel.h"
 #include "DrawRequest.h"
 #include "ErrorManager.h"
-#include "GameModel.h"
 #include "InputDeviceManager.h"
 #include "Logger.h"
 #include "TextureManager.h"
@@ -34,8 +33,6 @@ namespace hk
 
 		const InputDeviceManager&	GetInputDeviceManager	() const;
 		const TextureManager&		GetTextureManager		() const;
-		GameModel&					GetGameModel			();
-		CollisionSystem&			GetCollisionSystem		();
 
 	private:
 		Window&						CreateWindow			(const WindowInitInfo& window_info);
@@ -54,8 +51,7 @@ namespace hk
 		std::vector<std::unique_ptr<DrawRequest>>	m_draw_requests;
 		TextureManager								m_texture_manager;
 		InputDeviceManager							m_input_device_manager;
-		GameModel									m_game_model;
-		CollisionSystem								m_collision_system;
+		std::unique_ptr<BaseModel>					m_game_model;
 
 		bool										m_is_shutdown_requested;
 		bool										m_has_shutdown;

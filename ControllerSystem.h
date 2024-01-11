@@ -5,9 +5,11 @@
 
 namespace hk
 {
+	class GameModel;
+
 	class ControllerSystem
 	{
 	public:
-		void Update(entt::registry& registry) const;
+		void Update(entt::registry& registry, GameModel& model) const;
 	};
 }

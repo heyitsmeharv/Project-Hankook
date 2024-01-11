@@ -11,7 +11,6 @@
 #include "TilemapComponent.h"
 #include "TilemapObjectLayer.h"
 #include "TilemapTileLayer.h"
-#include "TextureManager.h"
 
 namespace hk
 {
@@ -37,7 +36,7 @@ namespace hk
 		return *this;
 	}
 
-	bool LoadTilemapFromFile(TilemapComponent& tilemap, const std::string& filepath)
+	bool LoadTilemapFromFile(TilemapComponent& tilemap, const std::string& filepath, const TextureManager& texture_manager)
 	{
 		using namespace rapidjson;
 
@@ -73,7 +72,7 @@ namespace hk
 
 					//Create a new tileset data collection
 					Tileset new_tileset;
-					new_tileset.LoadFromJson(tileset_data);
+					new_tileset.LoadFromJson(tileset_data, texture_manager);
 
 					tilemap.tilesets.push_back(std::move(new_tileset));
 				}

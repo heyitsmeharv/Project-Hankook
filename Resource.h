@@ -26,7 +26,7 @@ namespace hk
 
 	class Resource 
 		: public IImGuiUser
-		, public Utils::Reporter<ResourceChangedEvent>
+		, public utils::Reporter<ResourceChangedEvent>
 	{
 	public:
 		 Resource();

@@ -69,13 +69,46 @@ namespace hk
 		return true;
 	}
 
+	bool Texture::CreateTextureFromText(TTF_Font* font, const std::string& text, SDL_Color colour)
+	{
+		if (m_texture)
+		{
+			SDL_DestroyTexture(m_texture);
+		}
+
+		SDL_Surface* text_surface = TTF_RenderText_Solid(font, text.c_str(), colour);
+		if (text_surface == NULL)
+		{
+			hk::Fault(hk::ErrorCategory::GFX, "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+			return false;
+		}
+		else
+		{
+			m_texture = SDL_CreateTextureFromSurface(m_renderer, text_surface);
+			if (m_texture == NULL)
+			{
+				hk::Fault(hk::ErrorCategory::GFX, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+				return false;
+			}
+			else
+			{
+				m_width = text_surface->w;
+				m_height = text_surface->h;
+			}
+
+			SDL_FreeSurface(text_surface);
+		}
+
+		return true;
+	}
+
 	void Texture::Draw(const TextureDrawInfo& info) const
 	{
 		SDL_Rect render_quad{ info.position.x, info.position.y, info.dimensions.x, info.dimensions.y };
 		if (info.dimensions.IsZeroed())
 		{
-			render_quad.w = GetWidth();
-			render_quad.h = GetHeight();
+			render_quad.w = GetWidth() * info.scale;
+			render_quad.h = GetHeight() * info.scale;
 		}
 
 		if (info.clip.has_value())
@@ -106,7 +139,7 @@ namespace hk
 			SDL_SetTextureColorMod(m_texture, info.colour_mod->r, info.colour_mod->g, info.colour_mod->b);
 		}
 		
-		SDL_RenderCopyEx(   m_renderer,
+		SDL_RenderCopyEx(	m_renderer,
 							m_texture,
 							info.clip.has_value() ? &info.clip.value() : nullptr,
 							&render_quad,

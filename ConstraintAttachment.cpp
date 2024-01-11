@@ -3,7 +3,6 @@
 #include "CameraComponent.h"
 #include "TransformComponent.h"
 
-#include <algorithm>
 #include <entt/entt.hpp>
 
 namespace hk

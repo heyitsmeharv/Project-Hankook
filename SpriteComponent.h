@@ -11,7 +11,9 @@ namespace hk
 
 	struct SpriteComponent
 	{
-		const hk::Texture*			texture = nullptr;
+		friend class RenderingSystem;
+
+		std::string					asset_id;
 		int							z_index = 0;
 		Vector2i					dimensions = { 0, 0 };
 		double						angle_in_deg = 0.0;
@@ -19,5 +21,8 @@ namespace hk
 		SDL_RendererFlip			flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		std::optional<SDL_Point>	centre = std::nullopt;
 		std::optional<SDL_Color>	colour_mod = std::nullopt;
+
+	private:
+		const hk::Texture*			texture = nullptr;
 	};
 }

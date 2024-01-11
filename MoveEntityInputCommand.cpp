@@ -2,7 +2,6 @@
 #include "MoveEntityModelCommand.h"
 
 #include "Logger.h"
-#include "GameModelAccess.h"
 #include "GameModel.h"
 
 namespace hk
@@ -28,9 +27,9 @@ namespace hk
 		m_y_delta *= info.press_modifier;
 	}
 
-	void MoveEntityInputCommand::Execute(entt::entity controlled_entity, entt::entity) const
+	void MoveEntityInputCommand::Execute(entt::entity controlled_entity, entt::entity, GameModel& model) const
 	{
 		hk::Logger::Instance().AddEntry(hk::LogCategory::COMMANDS, "MoveEntityInputCommand executed on entity %d with x: %f, y: %f", controlled_entity, m_x_delta, m_y_delta);
-		GetGameModel().QueueModelCommand(std::make_unique<MoveEntityModelCommand>(controlled_entity, Vector2f{ m_x_delta, m_y_delta }));
+		model.QueueModelCommand(std::make_unique<MoveEntityModelCommand>(controlled_entity, Vector2f{ m_x_delta, m_y_delta }));
 	}
 }

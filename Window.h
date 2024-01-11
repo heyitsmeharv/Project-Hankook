@@ -16,8 +16,8 @@ namespace hk
 		int			y_pos = SDL_WINDOWPOS_UNDEFINED;
 		int			width = 800;
 		int			height = 800;
-		SDL_Color	draw_colour = { 0xFF, 0xFF, 0xFF, 0xFF };
-		SDL_Color	clear_colour = { 0xFF, 0xFF, 0xFF, 0xFF };
+		SDL_Color	draw_colour = { 255, 255, 255, 255 };
+		SDL_Color	clear_colour = { 255, 255, 255, 255 };
 		Uint32		flags;
 	};
 

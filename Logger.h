@@ -10,11 +10,12 @@ namespace hk
 {
 	enum class LogCategory : unsigned int
 	{
-		INPUT		= 1 << 0,
-		COMMANDS	= 1 << 1,
-		GFX			= 1 << 2,
+		GENERAL_INFO = 1 << 0,
+		INPUT		= 1 << 1,
+		COMMANDS	= 1 << 2,
+		GFX			= 1 << 3,
 
-		NUM_OF_CATEGORIES = 1 << 3
+		END_OF_CATEGORIES = 1 << 4
 	};
 
 	struct LogEntry

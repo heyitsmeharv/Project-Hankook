@@ -2,14 +2,15 @@
 
 #include "ConstraintAttachment.h"
 #include "Engine.h"
-#include "EngineAccess.h"
 #include "GamepadInstance.h"
 #include "KeyboardMouseInstance.h"
 #include "LockOnAttachment.h"
 #include "TextureManager.h"
 
 #include "CameraComponent.h"
+#include "InteractionComponent.h"
 #include "PlayerControllerComponent.h"
+#include "TextComponent.h"
 #include "TilemapComponent.h"
 #include "TransformComponent.h"
 #include "SpriteComponent.h"
@@ -17,12 +18,13 @@
 namespace hk
 {
 	GameModel::GameModel(Engine& engine)
-		: m_engine(engine)
+		: BaseModel(engine)
 		, m_model_command_queue()
 		, m_registry()
 		, m_player_entity(entt::null)
 		, m_camera_system()
 		, m_controller_system()
+		, m_interaction_system()
 		, m_rendering_system()
 	{
 	}
@@ -36,19 +38,47 @@ namespace hk
 		//----- TILE MAP -----
 		entt::entity tilemap_entity = m_registry.create();
 		TilemapComponent& tilemap = m_registry.emplace<TilemapComponent>(tilemap_entity);
-		LoadTilemapFromFile(tilemap, "Data\\Tilemap\\demo_project_2.tmj");
+		LoadTilemapFromFile(tilemap, "Data\\Tilemap\\demo_project_2.tmj", m_engine.GetTextureManager());
 
 		//----- PLAYER -----
-		m_player_entity = m_registry.create();
-		TransformComponent& player_transform = m_registry.emplace<TransformComponent>(m_player_entity);
-		player_transform.position = Vector2f{ 100.0f, 100.0f };
-
-		const hk::Texture* texture = &GetEngine().GetTextureManager().GetTexture("Data\\Images\\blank_circle_64.png");
-		if (texture)
 		{
+			m_player_entity = m_registry.create();
+			TransformComponent& player_transform = m_registry.emplace<TransformComponent>(m_player_entity);
+			player_transform.position = Vector2f{ 100.0f, 100.0f };
+
 			SpriteComponent& player_sprite = m_registry.emplace<SpriteComponent>(m_player_entity);
-			player_sprite.texture = texture;
+			player_sprite.asset_id = "Images\\blank_circle_64.png";
 			player_sprite.z_index = 1;
+		}
+
+		//----- NPCs -----
+		{
+			entt::entity npc_entity = m_registry.create();
+			TransformComponent& npc_transform = m_registry.emplace<TransformComponent>(npc_entity);
+			npc_transform.position = Vector2f{ 300.0f, 100.0f };
+
+			SpriteComponent& npc_sprite = m_registry.emplace<SpriteComponent>(npc_entity);
+			npc_sprite.asset_id = "Images\\blank_circle_64.png";
+			npc_sprite.z_index = 1;
+			npc_sprite.colour_mod = SDL_Color{ 0, 255, 255, 255 };
+
+			InteractionComponent& npc_interaction = m_registry.emplace<InteractionComponent>(npc_entity);
+			npc_interaction.type = InteractionType::DIALOGUE;
+		}
+
+		//----- TEXTS -----
+		{
+			entt::entity text_entity = m_registry.create();
+			TextComponent& text_component = m_registry.emplace<TextComponent>(text_entity, m_engine.GameWindow().GetRenderer());
+			text_component.font = m_rendering_system.GetFont();
+			text_component.colour = SDL_Color{ 255, 0, 0, 255 };
+			text_component.z_index = 100;
+			text_component.scale = 5.0f;
+
+			text_component.SetText("T");
+
+			TransformComponent& transform = m_registry.emplace<TransformComponent>(text_entity);
+			transform.position = { 600, 600 };
 		}
 
 		//---- CAMERA -----
@@ -72,12 +102,12 @@ namespace hk
 
 	void GameModel::Update(const double /*delta_time*/)
 	{
-		m_controller_system.Update(m_registry);
+		m_controller_system.Update(m_registry, *this);
 		m_camera_system.Update(m_registry);
 
 		ProcessModelCommands();
 		
-		m_rendering_system.Update(m_registry, m_camera_system.CurrentCamera());
+		m_rendering_system.Update(m_registry, m_camera_system.CurrentCamera(), m_engine);
 	}
 
 	void GameModel::ProcessModelCommands()
@@ -113,6 +143,11 @@ namespace hk
 	void GameModel::QueueModelCommand(std::unique_ptr<ModelCommand>&& model_command)
 	{
 		m_model_command_queue.AddToQueue(std::move(model_command));
+	}
+
+	void GameModel::PushNewInteraction(const PendingInteraction& new_interaction)
+	{
+		m_interaction_system.PushNewInteraction(new_interaction);
 	}
 
 	const entt::registry& GameModel::GetRegistry() const

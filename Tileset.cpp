@@ -1,12 +1,11 @@
 #include "Tileset.h"
 #include "Engine.h"
-#include "EngineAccess.h"
 #include "ErrorManager.h"
 #include "TextureManager.h"
 
 namespace hk
 {
-	void Tileset::LoadFromJson(const rapidjson::Value& tileset_data)
+	void Tileset::LoadFromJson(const rapidjson::Value& tileset_data, const TextureManager& texture_manager)
 	{
 		name = tileset_data["name"].GetString();
 		tile_dimensions.x = tileset_data["tilewidth"].GetInt();
@@ -16,7 +15,7 @@ namespace hk
 		margin = tileset_data["margin"].GetInt();
 		dimensions.x = tileset_data["imagewidth"].GetInt() / tile_dimensions.x;
 		dimensions.y = tileset_data["imageheight"].GetInt() / tile_dimensions.y;
-		image = &GetEngine().GetTextureManager().GetTexture(image_path);
+		image = &texture_manager.GetTexture(image_path);
 
 		if (tileset_data.HasMember("tiles"))
 		{

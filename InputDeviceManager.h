@@ -26,7 +26,7 @@ namespace hk
 		const GamepadDevice*				GetGamepadDevice(const SDL_JoystickID joystick_id) const;
 
 	private:
-		std::vector<KeyboardMouseDevice>	m_keyboard_devices;
+		std::vector<KeyboardMouseDevice>	m_keyboard_mouse_devices;
 		std::vector<GamepadDevice>			m_gamepad_devices;
 	};
 }

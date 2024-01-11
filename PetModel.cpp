@@ -37,8 +37,8 @@ namespace hk
 
 		m_fullness.Initialise(fullness_info);
 
-		static_cast<Utils::Reporter<ResourceChangedEvent>*>(&m_happiness)->AddListener(*this);
-		static_cast<Utils::Reporter<ResourceChangedEvent>*>(&m_fullness)->AddListener(*this);
+		static_cast<utils::Reporter<ResourceChangedEvent>*>(&m_happiness)->AddListener(*this);
+		static_cast<utils::Reporter<ResourceChangedEvent>*>(&m_fullness)->AddListener(*this);
 
 		m_thresholds =
 		{
